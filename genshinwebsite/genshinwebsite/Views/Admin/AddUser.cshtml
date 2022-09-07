@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "注册";
+}
+
+@model UserRegisterViewModels
+
+<p class="h2" style="text-align:center">用户添加</p>
+<hr />
+
+<form method="post">
+
+    @Html.AntiForgeryToken()
+    <div class="row mt-2 mb-2">
+        <div class="col-sm-2 col-md-2 offset-md-3 col-lg-2 offset-lg-3">
+            <label asp-for="Account"></label>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-lg-4 ">
+            <input class="form-control" asp-for="Account" />
+        </div>
+
+
+    </div>
+    <div class="row mb-2">
+        <div class="col-sm-2 col-md-2 offset-md-3 col-lg-2 offset-lg-3">
+            <label asp-for="Password"></label>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <input class="form-control" asp-for="Password" />
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-sm-2 col-md-2 offset-md-3 col-lg-2 offset-lg-3">
+            <label asp-for="ConfirmPassoword"></label>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <input class="form-control" asp-for="ConfirmPassoword" />
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-sm-2 col-md-2 offset-md-3 col-lg-2 offset-lg-3">
+            <label asp-for="Name"></label>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <input class="form-control" asp-for="Name" />
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-sm-6 col-md-7 offset-md-3 col-lg-6 offset-lg-3">
+            <div class="bg-warning">@Html.ValidationSummary()</div>
+        </div>
+    </div>
+
+
+    <div class="row text-center mb-2">
+        <div class="col-md-4 offset-md-4 col-lg-4 offset-lg-4">
+            <input type="submit" value="submit" />
+        </div>
+    </div>
+
+</form>

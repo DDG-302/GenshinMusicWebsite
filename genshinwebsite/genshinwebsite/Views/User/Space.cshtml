@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<UserModel> UserManager
+
+<div class="row mt-4">
+    <div class="col-2 offset-2">
+        <span class="label">
+            UID：
+        </span>
+    </div>
+    <div class="col-3 offset-1">
+        <span class="label">
+            @UserManager.GetUserId(User)
+        </span>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-2 offset-2">
+        <span class="label">
+            用户名：
+        </span>
+    </div>
+    <div class="col-3 offset-1">
+        <span class="label">
+            @User.Identity.Name
+        </span>
+    </div>
+</div>
+<div class="row mt-4">
+    <a class="offset-2 col-2 btn btn-light" asp-action="upload">上传乐谱</a>
+</div>
+
+

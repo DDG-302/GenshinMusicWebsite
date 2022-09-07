@@ -1,0 +1,31 @@
+﻿@model List<MusicViewModel>
+@*@foreach(var item in Model)
+    {
+        @
+    }*@
+
+
+@for(int i = 0; i < Model.Count; i++)
+{
+<div class="row">
+    @for (int j = 0; i < Model.Count && j < 3; j++, i++)
+    {
+        <div class="col-md-4 ">
+            <div class="img-thumbnail">
+                <div class="h3">@Model[i].MusicTitle</div>
+                <div class="h5">上传者：@Model[i].Uploader</div>
+                <p style="height:100px">@Model[i].Abstract_content</p>
+                <img class="img-thumbnail" src="~/f5dd25c2527841ec883df8f3ceadc983.jpg" />
+                @*<p>点赞：@Model[i].Like_num</p>
+                <p>浏览：@Model[i].View_num</p>*@
+                <a class="btn btn-light" href="home">
+                    <span class="glyphicon glyphicon-heart"></span>喜欢
+                </a>
+            </div>
+        </div>
+    }
+</div>
+}
+
+<partial name="_PageBar" />
+

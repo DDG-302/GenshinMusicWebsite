@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<UserModel> SignInManager
+@inject UserManager<UserModel> UserManager
+@tagHelperPrefix "my:"
+
+<ul class="navbar-nav">
+    @*登录有效*@
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <my:li class="nav-item" condition="SignInManager.IsSignedIn(User)">
+            <my:a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</my:a>
+        </my:li>
+        <my:li class="nav-item" condition="SignInManager.IsSignedIn(User)">
+            <my:form class="form-inline" asp-controller="user" asp-action="logout">
+                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </my:form>
+        </my:li>
+    }
+    else
+    {
+
+        @*登录无效*@
+        <my:li class="nav-item" condition="!SignInManager.IsSignedIn(User)">
+            <my:a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</my:a>
+        </my:li>
+        <my:li class="nav-item" condition="!SignInManager.IsSignedIn(User)">
+            <my:a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</my:a>
+        </my:li>
+      }
+
+
+</ul>

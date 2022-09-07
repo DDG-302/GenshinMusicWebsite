@@ -1,0 +1,50 @@
+﻿<div class="row">
+    <ul class="pagination">
+        @if (ViewData["page_offset"] != null && ViewData["max_page"] != null)
+        {
+            @if (int.Parse(ViewData["page_offset"].ToString()) - 1 > 0)
+            {
+                <li class="page-item"><a class="page-link" href="?page_offset=@(int.Parse(ViewData["page_offset"].ToString())-1)">&laquo;</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link">&laquo;</a></li>
+            }
+            @if (int.Parse(ViewData["page_offset"].ToString()) - 3 > 1)
+            {
+                <li class="page-item"><a class="page-link" href="?page_offset=1">1</a></li>
+                <li class="page-item"><a class="page-link">...</a></li>
+            }
+
+            @for (int i = int.Parse(ViewData["page_offset"].ToString()) - 3; i <= int.Parse(ViewData["max_page"].ToString()) && i <= int.Parse(ViewData["page_offset"].ToString()) + 3; i++)
+            {
+                if (i == int.Parse(ViewData["page_offset"].ToString()))
+                {
+                    <li class="page-item"><a class="page-link"><b>@i</b></a></li>
+                }
+                else if (i > 0)
+                {
+                    <li class="page-item"><a class="page-link" href="?page_offset=@i">@i</a></li>
+                }
+            }
+
+            @if (int.Parse(ViewData["page_offset"].ToString()) + 3 < int.Parse(ViewData["max_page"].ToString()))
+            {
+                <li class="page-item"><a class="page-link">...</a></li>
+                <li class="page-item"><a class="page-link" href="?page_offset=@int.Parse(ViewData["max_page"].ToString())">@int.Parse(ViewData["max_page"].ToString())</a></li>
+            }
+
+            @if (int.Parse(ViewData["page_offset"].ToString()) + 1 <= int.Parse(ViewData["max_page"].ToString()))
+            {
+                <li class="page-item"><a class="page-link" href="?page_offset=@(int.Parse(ViewData["page_offset"].ToString())+1)">&raquo;</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link">&raquo;</a></li>
+            }
+        }
+
+
+
+    </ul>
+</div>
