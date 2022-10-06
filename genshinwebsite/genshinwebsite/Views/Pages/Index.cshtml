@@ -3,29 +3,51 @@
     {
         @
     }*@
+<script src="~/js/MusicPage.js"></script>
+<div class="row" style="margin-bottom:10px">
+    <div class="col-md-3"></div>
+    <div class="col-md-4">
+        @if (ViewData["music_title"] != null)
+        {
+            <input id="search_input_box" type="text" value="@ViewData["music_title"].ToString()" style="width:100%" />
+        }
+        else
+        {
+            <input id="search_input_box" type="text" style="width:100%" />
+        }
 
-
-@for(int i = 0; i < Model.Count; i++)
+    </div>
+    <div class="col-md-2">
+        <button style="width:100%" onclick="search_click()">搜索</button>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+@for(int i = 0; i < Model.Count; )
 {
 <div class="row">
     @for (int j = 0; i < Model.Count && j < 3; j++, i++)
     {
-        <div class="col-md-4 ">
-            <div class="img-thumbnail">
+        <div class="col-md-4" style="margin-bottom:10px">
+                <div class="img-thumbnail">
                 <div class="h3">@Model[i].MusicTitle</div>
                 <div class="h5">上传者：@Model[i].Uploader</div>
                 <p style="height:100px">@Model[i].Abstract_content</p>
                 <img class="img-thumbnail" src="~/f5dd25c2527841ec883df8f3ceadc983.jpg" />
-                @*<p>点赞：@Model[i].Like_num</p>
-                <p>浏览：@Model[i].View_num</p>*@
-                <a class="btn btn-light" href="home">
-                    <span class="glyphicon glyphicon-heart"></span>喜欢
-                </a>
+                    <p>下载：@Model[i].Download_num</p>
+                    <p>浏览：@Model[i].View_num</p>
+                <a class="btn btn-light">
+                        <span class="glyphicon glyphicon-heart">详情</span>
+                    </a>
+                    <a class="btn btn-dark" asp-action="download" asp-route-muid="@Model[i].Id">
+                        <span class="glyphicon glyphicon-heart">下载</span>
+                    </a>
+                </div>
+
             </div>
+   
+            }
         </div>
     }
-</div>
-}
 
-<partial name="_PageBar" />
+    <partial name="_PageBar" />
 

@@ -6,8 +6,11 @@ using genshinwebsite.Models;
 
 namespace genshinwebsite.Services
 {
-    public interface IMusicDB<T> where T: class // 泛型约束
+    public enum MUSIC_SELECT_ORDER { UPLOAD_DATE, TITLE, VIEW_NUM }
+    public interface IMusicDB<T, M> where T:class where M : class // 泛型约束
     {
+        
+
         /// <summary>
         /// 总乐谱数量
         /// </summary>
@@ -26,7 +29,7 @@ namespace genshinwebsite.Services
         /// </summary>
         /// <param name="uid">用户id</param>
         /// <returns></returns>
-        public IEnumerable<T> get_by_uid(int uid, int num_per_page = 10, int page_offset = 0);
+        public IEnumerable<T> get_by_uid(int uid, int num_per_page = 10, int page_offset = 0, MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE);
 
         /// <summary>
         /// 全表查询
@@ -56,7 +59,14 @@ namespace genshinwebsite.Services
         /// <returns></returns>
         public DBOperationResult delete_ones_by_uid(int uid);
 
-        public IEnumerable<T> get_music_by_offset(int num_per_page = 10, int page_offset = 0);
+        public IEnumerable<M> get_music_by_offset(out int max_item_num, int num_per_page = 10, int page_offset = 0, string music_title = "", MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE);
+
+        /// <summary>
+        /// 根据乐谱id增加下载量
+        /// </summary>
+        /// <param name="muid"></param>
+        /// <returns></returns>
+        public DBOperationResult add_or_set_download_num(int muid, int set_num = -1);
 
     }
 }

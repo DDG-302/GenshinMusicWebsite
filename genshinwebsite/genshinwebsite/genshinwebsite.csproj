@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aba6c8ef-ddbf-4de1-a195-86eae67f40a7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,12 +10,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\153\153.js" />
+    <None Include="wwwroot\155\155.js" />
+    <None Include="wwwroot\171\171.js" />
+    <None Include="wwwroot\174\174.js" />
     <None Include="wwwroot\css\login-style.css" />
     <None Include="wwwroot\f5dd25c2527841ec883df8f3ceadc983.jpg" />
     <None Include="wwwroot\img\login-user.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="3.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.18" />
@@ -28,6 +34,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>

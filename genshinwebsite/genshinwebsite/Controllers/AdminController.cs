@@ -63,8 +63,22 @@ namespace genshinwebsite.Controllers
             
         }
 
-
-      
+        [HttpPost]
+        public IActionResult DeleteUser(int id)
+        {
+            if (!User.IsInRole("Admin") && !User.IsInRole("God"))
+            {
+                RedirectToAction("index", "home");
+            }
+            // 这里需要被删除的用户身份校验
+            Console.WriteLine(id);
+            return View();
+            //UserModel user = new UserModel()
+            //{
+            //    Id = id
+            //};
+            //var result = _userManager.DeleteAsync(user);
+        }
         
         public IActionResult UserManage(int id)
         {
@@ -100,6 +114,11 @@ namespace genshinwebsite.Controllers
             return View(user_view_model);
         }
 
+        /// <summary>
+        /// 修改用户信息
+        /// </summary>
+        /// <param name="userManageViewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserManage(UserManageViewModel userManageViewModel)
@@ -117,7 +136,22 @@ namespace genshinwebsite.Controllers
                 userManageViewModel.Role = Role_type.User;
             }
 
+            
             var user = await _userManager.FindByIdAsync(userManageViewModel.Id.ToString());
+            var role = _userManager.GetRolesAsync(user).Result;
+            
+            
+            if (role.Count != 0 && (int)Enum.Parse(typeof(Role_type), role[0]) > 0 && User.IsInRole("God") == false)
+            {
+                ModelState.AddModelError(string.Empty, "不允许修改拥有高级权限的用户");
+                return View(userManageViewModel);
+            }
+            else if(role.Count != 0 && (int)Enum.Parse(typeof(Role_type), role[0]) == 2)
+            {
+                ModelState.AddModelError(string.Empty, "不允许修改拥有God权限的用户");
+                return View(userManageViewModel);
+            }
+
             var result_list = new List<string>();
             ViewData["result"] = result_list;
             if (user != null)
@@ -132,18 +166,17 @@ namespace genshinwebsite.Controllers
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    result_list.Add("用户基本信息修改成功");
+                    result_list.Add("用户「基本」信息修改成功");
                     if (!User.IsInRole("God"))
                     {
                         return View(userManageViewModel);
                     }
-                    var role = _userManager.GetRolesAsync(user).Result;
                     // 判断角色是否已经存在
                     if(role.Count > 0)
                     {
                         if(role.Count == 1)
                         {
-                            if(role[0] != userManageViewModel.Role.ToString())
+                            if(role[0] != userManageViewModel.Role.ToString() || role[0] == "Not_Found")
                             {
                                 result = await _userManager.RemoveFromRolesAsync(user, role);// 已经存在的角色就删掉
                                 if (!result.Succeeded)
@@ -157,6 +190,11 @@ namespace genshinwebsite.Controllers
                                 result = await _userManager.AddToRoleAsync(user, userManageViewModel.Role.ToString());
                             }
                         }
+                        else
+                        {
+                            // 不存在则直接添加
+                            result = await _userManager.AddToRoleAsync(user, userManageViewModel.Role.ToString());
+                        }
                         
 
                     }
@@ -165,7 +203,7 @@ namespace genshinwebsite.Controllers
 
                     if (result.Succeeded)
                     {
-                        result_list.Add("用户角色信息修改完成");
+                        result_list.Add("用户「角色」信息修改完成");
                         return View(userManageViewModel);
                     }
                     
@@ -180,11 +218,15 @@ namespace genshinwebsite.Controllers
                 ModelState.AddModelError(string.Empty, "用户已不存在");
             }
             
-            return View(userManageViewModel);
+            return View("usermanage", userManageViewModel);
         }
 
        
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userManageViewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RoleManage(UserManageViewModel userManageViewModel)
@@ -215,7 +257,7 @@ namespace genshinwebsite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddUser(UserRegisterViewModels user_model)
+        public async Task<IActionResult> AddUser(UserRegisterViewModel user_model)
         {
             if (ModelState.IsValid)
             {

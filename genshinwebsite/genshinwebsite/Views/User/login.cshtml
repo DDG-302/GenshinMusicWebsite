@@ -1,44 +1,82 @@
 ﻿@{
     ViewData["Title"] = "登录";
+    //Layout = null;
 }
+@*@model UserLoginViewModel*@
+
+
 @model UserLoginViewModel
-<div class="render_body">
-    <link rel="stylesheet" href="~/css/login-style-2.css" />
-    <script type="text/javascript" src="~/js/login.js"></script>
-    <div class="main_div_up">
-        <form id="form1" method="post">
-            @Html.AntiForgeryToken()
-            <div>
-                <div class="row mt-4">
-                    <label class="col-3 offset-2" asp-for="Account"></label>
-                    <div class="col-5">
-                        <input class="input-group" asp-for="Account" />
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <label class="col-3 offset-2" asp-for="Password"></label>
-                    <div class="col-5">
-                        <input class="input-group" asp-for="Password" />
-                    </div>
 
-                </div>
-                <div class="row">
-                    <div class="col-8 offset-2">
-                        <div class="bg-warning">@Html.ValidationSummary()</div>
-                    </div>
-                   
-                </div>
 
-                <div class="btn_div" style="margin-top:25px">
-                    <button type="submit" class="click_btn">登 录</button>
-                </div>
+<link rel="stylesheet" href="~/155/155.css">
+    <div class="container_login">
+        <h1>Welcome</h1>
+        <form method="post">
+            <div class="form">
+                <input type="email" asp-for="Account" placeholder="您的邮箱">
+                <input type="password" asp-for="Password" placeholder="您的密码">
+                <div asp-validation-summary="All"></div>
+                <button class="btn-login" type="submit">登录</button>
             </div>
         </form>
-        <div class="btn_div">
-            <a asp-route="home"> <input class="click_btn" type="button" value="忘记密码" /></a>
-        </div>
-        <div class="btn_div">
-            <a asp-action="register"> <input class="click_btn" type="button" value="注册" /></a>
-        </div>
     </div>
-</div>
+    <ul class="bg-squares">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+
+<script src="~/155/155.js"></script>
+
+
+
+
+
+@*<div class="render_body">
+        <link rel="stylesheet" href="~/css/login-style-2.css" />
+        <script type="text/javascript" src="~/js/login.js"></script>
+        <div class="main_div_up">
+            <form id="form1" method="post">
+                @Html.AntiForgeryToken()
+                <div>
+                    <div class="row mt-4">
+                        <label class="col-3 offset-2" asp-for="Account"></label>
+                        <div class="col-5">
+                            <input class="input-group" asp-for="Account" />
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <label class="col-3 offset-2" asp-for="Password"></label>
+                        <div class="col-5">
+                            <input class="input-group" asp-for="Password" />
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-8 offset-2">
+                            <div class="bg-warning">@Html.ValidationSummary()</div>
+                        </div>
+
+                    </div>
+
+                    <div class="btn_div" style="margin-top:25px">
+                        <button type="submit" class="click_btn">登 录</button>
+                    </div>
+                </div>
+            </form>
+            <div class="btn_div">
+                <a asp-route="home"> <input class="click_btn" type="button" value="忘记密码" /></a>
+            </div>
+            <div class="btn_div">
+                <a asp-action="register"> <input class="click_btn" type="button" value="注册" /></a>
+            </div>
+        </div>
+    </div>*@

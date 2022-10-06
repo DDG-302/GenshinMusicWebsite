@@ -14,13 +14,12 @@ namespace genshinwebsite.Models
         public DateTime Datetime { get; set; } = DateTime.Now;
         public string MusicTitle { get; set; }
 
-        public string MD5 { get; set; }
         //public string Music_proj_addr { get; set; }
         //public string Keyboard_music_addr { get; set; }
         //public string Midi_addr { get; set; }
         public string Abstract_content { get; set; }
         public int User_id { get; set; }
         public int View_num { get; set; }
-        public int Like_num { get; set; }
+        public int Download_num { get; set; }
     }
 }

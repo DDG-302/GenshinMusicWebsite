@@ -23,16 +23,16 @@
                     <ul class="navbar-nav flex-grow-1">
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="home" asp-action="index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="home" asp-action="privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="user" asp-action="index">用户</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="index">用户</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="pages" asp-action="index">乐谱</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Pages" asp-action="index">乐谱</a>
                         </li>
                         @if (User.IsInRole("Admin") || User.IsInRole("God"))
                         {

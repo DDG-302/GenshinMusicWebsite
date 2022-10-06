@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="A" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\visual\ studio\ save\\genshinmusic_v2\\genshinwebsite\\genshinwebsite\\genshinwebsite\\obj\\Release\\netcoreapp3\.1\\PubTmp\\Out\\$" />
+  </parameter>
+</parameters>

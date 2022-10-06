@@ -1,0 +1,42 @@
+﻿.main_div {
+    width: auto;
+    height: auto;
+    float: left;
+    padding: 50px 150px 150px 150px;
+    margin: 50px 50px 50px 50px;
+    /*margin:0, auto;*/
+    position: relative;
+    /*margin:200px,300px,20px,30px;*/
+    background-color: #FFCCCC;
+    /*background-repeat: no-repeat;
+        background-size:contain;*/
+    /*margin-top: 50px;*/
+}
+
+.lbl {
+    width: 30%;
+    height: 60px;
+    float: left;
+    position: relative;
+    /*    top: 40px;
+    left: 80px;*/
+}
+
+.container {
+    width: 80%;
+    height: auto;
+    position: relative;
+    float: left;
+    margin-top: 5%;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.inputbox {
+    width: 70%;
+    height: auto;
+    float: left;
+    position: relative;
+    /*    top: 40px;
+    left: 110px;*/
+}

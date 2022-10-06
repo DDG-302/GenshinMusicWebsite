@@ -33,7 +33,7 @@
                     <td>@r.Email</td>
                     <td>@r.UserName</td>
                     <td>
-                        <form asp-action="DeleteRole" asp-route-id="@r.Id" method="post">
+                        <form asp-action="DeleteUser" asp-route-id="@r.Id" method="post">
                             <a asp-action="UserManage" asp-route-id="@r.Id" class="btn btn-info" target="_blank">编辑信息</a>
                             <button type="submit" class="btn btn-danger"
                                     onclick="return confirm('确认删除？')">

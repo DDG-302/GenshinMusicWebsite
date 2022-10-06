@@ -10,10 +10,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using genshinwebsite.Services;
 using genshinwebsite.Models;
+using genshinwebsite.ViewModels;
 using genshinwebsite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
+
+
+
 
 
 
@@ -33,7 +40,7 @@ namespace genshinwebsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews(); // 其中一个预定义的服务注册
-            services.AddDbContext<DataContext>(option => 
+            services.AddDbContext<DataContext>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection"));
             });
@@ -44,6 +51,10 @@ namespace genshinwebsite
                 }
             );
             services.AddDbContext<MusicDataContext>(option =>
+            {
+                option.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection"));
+            });
+            services.AddDbContext<EmailVCodeDataContext>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection"));
             });
@@ -69,7 +80,7 @@ namespace genshinwebsite
                     options.User.RequireUniqueEmail = true;
                 }
                 ).AddEntityFrameworkStores<DataContext>();
-
+   
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("仅限管理员", policy => policy.RequireRole("Admin"));
@@ -77,6 +88,27 @@ namespace genshinwebsite
                 options.AddPolicy("编辑乐谱", policy => policy.RequireClaim("EditMusic", "Edit Music"));
             });
 
+            // Add framework services.
+            services.AddMvc();
+
+            //Add MailKit
+            services.AddMailKit(optionBuilder =>
+            {
+                optionBuilder.UseMailKit(new MailKitOptions()
+                {
+                    //get options from sercets.json
+                    Server = Configuration["Server"],
+                    Port = Convert.ToInt32(Configuration["Port"]),
+                    SenderName = Configuration["SenderName"],
+                    SenderEmail = Configuration["SenderEmail"],
+
+                    // can be optional with no authentication 
+                    Account = Configuration["Account"],
+                    Password = Configuration["Password"],
+                    // enable ssl or tls
+                    Security = true
+                });
+            });
 
             //services.AddAuthorization(options =>
             //{
@@ -91,8 +123,11 @@ namespace genshinwebsite
 
             //services.AddScoped<IRepository<UserModel>, UserRepository>(); // 每次http请求产生新的实例
             //services.AddScoped<IRepository<UserModel>, EFCoreRepository>();
-            services.AddScoped<IMusicDB<MusicModel>, MusicDBService>(); // efcore不是线程安全的，不能用singleton
-                                                                        // 用scope让每次执行都在一个逻辑线程中
+            services.AddScoped<IMusicDB<MusicModel, MusicViewModel>, MusicDBService>(); // efcore不是线程安全的，不能用singleton
+                                                                                        // 用scope让每次执行都在一个逻辑线程中
+            services.AddScoped<IEmailVCodeDB, EmailVCodeDBService>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

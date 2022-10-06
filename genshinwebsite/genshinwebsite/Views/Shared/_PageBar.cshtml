@@ -1,13 +1,240 @@
-﻿<div class="row">
+﻿
+
+<link rel="stylesheet" href="~/174/174.css">
+<div class="row">
+
+
+    <div id="pagination2">
+        <span>
+
+            @if (ViewData["page_offset"] != null && ViewData["max_page"] != null)
+            {
+                var paras = new Dictionary<string, string>();
+                foreach (var key in Context.Request.Query.Keys)
+                {
+                    paras.Add(key, Context.Request.Query[key]);
+                }
+
+                int condition_flag = 0;
+                int page_offset = int.Parse(ViewData["page_offset"].ToString());
+                int max_page = int.Parse(ViewData["max_page"].ToString());
+
+                if (max_page <= 11)
+                {
+                    condition_flag = 0; // 不足11页的情况
+                }
+                else if (page_offset <= 6)
+                {
+                    condition_flag = 2; // 后省略号的情况
+                }
+                else if (page_offset >= max_page - 5)
+                {
+                    condition_flag = 3; // 前省略号的情况
+                }
+                else
+                {
+                    condition_flag = 1; // 前后省略号的情况
+                }
+
+                switch (condition_flag)
+                {
+                    case 0:
+                        // 不足11页的情况
+                        if (page_offset > 1)
+                        {
+                            <a asp-all-route-data="paras" asp-route-page_offset="@(page_offset-1)">&#9668;</a>
+                        }
+                        else
+                        {
+                            <a>&#9668;</a>
+                        }
+                        for (int i = 1; i <= max_page; i++)
+                        {
+                            if (i == page_offset)
+                            {
+                                <a class="current">@i</a>
+                            }
+                            else
+                            {
+                                <a asp-all-route-data="paras" asp-route-page_offset="@i">@i</a>
+                            }
+                        }
+                        if (page_offset < max_page)
+                        {
+                            <a asp-all-route-data="paras" asp-route-page_offset="@(page_offset+1)">&#9658;</a>
+                        }
+                        else
+                        {
+                            <a>&#9658;</a>
+                        }
+                        break;
+
+                    case 1:
+
+                        <a asp-all-route-data="paras" asp-route-page_offset="@(page_offset-1)">&#9668;</a>
+                        <a asp-all-route-data="paras" asp-route-page_offset="1">1</a>
+                        <i>...</i>
+                        int j = page_offset - 3;
+                        for (; j < page_offset; j++)
+                        {
+                            <a asp-all-route-data="paras" asp-route-page_offset="@j">@j</a>
+                        }
+                        <a class="current">@j</a>
+                        for (j = page_offset + 1; j <= page_offset + 3; j++)
+                        {
+                            <a asp-all-route-data="paras" asp-route-page_offset="@j">@j</a>
+                        }
+
+                        <i>...</i>
+                        <a asp-all-route-data="paras" asp-route-page_offset="@max_page">@max_page</a>
+                        <a asp-all-route-data="paras" asp-route-page_offset="@(page_offset+1)">&#9658;</a>
+                        break;
+
+                    case 2:
+
+                        if (page_offset > 1)
+                        {
+                            <a asp-all-route-data ="paras" asp-route-page_offset="@(page_offset-1)">&#9668;</a>
+                        }
+                        else
+                        {
+                            <a>&#9668;</a>
+                        }
+                        for (j = 1; j <= 9; j++)
+                        {
+                            if (j == page_offset)
+                            {
+                                <a class="current">@j</a>
+                            }
+                            else
+                            {
+                                <a asp-all-route-data="paras" asp-route-page_offset="@j">@j</a>
+                            }
+                        }
+                        <i>...</i>
+                        <a asp-all-route-data="paras" asp-route-page_offset="@max_page">@max_page</a>
+                        <a asp-all-route-data="paras" asp-route-page_offset="@(page_offset+1)">&#9658;</a>
+                        break;
+                    case 3:
+                        <a asp-all-route-data="paras" asp-route-page_offset="@(page_offset-1)">&#9668;</a>
+                        <a asp-all-route-data="paras" asp-route-page_offset="1">1</a>
+                        <i>...</i>
+                        for (j = max_page - 8; j <= max_page; j++)
+                        {
+                            if (j == page_offset)
+                            {
+                                <a class="current">@j</a>
+                            }
+                            else
+                            {
+                                <a asp-all-route-data="paras" asp-route-page_offset="@j">@j</a>
+                            }
+                        }
+                        if (page_offset < max_page)
+                        {
+                            <a asp-all-route-data="paras" asp-route-page_offset="@(page_offset+1)">&#9658;</a>
+                        }
+                        else
+                        {
+                            <a>&#9658;</a>
+                        }
+                        break;
+
+                };
+
+
+
+            }
+
+            <input id="page_num_input" type="number" />
+            <button id="jump_btn" onclick="jump_click();">跳转</button>
+            <script src="~/js/page-jump.js"></script>
+            @*@if (int.Parse(ViewData["page_offset"].ToString()) - 1 > 0)
+            {
+                // 大于0说明不是第一页
+                <a href="?page_offset=@(int.Parse(ViewData["page_offset"].ToString())-1)">&#9668;</a>
+            }
+            else
+            {
+                // 是第一页则不能向前跳转
+                <a>&#9668;</a>
+            }
+            int page_block_num = 11; // 最多11个格子
+
+            @if (int.Parse(ViewData["page_offset"].ToString()) - 3 > 1)
+            {
+                // 如果距离第一页过远则中间用省略号填充
+                <a href="?page_offset=1">1</a>
+                <i>...</i>
+                if (int.Parse(ViewData["page_offset"].ToString()) + 3 < int.Parse(ViewData["max_page"].ToString()))
+                {
+                    @for (int i = int.Parse(ViewData["page_offset"].ToString()) - 3; i <= int.Parse(ViewData["max_page"].ToString()) && i <= int.Parse(ViewData["page_offset"].ToString()) + 3; i++)
+                    {
+                        if (i == int.Parse(ViewData["page_offset"].ToString()))
+                        {
+                            // 当前页面
+                            <a class="current">@i</a>
+                        }
+                        else
+                        {
+                            <a href="?page_offset=@i">@i</a>
+                        }
+                    }
+                }
+                page_block_num -= 9;
+            }
+            else
+            {
+                // 否则直接向后填充
+                @for (int i = 1; i <= int.Parse(ViewData["max_page"].ToString()) && i <= 7; i++)
+                {
+                    if (i == int.Parse(ViewData["page_offset"].ToString()))
+                    {
+                        // 当前页面
+                        <a class="current">@i</a>
+                    }
+                    else if (i > 0)
+                    {
+                        <a href="?page_offset=@i">@i</a>
+                    }
+                }
+            }
+
+
+
+            @if (int.Parse(ViewData["page_offset"].ToString()) + 3 < int.Parse(ViewData["max_page"].ToString()))
+            {
+                <i>...</i>
+                <a href="?page_offset=@int.Parse(ViewData["max_page"].ToString())">@int.Parse(ViewData["max_page"].ToString())</a>
+            }
+
+            @if (int.Parse(ViewData["page_offset"].ToString()) + 1 <= int.Parse(ViewData["max_page"].ToString()))
+            {
+                <a href="?page_offset=@(int.Parse(ViewData["page_offset"].ToString())+1)">&raquo;</a>
+            }
+            else
+            {
+                <a>&#9658;</a>
+            }
+        }*@
+
+
+
+        </span>
+    </div>
+</div>
+@*<script src="~/174/174.js"></script>*@
+
+@*<div class="row">
     <ul class="pagination">
         @if (ViewData["page_offset"] != null && ViewData["max_page"] != null)
         {
-            @if (int.Parse(ViewData["page_offset"].ToString()) - 1 > 0)
+                                @if (int.Parse(ViewData["page_offset"].ToString()) - 1 > 0)
             {
                 <li class="page-item"><a class="page-link" href="?page_offset=@(int.Parse(ViewData["page_offset"].ToString())-1)">&laquo;</a></li>
             }
             else
-            {
+                            {
                 <li class="page-item"><a class="page-link">&laquo;</a></li>
             }
             @if (int.Parse(ViewData["page_offset"].ToString()) - 3 > 1)
@@ -18,12 +245,12 @@
 
             @for (int i = int.Parse(ViewData["page_offset"].ToString()) - 3; i <= int.Parse(ViewData["max_page"].ToString()) && i <= int.Parse(ViewData["page_offset"].ToString()) + 3; i++)
             {
-                if (i == int.Parse(ViewData["page_offset"].ToString()))
-                {
+                                if (i == int.Parse(ViewData["page_offset"].ToString()))
+                                {
                     <li class="page-item"><a class="page-link"><b>@i</b></a></li>
                 }
                 else if (i > 0)
-                {
+                            {
                     <li class="page-item"><a class="page-link" href="?page_offset=@i">@i</a></li>
                 }
             }
@@ -39,7 +266,7 @@
                 <li class="page-item"><a class="page-link" href="?page_offset=@(int.Parse(ViewData["page_offset"].ToString())+1)">&raquo;</a></li>
             }
             else
-            {
+                            {
                 <li class="page-item"><a class="page-link">&raquo;</a></li>
             }
         }
@@ -47,4 +274,4 @@
 
 
     </ul>
-</div>
+</div>*@

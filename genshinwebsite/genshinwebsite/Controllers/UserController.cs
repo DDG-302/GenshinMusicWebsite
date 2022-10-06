@@ -28,18 +28,21 @@ namespace genshinwebsite.Controllers
         private readonly UserManager<UserModel> _userManager;
         private readonly string _data_root;
         private readonly string _img_root;
-        private readonly IMusicDB<MusicModel> _musicDBHelper;
+        private readonly IMusicDB<MusicModel, MusicViewModel> _musicDBHelper;
+        private readonly IEmailVCodeDB _emailVCodeDB;
         public UserController(
             SignInManager<UserModel> signInManager,
             UserManager<UserModel> userManager,
             IWebHostEnvironment env, 
-            IMusicDB<MusicModel> musicDBHelper)
+            IMusicDB<MusicModel, MusicViewModel> musicDBHelper,
+            IEmailVCodeDB emailVCodeDB)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _data_root = Path.Combine(env.ContentRootPath, "music_save");
             _musicDBHelper = musicDBHelper;
             _img_root = Path.Combine(env.WebRootPath, "img/musicsheet");
+            _emailVCodeDB = emailVCodeDB;
         }
 
 
@@ -68,7 +71,7 @@ namespace genshinwebsite.Controllers
             }
             else
             {
-                return RedirectToAction("login");
+                return RedirectToAction("Login");
             }
         }
 
@@ -148,13 +151,16 @@ namespace genshinwebsite.Controllers
         //    return rtn_str;
         //}
 
+
         [HttpPost]
-        public async Task<string> Upload([FromForm] IFormFile file)
+        [ValidateAntiForgeryToken]
+        public async Task<string> Upload([FromForm] string abs, IFormFile file)
         {
-            if (!User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated || file == null)
             {
                 return string.Empty;
             }
+            
             string rtn_str = "save ok!!!";
 
             
@@ -183,11 +189,11 @@ namespace genshinwebsite.Controllers
 
                         MusicModel musicModel = new MusicModel()
                         {
-                            MusicTitle = file.FileName,
+                            MusicTitle = Path.GetFileNameWithoutExtension(file.FileName),
                             User_id = uid,
-                            Abstract_content = "测试乐谱"
+                            Abstract_content = abs,
                         };
-                        MD5 md5Hash = MD5.Create();
+
                         StringBuilder sb = new StringBuilder();
 
                         var result = _musicDBHelper.add_one(musicModel);
@@ -200,12 +206,12 @@ namespace genshinwebsite.Controllers
                             // 真正包含文件名的存放路径
                             string music_save_file = Path.Combine(user_music_root, musicModel.Id.ToString());
                             Directory.CreateDirectory(music_save_file);
-                            string music_file_save_path = Path.Combine(music_save_file, file.FileName + ".genmujson");
+                            string music_file_save_path = Path.Combine(music_save_file, file.FileName);
                             using (var fileStream = new FileStream(music_file_save_path, FileMode.Create, FileAccess.Write))
                             {
                                 file.CopyTo(fileStream);
                             }
-                            using (var fileStream = new FileStream(Path.Combine(_img_root, save_file.Music_name), FileMode.Create, FileAccess.Write))
+                            using (var fileStream = new FileStream(Path.Combine(_img_root, file.FileName), FileMode.Create, FileAccess.Write))
                             {
                                 file.CopyTo(fileStream);
                             }
@@ -268,10 +274,7 @@ namespace genshinwebsite.Controllers
                 }
 
             }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "未找到用户");
-            }
+
 
             // 没找到则返回一个model级错误
             ModelState.AddModelError(string.Empty, "用户名或密码错误");
@@ -280,10 +283,21 @@ namespace genshinwebsite.Controllers
     
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(UserRegisterViewModels user_model)
+        public async Task<IActionResult> Register(UserRegisterViewModel user_model, string confirm_code)
         {
+            if(confirm_code != "任何邪恶终将绳之以法")
+            {
+                ModelState.AddModelError(string.Empty, "暂时禁止注册");
+                return View("register", user_model);
+            }
             if (ModelState.IsValid)
             {
+                if(_emailVCodeDB.is_code_verified(user_model.Account, user_model.VCode) == false)
+                {
+                    ModelState.AddModelError("VCode", "邮箱验证码错误");
+                    user_model.VCode = string.Empty;
+                    return View("register", user_model);
+                }
                 var user = new UserModel
                 {
                     UserName = user_model.Name,
@@ -299,7 +313,18 @@ namespace genshinwebsite.Controllers
                 }
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("index", "home");
+
+                     var signin_result = await _signInManager.PasswordSignInAsync(user, user_model.Password, true, false);
+                    if (signin_result.Succeeded)
+                    {
+                        return RedirectToAction("index", "home");
+                    }
+                    else
+                    {
+
+                        ModelState.AddModelError(string.Empty, "无法登陆");
+
+                    }
                 }
                 else
                 {
@@ -312,6 +337,7 @@ namespace genshinwebsite.Controllers
             }
             return View("register", user_model);
         }
+
 
         public async Task<IActionResult> Logout()
         {

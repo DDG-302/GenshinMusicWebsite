@@ -1,0 +1,42 @@
+/**{
+    margin: 0;
+    padding: 0;
+}*/
+body{
+     /*设置字体*/ 
+    font-family: Arial, Helvetica, sans-serif;
+     /*禁止选取*/ 
+    user-select: none;
+}
+/* 页码和省略号的统一样式 */
+#pagination2 a,
+#pagination2 i{
+    display: inline-block;
+    min-width: 32px;
+    height: 32px;
+    text-align: center;
+    line-height: 32px;
+    border-radius: 4px;
+    margin: 0 3px;
+}
+/* 页码 */
+#pagination2 a{
+    border: 1px solid #333;
+    background-color: #333;
+    color: #eee;
+    font-size: 13px;
+}
+#pagination2 a:hover{
+    background-color: #000;
+    cursor: pointer;
+}
+/* 当前页码 */
+#pagination2 a.current{
+    background-color: transparent;
+    color: #333;
+    font-weight: bold;
+}
+/* 省略号 */
+#pagination2 i{
+    font-size: 18px;
+}

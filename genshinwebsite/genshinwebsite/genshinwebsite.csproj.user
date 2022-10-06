@@ -5,7 +5,11 @@
   </PropertyGroup>
   <PropertyGroup>
     <ActiveDebugProfile>genshinwebsite</ActiveDebugProfile>
-    <View_SelectedScaffolderID>RazorViewEmptyScaffolder</View_SelectedScaffolderID>
-    <View_SelectedScaffolderCategoryPath>root/Common/MVC/View</View_SelectedScaffolderCategoryPath>
+    <View_SelectedScaffolderID>MvcControllerEmptyScaffolder</View_SelectedScaffolderID>
+    <View_SelectedScaffolderCategoryPath>root/Common/MVC/Controller</View_SelectedScaffolderCategoryPath>
+    <NameOfLastUsedPublishProfile>FolderProfile</NameOfLastUsedPublishProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

@@ -1,7 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-cn">
 <html>
-<link href="~/css/header-style.css" rel='stylesheet' type='text/css' />
+
+<link href="~/153/153.css" rel='stylesheet' type='text/css' />
 <link href="~/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 
 <head>
@@ -9,56 +10,40 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <!-- header -->
-    <div class="header-w3layouts">
-        <!-- Navigation -->
+    
+  
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent border-bottom mb-3">
+            <ul class="partial_nav">
 
-
-        <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light ">
-            <div class="container">
-                <a class="navbar-brand" href="#">HEADSHOT</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item ">
-                            <a class="nav-link" href="#">Home </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link scroll" href="#about">About</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link scroll" href="#service">Service</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link scroll" href="#team">Team</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link scroll" href="#gallery">Gallery</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link scroll" href="#contact">Contact</a>
-                        </li>
-                    </ul>
-
-                </div>
-            </div>
+                <li><a asp-controller="Home" asp-action="Index">首页</a></li>
+                <li><a asp-controller="User" asp-action="Index">用户</a></li>
+                <li><a asp-controller="Pages" asp-action="Index">乐谱</a></li>
+                <li><a href="~/Release.zip">获取软件</a></li>
+                <li><a href="#">联系我们</a></li>
+                @if (User.IsInRole("Admin") || User.IsInRole("God"))
+                {
+                    <li>
+                        <a asp-controller="admin" asp-action="index">用户管理</a>
+                    </li>
+                }
+                <partial name="_LoginPartial" />
+            </ul>
+            
         </nav>
-        <!-- /.navbar-collapse -->
-        <!-- /.container -->
+ 
 
-    </div>
+
+
     <!-- //header -->
 
-    <div>
-        @RenderBody()
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
 
 
-    <footer>
+    @*<footer>
         <section class="footer text-white py-lg-5 py-md-4 py-sm-3 py-2">
             <div class="w3_footer py-lg-5 py-md-4 py-sm-3 py-2">
                 <div class="container">
@@ -71,6 +56,7 @@
                 </div>
             </div>
         </section>
-    </footer>
+    </footer>*@
 </body>
 </html>
+<script src="~/153/153.js"></script>
