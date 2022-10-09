@@ -1,0 +1,80 @@
+错误时间：2022/6/30 19:47:06
+错误信息：数字必须为小于等于 Int32.MaxValue 的非负值或为 -1。
+参数名: millisecondsTimeout
+错误源：mscorlib
+错误栈：   在 System.Threading.WaitHandle.WaitOne(Int32 millisecondsTimeout, Boolean exitContext)
+   在 System.Threading.WaitHandle.WaitOne(Int32 millisecondsTimeout)
+   在 genshinmusic.MIDIPlayer.<>c__DisplayClass21_0.<set_midi_player>b__0() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 103
+
+错误时间：2022/6/30 19:47:19
+错误信息：数字必须为小于等于 Int32.MaxValue 的非负值或为 -1。
+参数名: millisecondsTimeout
+错误源：mscorlib
+错误栈：   在 System.Threading.WaitHandle.WaitOne(Int32 millisecondsTimeout, Boolean exitContext)
+   在 System.Threading.WaitHandle.WaitOne(Int32 millisecondsTimeout)
+   在 genshinmusic.MIDIPlayer.<>c__DisplayClass21_0.<set_midi_player>b__0() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 103
+错误时间：2022/7/1 0:46:07
+错误信息：The JSON value could not be converted to System.Int32. Path: $.Music_sheet[0].Begin_bar_idx | LineNumber: 0 | BytePositionInLine: 141.
+错误源：System.Text.Json
+错误栈：   在 System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack& readStack, Utf8JsonReader& reader, Exception ex)
+   在 System.Text.Json.JsonSerializer.ReadCore(JsonSerializerOptions options, Utf8JsonReader& reader, ReadStack& readStack)
+   在 System.Text.Json.JsonSerializer.ReadCore(Type returnType, JsonSerializerOptions options, Utf8JsonReader& reader)
+   在 System.Text.Json.JsonSerializer.Deserialize(String json, Type returnType, JsonSerializerOptions options)
+   在 System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   在 genshinmusic.SaveLoadProj.load_file() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\SaveLoadProj.cs:行号 176
+===========================================
+===========================================
+错误时间：2022/7/1 0:46:44
+错误信息：The JSON value could not be converted to System.Int32. Path: $.Music_sheet[0].Begin_bar_idx | LineNumber: 0 | BytePositionInLine: 141.
+错误源：System.Text.Json
+错误栈：   在 System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack& readStack, Utf8JsonReader& reader, Exception ex)
+   在 System.Text.Json.JsonSerializer.ReadCore(JsonSerializerOptions options, Utf8JsonReader& reader, ReadStack& readStack)
+   在 System.Text.Json.JsonSerializer.ReadCore(Type returnType, JsonSerializerOptions options, Utf8JsonReader& reader)
+   在 System.Text.Json.JsonSerializer.Deserialize(String json, Type returnType, JsonSerializerOptions options)
+   在 System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   在 genshinmusic.SaveLoadProj.load_file() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\SaveLoadProj.cs:行号 176
+===========================================
+===========================================
+错误时间：2022/7/1 0:46:49
+错误信息：The JSON value could not be converted to System.Int32. Path: $.Music_sheet[0].Begin_bar_idx | LineNumber: 0 | BytePositionInLine: 129.
+错误源：System.Text.Json
+错误栈：   在 System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack& readStack, Utf8JsonReader& reader, Exception ex)
+   在 System.Text.Json.JsonSerializer.ReadCore(JsonSerializerOptions options, Utf8JsonReader& reader, ReadStack& readStack)
+   在 System.Text.Json.JsonSerializer.ReadCore(Type returnType, JsonSerializerOptions options, Utf8JsonReader& reader)
+   在 System.Text.Json.JsonSerializer.Deserialize(String json, Type returnType, JsonSerializerOptions options)
+   在 System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   在 genshinmusic.SaveLoadProj.load_file() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\SaveLoadProj.cs:行号 176
+===========================================
+===========================================
+错误时间：2022/7/1 0:46:53
+错误信息：The JSON value could not be converted to System.Int32. Path: $.Music_sheet[0].Begin_bar_idx | LineNumber: 0 | BytePositionInLine: 145.
+错误源：System.Text.Json
+错误栈：   在 System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack& readStack, Utf8JsonReader& reader, Exception ex)
+   在 System.Text.Json.JsonSerializer.ReadCore(JsonSerializerOptions options, Utf8JsonReader& reader, ReadStack& readStack)
+   在 System.Text.Json.JsonSerializer.ReadCore(Type returnType, JsonSerializerOptions options, Utf8JsonReader& reader)
+   在 System.Text.Json.JsonSerializer.Deserialize(String json, Type returnType, JsonSerializerOptions options)
+   在 System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   在 genshinmusic.SaveLoadProj.load_file() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\SaveLoadProj.cs:行号 176
+===========================================
+===========================================
+错误时间：2022/7/1 0:46:57
+错误信息：The JSON value could not be converted to System.Int32. Path: $.Music_sheet[0].Begin_bar_idx | LineNumber: 0 | BytePositionInLine: 134.
+错误源：System.Text.Json
+错误栈：   在 System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack& readStack, Utf8JsonReader& reader, Exception ex)
+   在 System.Text.Json.JsonSerializer.ReadCore(JsonSerializerOptions options, Utf8JsonReader& reader, ReadStack& readStack)
+   在 System.Text.Json.JsonSerializer.ReadCore(Type returnType, JsonSerializerOptions options, Utf8JsonReader& reader)
+   在 System.Text.Json.JsonSerializer.Deserialize(String json, Type returnType, JsonSerializerOptions options)
+   在 System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   在 genshinmusic.SaveLoadProj.load_file() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\SaveLoadProj.cs:行号 176
+===========================================
+===========================================
+错误时间：2022/7/1 21:53:59
+错误信息：文件“D:\work\杂\genshinmus\v2\Release\demo\result\4.midi”正由另一进程使用，因此该进程无法访问此文件。
+错误源：mscorlib
+错误栈：   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   在 System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   在 NAudio.Midi.MidiFile.Export(String filename, MidiEventCollection events)
+   在 genshinmusic.MIDIPlayer.create_midi_file(List`1 music_sheet, Int32 speed, String path, Int32 eight_degree_num) 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 80
+===========================================
+===========================================
