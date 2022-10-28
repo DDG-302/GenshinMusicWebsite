@@ -116,3 +116,8 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Security.Cryptography.Cng.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Security.Cryptography.Pkcs.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Text.Encoding.CodePages.dll
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\Pages\Detail.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\Admin\MusicManage.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\Home\ProgramDownload.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\UploadManager.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\Home\Help.cshtml.g.cs

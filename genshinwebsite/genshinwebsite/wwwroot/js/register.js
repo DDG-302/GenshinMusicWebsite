@@ -14,7 +14,6 @@
 
 function get_VCode_click() {
     let email = document.getElementById("email_input");
-    alert(email.value)
     $.ajax({
         url: '/Email/Email?email=' + email.value,
 

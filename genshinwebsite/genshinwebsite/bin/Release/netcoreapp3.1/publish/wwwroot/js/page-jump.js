@@ -23,24 +23,19 @@ function have_question_mark(str) {
     return false;
 }
 function jump_click() {
-    
     let url = window.location.href;
     let input_box = document.getElementById('page_num_input');
     if (input_box.value == null || input_box.value == "") {
         return;
     }
     if (url.search("page_offset") != -1) {
-        alert("1")
         url = changeURLArg(url, "page_offset", input_box.value)
         window.location = url;
     }
     else if (have_question_mark(url)) {
-        alert("2")
         window.location = url + "&page_offset=" + input_box.value;
     }
     else {
-        alert("3")
         window.location = "?page_offset=" + input_box.value;
     }
-    
 }

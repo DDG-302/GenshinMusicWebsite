@@ -37,9 +37,7 @@ namespace genshinwebsite.ViewModels
         public string Password { get; set; }
 
         [Display(Name = "角色")]
-        public Role_type Role { get; set; } = Role_type.Not_Found;
-
-        
+        public Role_type Role { get; set; } = Role_type.User;
 
     }
 }

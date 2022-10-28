@@ -13,8 +13,8 @@
         <h1>Welcome</h1>
         <form method="post">
             <div class="form">
-                <input type="email" asp-for="Account" placeholder="您的邮箱">
-                <input type="password" asp-for="Password" placeholder="您的密码">
+                <input onmouseover="this.title='您的邮箱'" id="email_input" type="email" asp-for="Account" placeholder="您的邮箱">
+                <input onmouseover="this.title='您的密码'" type="password" asp-for="Password" placeholder="您的密码">
                 <div asp-validation-summary="All"></div>
                 <button class="btn-login" type="submit">登录</button>
             </div>

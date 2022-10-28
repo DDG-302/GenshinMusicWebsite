@@ -1,16 +1,44 @@
 ﻿@model MusicUploadModel
+@{
+    ViewData["Title"] = "乐谱上传";
+}
+<script src="~/js/MusicUpload.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<h1>乐谱工程上传</h1>
+<hr />
+<div id="info_div"></div>
+
+<div class="row">
+    <div class="col-2 offset-2">
+        <span class="label">
+            选择一个工程文件：
+        </span>
+    </div>
+    <div class="col-5 offset-1">
+        <input class="btn btn-success" style="width:100%;" id="File" asp-for="File" accept=".genmujson" />
+    </div>
+
+</div>
 
 <div class="row mt-4">
     <div class="col-2 offset-2">
         <span class="label">
-            上传乐谱：
+            简介：
         </span>
     </div>
-    <div class="col-3 offset-1">
-        <form method="post" enctype="multipart/form-data">
-            <input class="text-body" type="text" id="abs" name="abs"/>
-            <input class="form-control-file" asp-for="File" accept=".genmujson" />
-            <button class="btn btn-info" type="submit">提交</button>
-        </form>
+    <div class="col-5 offset-1">
+        <textarea style="height:200px;width:100%" class="text-body" type="text" id="abs" placeholder="这里可以填写小于500字的简介"></textarea>
+    </div>
+
+
+</div>
+
+
+
+<div class="row" style="top:20px;">
+    <div class="col-3 offset-6">
+        <button class="btn btn-info" style="width:100%" type="button" onclick="upload_btn_click();">提交</button>
     </div>
 </div>
+ 

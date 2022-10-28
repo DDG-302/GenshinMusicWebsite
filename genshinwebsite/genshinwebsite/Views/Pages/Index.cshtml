@@ -3,7 +3,24 @@
     {
         @
     }*@
-<script src="~/js/MusicPage.js"></script>
+@{
+    ViewData["Title"] = "乐谱";
+    int filter_idx = 1;
+    if (ViewData["filter_idx"] != null)
+    {
+        filter_idx = int.Parse(ViewData["filter_idx"].ToString());
+    }
+}
+<script src="~/js/MusicFilter.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<h1>乐谱工程</h1>
+<link rel="stylesheet" href="~/css/musicsheet-display.css" />
+
+<script>
+    selected_filter = @filter_idx
+</script>
+
+
 <div class="row" style="margin-bottom:10px">
     <div class="col-md-3"></div>
     <div class="col-md-4">
@@ -22,32 +39,116 @@
     </div>
     <div class="col-md-3"></div>
 </div>
-@for(int i = 0; i < Model.Count; )
-{
-<div class="row">
-    @for (int j = 0; i < Model.Count && j < 3; j++, i++)
+<ul class="nav nav-pills">
+    @if (filter_idx == 1)
     {
-        <div class="col-md-4" style="margin-bottom:10px">
-                <div class="img-thumbnail">
-                <div class="h3">@Model[i].MusicTitle</div>
-                <div class="h5">上传者：@Model[i].Uploader</div>
-                <p style="height:100px">@Model[i].Abstract_content</p>
-                <img class="img-thumbnail" src="~/f5dd25c2527841ec883df8f3ceadc983.jpg" />
-                    <p>下载：@Model[i].Download_num</p>
-                    <p>浏览：@Model[i].View_num</p>
-                <a class="btn btn-light">
-                        <span class="glyphicon glyphicon-heart">详情</span>
-                    </a>
-                    <a class="btn btn-dark" asp-action="download" asp-route-muid="@Model[i].Id">
-                        <span class="glyphicon glyphicon-heart">下载</span>
-                    </a>
-                </div>
+        <li><a id="filter_1" class="nav-link active" href="javascript:set_filter(1);">最新发布顺序</a></li>
 
-            </div>
-   
-            }
-        </div>
+    }
+    else
+    {
+        <li><a id="filter_1" class="nav-link" href="javascript:set_filter(1);">最新发布顺序</a></li>
     }
 
-    <partial name="_PageBar" />
+    @if (filter_idx == 2)
+    {
+        <li><a id="filter_2" class="nav-link active" href="javascript:set_filter(2);">下载顺序</a></li>
+
+    }
+    else
+    {
+        <li><a id="filter_2" class="nav-link" href="javascript:set_filter(2);">下载顺序</a></li>
+    }
+
+    @if (filter_idx == 3)
+    {
+        <li><a id="filter_3" class="nav-link active" href="javascript:set_filter(3);">浏览顺序</a></li>
+
+    }
+    else
+    {
+        <li><a id="filter_3" class="nav-link" href="javascript:set_filter(3);">浏览顺序</a></li>
+    }
+
+
+    @if (filter_idx == 4)
+    {
+        <li><a id="filter_4" class="nav-link active" href="javascript:set_filter(4);">标题</a></li>
+
+    }
+    else
+    {
+        <li><a id="filter_4" class="nav-link" href="javascript:set_filter(4);">标题</a></li>
+    }
+
+
+
+
+</ul>
+<hr />
+@for (int i = 0; i < Model.Count;)
+{
+    <div class="row">
+        @for (int j = 0; i < Model.Count && j < 3; j++, i++)
+        {
+            <div class="col-md-4 col-sm-12">
+                <div class="container1">
+                    <div class="back" style="background-image:url(/images/bg.jpg);">
+                        <p>
+                            @Model[i].Id &nbsp;&nbsp;
+                        </p>
+                    </div>
+                    <div class="card_head">
+                        <img class="user_icon" src="~/img/login-user.png" />
+                        <p>@Model[i].Uploader</p>
+
+                    </div>
+                    <div class="card_body">
+                        <div class="info">
+                            <p style="font-size:20px"> @Model[i].MusicTitle</p>
+                            <p> @Model[i].Datetime</p>
+
+                            <p class="abstract">@Model[i].Abstract_content</p>
+
+
+                        </div>
+                        <div class="operation">
+                            <p>下载：@Model[i].Download_num &nbsp;&nbsp; 浏览：@Model[i].View_num</p>
+                            <a class="btn btn-light" href="/Pages/@Model[i].Id">
+                               详情
+                            </a>
+                            <a class="btn btn-dark" asp-action="download" asp-route-muid="@Model[i].Id">
+                                下载
+                            </a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-md-4" style="margin-bottom:10px">
+                    <div class="img-thumbnail">
+
+                        <div class="h3">@Model[i].MusicTitle</div>
+                        <div class="h5">上传者：@Model[i].Uploader</div>
+                        <p>发布日期：@Model[i].Datetime</p>
+                        <p style="height:100px">@Model[i].Abstract_content</p>
+                        <img class="img-thumbnail" src="~/f5dd25c2527841ec883df8f3ceadc983.jpg" />
+                        <p>下载：@Model[i].Download_num</p>
+                        <p>浏览：@Model[i].View_num</p>
+                        <a class="btn btn-light" href="/Pages/@Model[i].Id">
+                            <span class="glyphicon glyphicon-heart">详情</span>
+                        </a>
+                        <a class="btn btn-dark" asp-action="download" asp-route-muid="@Model[i].Id">
+                            <span class="glyphicon glyphicon-heart">下载</span>
+                        </a>
+                    </div>
+
+                </div>*@
+
+        }
+    </div>
+}
+
+<partial name="_PageBar" />
 

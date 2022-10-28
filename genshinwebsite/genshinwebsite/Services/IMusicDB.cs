@@ -6,7 +6,7 @@ using genshinwebsite.Models;
 
 namespace genshinwebsite.Services
 {
-    public enum MUSIC_SELECT_ORDER { UPLOAD_DATE, TITLE, VIEW_NUM }
+    public enum MUSIC_SELECT_ORDER { UPLOAD_DATE = 1, DOWNLOAD_NUM = 2, VIEW_NUM = 3 , TITLE=4 }
     public interface IMusicDB<T, M> where T:class where M : class // 泛型约束
     {
         
@@ -28,8 +28,9 @@ namespace genshinwebsite.Services
         /// 根据用户id寻找由该用户名下的所有乐谱
         /// </summary>
         /// <param name="uid">用户id</param>
+        /// /// <param name="max_item_num">所有uid=查询用户id的乐谱数量</param>
         /// <returns></returns>
-        public IEnumerable<T> get_by_uid(int uid, int num_per_page = 10, int page_offset = 0, MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE);
+        public IEnumerable<T> get_by_uid( int uid, out int max_item_num, int num_per_page = 10, int page_offset = 0, MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE);
 
         /// <summary>
         /// 全表查询
@@ -45,11 +46,20 @@ namespace genshinwebsite.Services
         public DBOperationResult add_one(MusicModel musicModel);
 
         /// <summary>
-        /// 删除乐谱id对应的乐谱，数据库存储和实体文件都应当删除
+        /// 记录一次浏览
         /// </summary>
-        /// <param name="id">乐谱id</param>
+        /// <param name="musicModel"></param>
         /// <returns></returns>
-        public DBOperationResult delete_one_by_id(int id);
+        public DBOperationResult view_one(MusicModel musicModel);
+
+
+        /// <summary>
+        /// 删除乐谱muid+用户uid对应的乐谱，数据库存储和实体文件都应当删除；uid是为了校验用户身份
+        /// </summary>
+        /// <param name="muid">乐谱id</param>
+        /// <param name="uid">用户id</param>
+        /// <returns></returns>
+        public DBOperationResult delete_one_by_id(int muid, int uid);
 
 
         /// <summary>

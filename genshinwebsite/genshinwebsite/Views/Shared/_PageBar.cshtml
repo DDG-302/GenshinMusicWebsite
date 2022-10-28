@@ -94,7 +94,7 @@
 
                         if (page_offset > 1)
                         {
-                            <a asp-all-route-data ="paras" asp-route-page_offset="@(page_offset-1)">&#9668;</a>
+                            <a asp-all-route-data="paras" asp-route-page_offset="@(page_offset-1)">&#9668;</a>
                         }
                         else
                         {
@@ -150,73 +150,73 @@
             <button id="jump_btn" onclick="jump_click();">跳转</button>
             <script src="~/js/page-jump.js"></script>
             @*@if (int.Parse(ViewData["page_offset"].ToString()) - 1 > 0)
-            {
-                // 大于0说明不是第一页
-                <a href="?page_offset=@(int.Parse(ViewData["page_offset"].ToString())-1)">&#9668;</a>
-            }
-            else
-            {
-                // 是第一页则不能向前跳转
-                <a>&#9668;</a>
-            }
-            int page_block_num = 11; // 最多11个格子
-
-            @if (int.Parse(ViewData["page_offset"].ToString()) - 3 > 1)
-            {
-                // 如果距离第一页过远则中间用省略号填充
-                <a href="?page_offset=1">1</a>
-                <i>...</i>
-                if (int.Parse(ViewData["page_offset"].ToString()) + 3 < int.Parse(ViewData["max_page"].ToString()))
-                {
-                    @for (int i = int.Parse(ViewData["page_offset"].ToString()) - 3; i <= int.Parse(ViewData["max_page"].ToString()) && i <= int.Parse(ViewData["page_offset"].ToString()) + 3; i++)
                     {
-                        if (i == int.Parse(ViewData["page_offset"].ToString()))
+                        // 大于0说明不是第一页
+                        <a href="?page_offset=@(int.Parse(ViewData["page_offset"].ToString())-1)">&#9668;</a>
+                    }
+                    else
+                    {
+                        // 是第一页则不能向前跳转
+                        <a>&#9668;</a>
+                    }
+                    int page_block_num = 11; // 最多11个格子
+
+                    @if (int.Parse(ViewData["page_offset"].ToString()) - 3 > 1)
+                    {
+                        // 如果距离第一页过远则中间用省略号填充
+                        <a href="?page_offset=1">1</a>
+                        <i>...</i>
+                        if (int.Parse(ViewData["page_offset"].ToString()) + 3 < int.Parse(ViewData["max_page"].ToString()))
                         {
-                            // 当前页面
-                            <a class="current">@i</a>
+                            @for (int i = int.Parse(ViewData["page_offset"].ToString()) - 3; i <= int.Parse(ViewData["max_page"].ToString()) && i <= int.Parse(ViewData["page_offset"].ToString()) + 3; i++)
+                            {
+                                if (i == int.Parse(ViewData["page_offset"].ToString()))
+                                {
+                                    // 当前页面
+                                    <a class="current">@i</a>
+                                }
+                                else
+                                {
+                                    <a href="?page_offset=@i">@i</a>
+                                }
+                            }
                         }
-                        else
+                        page_block_num -= 9;
+                    }
+                    else
+                    {
+                        // 否则直接向后填充
+                        @for (int i = 1; i <= int.Parse(ViewData["max_page"].ToString()) && i <= 7; i++)
                         {
-                            <a href="?page_offset=@i">@i</a>
+                            if (i == int.Parse(ViewData["page_offset"].ToString()))
+                            {
+                                // 当前页面
+                                <a class="current">@i</a>
+                            }
+                            else if (i > 0)
+                            {
+                                <a href="?page_offset=@i">@i</a>
+                            }
                         }
                     }
-                }
-                page_block_num -= 9;
-            }
-            else
-            {
-                // 否则直接向后填充
-                @for (int i = 1; i <= int.Parse(ViewData["max_page"].ToString()) && i <= 7; i++)
-                {
-                    if (i == int.Parse(ViewData["page_offset"].ToString()))
+
+
+
+                    @if (int.Parse(ViewData["page_offset"].ToString()) + 3 < int.Parse(ViewData["max_page"].ToString()))
                     {
-                        // 当前页面
-                        <a class="current">@i</a>
+                        <i>...</i>
+                        <a href="?page_offset=@int.Parse(ViewData["max_page"].ToString())">@int.Parse(ViewData["max_page"].ToString())</a>
                     }
-                    else if (i > 0)
+
+                    @if (int.Parse(ViewData["page_offset"].ToString()) + 1 <= int.Parse(ViewData["max_page"].ToString()))
                     {
-                        <a href="?page_offset=@i">@i</a>
+                        <a href="?page_offset=@(int.Parse(ViewData["page_offset"].ToString())+1)">&raquo;</a>
                     }
-                }
-            }
-
-
-
-            @if (int.Parse(ViewData["page_offset"].ToString()) + 3 < int.Parse(ViewData["max_page"].ToString()))
-            {
-                <i>...</i>
-                <a href="?page_offset=@int.Parse(ViewData["max_page"].ToString())">@int.Parse(ViewData["max_page"].ToString())</a>
-            }
-
-            @if (int.Parse(ViewData["page_offset"].ToString()) + 1 <= int.Parse(ViewData["max_page"].ToString()))
-            {
-                <a href="?page_offset=@(int.Parse(ViewData["page_offset"].ToString())+1)">&raquo;</a>
-            }
-            else
-            {
-                <a>&#9658;</a>
-            }
-        }*@
+                    else
+                    {
+                        <a>&#9658;</a>
+                    }
+                }*@
 
 
 

@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Configuration;
 
 
 
@@ -26,6 +28,7 @@ namespace genshinwebsite.Controllers
     {
         private readonly SignInManager<UserModel> _signInManager;
         private readonly UserManager<UserModel> _userManager;
+        private readonly IConfiguration _configuration;
         private readonly string _data_root;
         private readonly string _img_root;
         private readonly IMusicDB<MusicModel, MusicViewModel> _musicDBHelper;
@@ -33,9 +36,9 @@ namespace genshinwebsite.Controllers
         public UserController(
             SignInManager<UserModel> signInManager,
             UserManager<UserModel> userManager,
-            IWebHostEnvironment env, 
+            IWebHostEnvironment env,
             IMusicDB<MusicModel, MusicViewModel> musicDBHelper,
-            IEmailVCodeDB emailVCodeDB)
+            IEmailVCodeDB emailVCodeDB, IConfiguration configuration)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -43,6 +46,7 @@ namespace genshinwebsite.Controllers
             _musicDBHelper = musicDBHelper;
             _img_root = Path.Combine(env.WebRootPath, "img/musicsheet");
             _emailVCodeDB = emailVCodeDB;
+            _configuration = configuration;
         }
 
 
@@ -75,106 +79,40 @@ namespace genshinwebsite.Controllers
             }
         }
 
-        //[HttpPost]
-        //public async Task<string> Space([FromForm] IFormFile file)
-        //{
-        //    if (!User.Identity.IsAuthenticated)
-        //    {
-        //        return string.Empty;
-        //    }
-        //    string rtn_str = "save ok!!!";
+        public IActionResult test_ip()
+        {
+            var ip = Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4();
+            return StatusCode(200, ip.ToString());
+        }
 
-
-        //    var readstream = new StreamReader(file.OpenReadStream());
-        //    //var data = readstream.ReadToEnd();
-
-        //    string json_str = readstream.ReadToEnd();
-        //    SaveFileTemplate save_file = null;
-        //    try
-        //    {
-        //        save_file = JsonSerializer.Deserialize<SaveFileTemplate>(json_str);
-        //        var music_sheet = save_file.Music_sheet;
-        //        // 路径格式为 {用户id}/{乐谱id}/{title}.genmujson(这是为了确保重名乐谱也可以上传)
-        //        if (MusicVlidator.from_music_sheet_load_notes_to_seq_list(ref music_sheet, save_file.Beats_per_bar))
-        //        {
-        //            var user = await _userManager.GetUserAsync(User);
-        //            if (user != null)
-        //            {
-        //                int uid = user.Id;
-        //                string user_music_root = Path.Combine(_data_root, uid.ToString());
-        //                if (!Directory.Exists(user_music_root))
-        //                {
-        //                    Directory.CreateDirectory(user_music_root);
-        //                }
-
-
-        //                MusicModel musicModel = new MusicModel()
-        //                {
-        //                    MusicTitle = save_file.Music_name,
-        //                    User_id = uid,
-        //                    Abstract_content = "测试乐谱"
-        //                };
-        //                var result = _musicDBHelper.add_one(musicModel);
-        //                if (result != DBOperationResult.OK)
-        //                {
-        //                    rtn_str = "DB_ERROR";
-        //                }
-        //                else
-        //                {
-        //                    // 真正包含文件名的存放路径
-        //                    string music_save_file = Path.Combine(user_music_root, musicModel.Id.ToString());
-        //                    Directory.CreateDirectory(music_save_file);
-        //                    string music_file_save_path = Path.Combine(music_save_file, save_file.Music_name + ".genmujson");
-        //                    using (var fileStream = new FileStream(music_file_save_path, FileMode.Create, FileAccess.Write))
-        //                    {
-        //                        file.CopyTo(fileStream);
-        //                    }
-        //                    using (var fileStream = new FileStream(_img_root, FileMode.Create, FileAccess.Write))
-        //                    {
-        //                        file.CopyTo(fileStream);
-        //                    }
-        //                }
-
-        //            }
-
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        string err = e.Message;
-        //        rtn_str = "error...";
-        //    }
-        //    finally
-        //    {
-        //        readstream.Close();
-        //    }
-        //    return rtn_str;
-        //}
-
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<string> Upload([FromForm] string abs, IFormFile file)
+        [Authorize]
+        public async Task<IActionResult> Upload([FromForm] string abs, IFormFile file)
         {
             if (!User.Identity.IsAuthenticated || file == null)
             {
-                return string.Empty;
+                return StatusCode(403, "上传失败：文件为空");
             }
             
-            string rtn_str = "save ok!!!";
-
+            string rtn_str = "上传成功";
+            int status_code = 200;
             
+
             var readstream = new StreamReader(file.OpenReadStream());
             //var data = readstream.ReadToEnd();
 
             string json_str = readstream.ReadToEnd();
-            SaveFileTemplate save_file = null;
+            
             try
             {
+                SaveFileTemplate save_file = null;
                 save_file = JsonSerializer.Deserialize<SaveFileTemplate>(json_str);
                 var music_sheet = save_file.Music_sheet;
                 // 路径格式为 {用户id}/{乐谱id}/{title}.genmujson(这是为了确保重名乐谱也可以上传)
-                if (MusicVlidator.from_music_sheet_load_notes_to_seq_list(ref music_sheet, save_file.Beats_per_bar))
+                if (MusicValidator.from_music_sheet_load_notes_to_seq_list(ref music_sheet, save_file.Beats_per_bar))
                 {
                     var user = await _userManager.GetUserAsync(User);
                     if (user != null)
@@ -199,7 +137,8 @@ namespace genshinwebsite.Controllers
                         var result = _musicDBHelper.add_one(musicModel);
                         if (result != DBOperationResult.OK)
                         {
-                            rtn_str = "DB_ERROR";
+                            rtn_str = "上传失败：数据库错误";
+                            status_code = 500;
                         }
                         else
                         {
@@ -211,28 +150,144 @@ namespace genshinwebsite.Controllers
                             {
                                 file.CopyTo(fileStream);
                             }
-                            using (var fileStream = new FileStream(Path.Combine(_img_root, file.FileName), FileMode.Create, FileAccess.Write))
-                            {
-                                file.CopyTo(fileStream);
-                            }
+                            //using (var fileStream = new FileStream(Path.Combine(_img_root, file.FileName), FileMode.Create, FileAccess.Write))
+                            //{
+                            //    file.CopyTo(fileStream);
+                            //}
+                            
                         }
 
                     }
+                    else
+                    {
+                        rtn_str = "上传失败：用户不存在";
+                        status_code = 400;
+                    }
+                    
 
+                }
+                else
+                {
+                    rtn_str = "上传失败：乐谱未通过校验，请检查乐谱内容正确";
+                    status_code = 500;
                 }
             }
             catch (Exception e)
             {
                 string err = e.Message;
-                rtn_str = "error...";
+                rtn_str = "上传失败，服务器程序错误：" + err;
+                status_code = 500;
             }
             finally
             {
                 readstream.Close();
             }
-            return rtn_str;
+            return StatusCode(status_code, rtn_str);
         }
 
+        [Route("Space/Setting")]
+        [Authorize]
+        public IActionResult Setting()
+        {
+            return View();
+        }
+
+        [Route("Space/Setting")]
+        [HttpPost]
+        [Authorize]
+        public IActionResult Setting(UserManageViewModel userManageViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+               
+                
+
+            }
+
+            return Ok();
+        }
+
+        [Authorize]
+        public IActionResult UploadManager(int page_offset, string music_title = "", MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE)
+        {
+            
+            ViewData["url"] = HttpContext.Request.GetDisplayUrl();
+            ViewData["filter_idx"] = (int)select_order;
+            if (music_title != null && music_title != string.Empty && music_title != "")
+            {
+                ViewData["music_title"] = music_title;
+            }
+            List<MusicViewModel> musicViewModels = new List<MusicViewModel>();
+            var num_per_page = _configuration.GetValue("NumPerPage", 10);
+            int item_count;
+            var music_list = _musicDBHelper.get_by_uid(int.Parse(_userManager.GetUserId(HttpContext.User)), 
+                out item_count,
+                num_per_page,
+                page_offset - 1,
+                select_order).ToList();
+            page_offset = Math.Max(1, page_offset);
+
+           
+            if (item_count % num_per_page != 0)
+            {
+                page_offset = Math.Min(item_count / num_per_page + 1, page_offset);
+                ViewData["max_page"] = item_count / num_per_page + 1;
+            }
+            else
+            {
+                page_offset = Math.Min(item_count / num_per_page, page_offset);
+                ViewData["max_page"] = item_count / num_per_page;
+            }
+            ViewData["page_offset"] = page_offset;
+
+
+            foreach (var m in music_list)
+            {
+                MusicViewModel music = new MusicViewModel()
+                {
+                    Id = m.Id,
+                    Uploader = User.Identity.Name,
+                    Abstract_content = m.Abstract_content,
+                    Datetime = m.Datetime,
+                    MusicTitle = m.MusicTitle,
+                    View_num = m.View_num,
+                    Download_num = m.Download_num
+                };
+               
+                musicViewModels.Add(music);
+            }
+            return View(musicViewModels);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("DeleteMyMusic")]
+        public async Task<IActionResult> DeleteMyMusic(int muid)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = _musicDBHelper.delete_one_by_id(muid, user.Id);
+            // 路径格式为 {用户id}/{乐谱id}/{title}.genmujson(这是为了确保重名乐谱也可以上传)
+            if (result == DBOperationResult.OK)
+            {
+                string music_sheet_file = user.Id.ToString() + "/" + muid.ToString();
+                if (Directory.Exists(music_sheet_file))
+                {
+                    Directory.Delete(music_sheet_file, true);
+                }
+                return Ok("删除完成");
+            }
+            else if(result == DBOperationResult.ERROR)
+            {
+                return StatusCode(403, "禁止此请求");
+            }
+            else
+            {
+                return StatusCode(500, "出错");
+            }
+            return View();
+        }
+
+        [Authorize]
         public IActionResult Upload()
         {
             return View();
@@ -263,7 +318,8 @@ namespace genshinwebsite.Controllers
             var user = await _userManager.FindByEmailAsync(user_model.Account);
             if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(user, user_model.Password, true, false);
+               
+                var result = await _signInManager.PasswordSignInAsync(user, user_model.Password, false, true);
                 if (result.Succeeded)
                 {
                     //if (_signInManager.IsSignedIn(User))
@@ -271,6 +327,16 @@ namespace genshinwebsite.Controllers
                     //    return Redirect("home/index");
                     //}
                     return RedirectToAction("index", "home");
+                }
+                else if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError(string.Empty, "用户已被锁定，请等待解锁");
+                    return View("login", user_model);
+                }
+                else if (result.IsNotAllowed)
+                {
+                    ModelState.AddModelError(string.Empty, "管理员已禁止该账号登录");
+                    return View("login", user_model);
                 }
 
             }
@@ -283,13 +349,8 @@ namespace genshinwebsite.Controllers
     
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(UserRegisterViewModel user_model, string confirm_code)
+        public async Task<IActionResult> Register(UserRegisterViewModel user_model)
         {
-            if(confirm_code != "任何邪恶终将绳之以法")
-            {
-                ModelState.AddModelError(string.Empty, "暂时禁止注册");
-                return View("register", user_model);
-            }
             if (ModelState.IsValid)
             {
                 if(_emailVCodeDB.is_code_verified(user_model.Account, user_model.VCode) == false)
@@ -346,34 +407,6 @@ namespace genshinwebsite.Controllers
             
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> UpdatePost(UserLoginViewModel user_model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new UserModel
-        //        {
-        //            Id = 1,
-        //            Email = user_model.Account,
-        //            SecurityStamp = "2WX2MOTEBLVWSFZF55GQX5RP63ZHRGVL"
 
-        //        };
-        //        user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, user_model.Password);
-        //        var result = await _userManager.UpdateAsync(user);
-        //        if (result.Succeeded)
-        //        {
-        //            return RedirectToAction("index", "home");
-        //        }
-        //        else
-        //        {
-        //            foreach (var error in result.Errors)
-        //            {
-        //                ModelState.AddModelError(string.Empty, error.Description);
-        //            }
-        //        }
-        //    }
-        //    return View("login", user_model);
-        //}
     }
 }

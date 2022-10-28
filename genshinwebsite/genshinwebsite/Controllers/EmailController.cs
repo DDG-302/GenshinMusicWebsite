@@ -24,9 +24,9 @@ namespace genshinwebsite.Controllers
 
         public IActionResult Email(string email)
         {
-            //try
-            //{
-                if(email == string.Empty || email == ""||email==null)
+            try
+            {
+                if (email == string.Empty || email == ""||email==null)
                 {
                     return BadRequest();
                 }
@@ -39,12 +39,12 @@ namespace genshinwebsite.Controllers
                 _EmailService.Send(email, "注册验证码", VCode);
 
                 return Ok();
-            //}
-            //catch
-            //{
+            }
+            catch
+            {
                 return StatusCode(500);
-            //}
-            
+            }
+
         }
     }
 

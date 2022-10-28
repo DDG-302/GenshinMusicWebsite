@@ -25,7 +25,16 @@ namespace genshinwebsite.Controllers
             return View();
         }
 
+        public IActionResult Help()
+        {
+            return View();
+        }
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult ProgramDownload()
         {
             return View();
         }

@@ -40,6 +40,7 @@
   <ItemGroup>
     <Folder Include="music_save\" />
     <Folder Include="wwwroot\img\musicsheet\" />
+    <Folder Include="wwwroot\program\dev\" />
   </ItemGroup>
 
 </Project>

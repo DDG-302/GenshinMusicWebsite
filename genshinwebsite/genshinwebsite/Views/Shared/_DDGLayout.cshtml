@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-cn">
-<html>
+
 
 <link href="~/153/153.css" rel='stylesheet' type='text/css' />
-<link href="~/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel='stylesheet' type='text/css' />
 
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -16,10 +16,10 @@
             <ul class="partial_nav">
 
                 <li><a asp-controller="Home" asp-action="Index">首页</a></li>
-                <li><a asp-controller="User" asp-action="Index">用户</a></li>
                 <li><a asp-controller="Pages" asp-action="Index">乐谱</a></li>
-                <li><a href="~/Release.zip">获取软件</a></li>
-                <li><a href="#">联系我们</a></li>
+                <li><a asp-controller="Home" asp-action="ProgramDownload">获取软件</a></li>
+                <li><a href="mailto:768003641@qq.com">联系我们</a></li>
+                <li><a asp-controller="Home" asp-action="Help">说明</a></li>
                 @if (User.IsInRole("Admin") || User.IsInRole("God"))
                 {
                     <li>
@@ -37,7 +37,7 @@
     <!-- //header -->
 
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main"  class="pb-3" id="main">
             @RenderBody()
         </main>
     </div>
@@ -50,6 +50,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 w3_ftl">
                             <div class="row">
+                                这是一个footer
                             </div>
                         </div>
                     </div>

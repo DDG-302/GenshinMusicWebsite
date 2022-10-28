@@ -41,9 +41,30 @@ namespace genshinwebsite.Services
             return DBOperationResult.OK;
         }
 
+        public DBOperationResult view_one(MusicModel musicModel)
+        {
+            try
+            {
+                _musicDataContext.Update(musicModel);
+                _musicDataContext.SaveChanges();
+            }
+            catch (DbUpdateException exp)
+            {
+                return DBOperationResult.DbUpdateException;
+            }
+            catch (Exception exp)
+            {
+                return DBOperationResult.ERROR;
+            }
+            return DBOperationResult.OK;
+        }
+
+
+
         public DBOperationResult delete_ones_by_uid(int uid)
         {
-            var musics = get_by_uid(uid);
+            int t;
+            var musics = get_by_uid(uid, out t);
             try
             {
                 _musicDataContext.RemoveRange(musics);
@@ -60,15 +81,16 @@ namespace genshinwebsite.Services
             return DBOperationResult.OK;
         }
 
-        public DBOperationResult delete_one_by_id(int id)
+        public DBOperationResult delete_one_by_id(int muid, int uid)
         {
-            var music = new MusicModel()
+            var music = _musicDataContext.Music.Where(m =>  m.Id == muid &&  m.User_id == uid).ToList(); 
+            if(music.Count == 0)
             {
-                Id = id
-            };
+                return DBOperationResult.ERROR;
+            }
             try
             {
-                _musicDataContext.Music.Remove(music);
+                _musicDataContext.Music.Remove(music[0]);
                 _musicDataContext.SaveChanges();
             }
             catch (DbUpdateException exp)
@@ -94,25 +116,31 @@ namespace genshinwebsite.Services
             return _musicDataContext.Music.Find(id);
         }
 
-        public IEnumerable<MusicModel> get_by_uid(int uid, int num_per_page = 10, int page_offset = 0, MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE)
+        public IEnumerable<MusicModel> get_by_uid(int uid, out int max_item_num, int num_per_page = 10, int page_offset = 0, MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE)
         {
             page_offset = Math.Max(page_offset, 0);
             num_per_page = Math.Max(num_per_page, 1);
             IEnumerable<MusicModel> result = null;
-            
+            var content = _musicDataContext.Music.AsNoTracking().Where(m => m.User_id == uid);
+
+            max_item_num = content.Count();
+
             switch (select_order)
             {
                 case MUSIC_SELECT_ORDER.UPLOAD_DATE:
-                    result = _musicDataContext.Music.AsNoTracking().OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).Where(m => m.User_id == uid).ToList();
+                    result = content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).ToList();
                     break;
                 case MUSIC_SELECT_ORDER.TITLE:
-                    result = _musicDataContext.Music.AsNoTracking().OrderBy(m => m.MusicTitle).Skip(num_per_page * page_offset).Take(num_per_page).Where(m => m.User_id == uid).ToList();
+                    result = content.OrderBy(m => m.MusicTitle).Skip(num_per_page * page_offset).Take(num_per_page).ToList();
                     break;
                 case MUSIC_SELECT_ORDER.VIEW_NUM:
-                    result = _musicDataContext.Music.AsNoTracking().OrderByDescending(m => m.View_num).Skip(num_per_page * page_offset).Take(num_per_page).Where(m => m.User_id == uid).ToList();
+                    result = content.OrderByDescending(m => m.View_num).Skip(num_per_page * page_offset).Take(num_per_page).ToList();
+                    break;
+                case MUSIC_SELECT_ORDER.DOWNLOAD_NUM:
+                    result = content.OrderByDescending(m => m.Download_num).Skip(num_per_page * page_offset).Take(num_per_page).ToList();
                     break;
                 default:
-                    result = _musicDataContext.Music.AsNoTracking().OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).Where(m => m.User_id == uid).ToList();
+                    result = content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).ToList();
                     break;
 
             }
@@ -169,6 +197,7 @@ namespace genshinwebsite.Services
                     result = content.OrderBy(m => m.MusicTitle).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
                     {
                         Id = music.Id,
+                        MusicTitle = music.MusicTitle,
                         Abstract_content = music.Abstract_content,
                         Datetime = music.Datetime,
                         View_num = music.View_num,
@@ -182,6 +211,21 @@ namespace genshinwebsite.Services
                     result = content.OrderByDescending(m => m.View_num).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
                     {
                         Id = music.Id,
+                        MusicTitle = music.MusicTitle,
+                        Abstract_content = music.Abstract_content,
+                        Datetime = music.Datetime,
+                        View_num = music.View_num,
+                        Download_num = music.Download_num,
+                        Uid = music.User_id,
+                        Uploader = user.UserName
+
+                    }).ToList();
+                    break;
+                case MUSIC_SELECT_ORDER.DOWNLOAD_NUM:
+                    result = content.OrderByDescending(m => m.Download_num).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
+                    {
+                        Id = music.Id,
+                        MusicTitle = music.MusicTitle,
                         Abstract_content = music.Abstract_content,
                         Datetime = music.Datetime,
                         View_num = music.View_num,
@@ -195,6 +239,7 @@ namespace genshinwebsite.Services
                     result = content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
                     {
                         Id = music.Id,
+                        MusicTitle = music.MusicTitle,
                         Abstract_content = music.Abstract_content,
                         Datetime = music.Datetime,
                         View_num = music.View_num,

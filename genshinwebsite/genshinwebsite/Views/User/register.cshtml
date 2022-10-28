@@ -3,99 +3,48 @@
 }
 
 @model UserRegisterViewModel
+    <link rel="stylesheet" href="~/css/font-awesome.css">
+<link rel="stylesheet" href="~/171/171.css">
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
-   <p class="h2" style="text-align:center">用户注册</p>
-<hr />
-
 <form method="post">
+    <div class="container1">
+        <h1>注册</h1>
 
-    @Html.AntiForgeryToken()
-    <div class="row mt-2 mb-2">
-        <div class="col-sm-2 col-md-2 offset-md-3 col-lg-2 offset-lg-3">
-            <label asp-for="Account"></label>
+        <div class="ipt-box1">
+            <input id="email_input" onmouseover="this.title='以您的邮箱作为账号'" asp-for="Account" type="text" placeholder="您的邮箱" autocomplete="off">
+        </div>
+        <div class="ipt-box1">
+            <input onmouseover="this.title='设置您的昵称'" asp-for="Name" type="text" placeholder="您的昵称" autocomplete="off">
+        </div>
+        <div class="ipt-box1">
+            <input onmouseover="this.title='设置您的密码'" asp-for="Password" type="password" id="password" placeholder="密码" autocomplete="off">
+            <i id="eye" class="eye fa fa-eye-slash"></i>
+            <div class="beam1"></div>
+        </div>
+        <div class="ipt-box1">
+            <input onmouseover="this.title='确认您的密码'" asp-for="ConfirmPassoword" type="password" id="confirm_password" placeholder="确认密码" autocomplete="off">
+            <i id="confirm_eye" class="eye fa fa-eye-slash"></i>
+            <div class="beam1"></div>
         </div>
 
-        <div class="col-sm-4 col-md-4 col-lg-4 ">
-            <input class="form-control" asp-for="Account" id="email_input" />
+
+        <div class="ipt-box1">
+            <div class="row">
+                <div class="col-8">
+                    <input onmouseover="this.title='邮箱验证码'" style="width:100%" asp-for="VCode" type="text" placeholder="邮箱验证码" autocomplete="off">
+                </div>
+                <div class="col-4">
+
+                    <button onmouseover="this.title='请先输入您的邮箱'" class="btn-info" style="width:100%;height:100%;" type="button" onclick="get_VCode_click()">获取邮箱验证码</button>
+
+                </div>
+            </div>
         </div>
 
+        <button class="btn-login1" type="submit">提交注册信息</button>
 
     </div>
-    <div class="row mb-2">
-        <div class="col-sm-2 col-md-2 offset-md-3 col-lg-2 offset-lg-3">
-            <label asp-for="Password"></label>
-        </div>
-
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <input class="form-control" asp-for="Password" />
-        </div>
-    </div>
-    <div class="row mb-2">
-        <div class="col-sm-2 col-md-2 offset-md-3 col-lg-2 offset-lg-3">
-            <label asp-for="ConfirmPassoword"></label>
-        </div>
-
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <input class="form-control" asp-for="ConfirmPassoword" />
-        </div>
-    </div>
-
-    <div class="row mb-2">
-        <div class="col-sm-2 col-md-2 offset-md-3 col-lg-2 offset-lg-3">
-            <label asp-for="Name"></label>
-        </div>
-
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <input class="form-control" asp-for="Name" />
-        </div>
-    </div>
-
-    <div class="row mb-2">
-        <div class="col-sm-2 col-md-2 offset-md-3 col-lg-2 offset-lg-3">
-            <label asp-for="VCode"></label>
-        </div>
-
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <input class="form-control" asp-for="VCode" />
-
-        </div>
-        <div class="col-sm-2 col-md-2 col-lg-2">
-            <button type="button" class="btn-info" onclick="get_VCode_click()">获取验证码</button>
-        </div>
-
-    </div>
-
-    <div class="row mb-2">
-        <div class="col-sm-2 col-md-2 offset-md-3 col-lg-2 offset-lg-3">
-            <label>确认码：</label>
-        </div>
-
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <input class="form-control" name="confirm_code" type="text" />
-
-        </div>
-
-
-    </div>
-    <div class="row mb-2">
-        <div class="col-sm-6 col-md-7 offset-md-3 col-lg-6 offset-lg-3">
-            <div class="bg-warning">@Html.ValidationSummary()</div>
-        </div>
-    </div>
-
-
-
-
-    <div class="row text-center mb-2">
-        <div class="col-md-4 offset-md-4 col-lg-4 offset-lg-4">
-            @*<button type="button" name="register" onclick="submit_click()">提交注册</button>*@
-            <input type="submit" value="提交注册" />
-        </div>
-    </div>
-
-
-
 </form>
-
+<script src="~/171/171.js"></script>
 <script src="~/js/register.js"></script>

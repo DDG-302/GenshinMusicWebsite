@@ -1,0 +1,95 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model MusicDetailViewModel
+@{
+    ViewData["Title"] = Model.MusicTitle;
+}
+<script src="~/js/Comment.js"></script>
+<style>
+    .abs {
+        white-space: pre;
+    }
+</style>
+<div class="alert alert-info">
+    <span class="h2">曲名：@Model.MusicTitle</span>
+    <span style="float:right;height:100%;padding:10px 0;">编号: @Model.Id</span>
+</div>
+@*<div class="row mt-4">
+    <div class="col-2 offset-2">
+        <span class="label">
+            上传用户：
+        </span>
+    </div>
+    <div class="col-3 offset-1">
+        <span class="label">
+
+        </span>
+    </div>
+</div>*@
+
+<table class="table table-bordered table-striped table-hover">
+
+
+    <tbody>
+        <tr>
+            <th>上传用户：</th>
+            <td colspan=2 >
+                <a href="#">
+                    @Model.Uploader
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th>上传日期：</th>
+            <td colspan=2 >  @Model.Datetime</td>
+        </tr>
+        <tr>
+            <th>下载量：</th>
+            <td colspan=2 >@Model.Download_num</td>
+        </tr>
+        <tr>
+            <th>浏览量：</th>
+            <td colspan=2 >@Model.View_num</td>
+        </tr>
+        <tr>
+            <th>简介：</th>
+            <td colspan=2 ><span class="abs">@Model.Abstract_content</span> </td>
+        </tr>
+        <tr>
+            <th>下载：</th>
+            <td >
+                <a class="btn btn-dark" asp-action="download" asp-route-muid="@Model.Id">
+                    工程文件下载(.genmujson)
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-dark" href="#">
+                    键盘谱下载(.zip)[功能未实现]
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<form method="post" asp-action="Submit_comment" style="align-content:center">
+    <div class="row">
+        <textarea style="height:100px" id="comment_input_box" class="offset-md-3 col-md-6 offset-sm-2 col-sm-8" placeholder="在这里可以发送评论（功能未实现）"></textarea>
+    </div>
+
+    <input id="comment_input_hidden" type="hidden" />
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3 offset-sm-2 col-sm-8">
+            <button style="width:100%;" class="btn btn-dark" type="button" onclick="comment_submit_click()">提交（功能未实现）</button>
+        </div>
+    </div>
+</form>
+
+<div class="main_back" style="height:100%">
+    <div id="main_div" class="main_div">
+
+    </div>
+</div>

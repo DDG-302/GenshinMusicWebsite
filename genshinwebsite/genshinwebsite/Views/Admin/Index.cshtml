@@ -10,7 +10,7 @@
     </script>
 
     <div class="row">
-        <input id="inp_box" class="form-control col-6 offset-2" value="@(ViewData["username"]!=null?"&username="+ViewData["username"].ToString():"")"/>
+        <input id="inp_box" class="form-control col-6 offset-2" value="@(ViewData["username"]!=null?ViewData["username"].ToString():"")"/>
         <button type="button" class="btn btn-primary" onclick="on_search_click();">搜索</button>
     </div>
     <div class="row">

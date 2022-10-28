@@ -1,0 +1,170 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "说明与帮助";
+}
+
+<h1 class="h1 text-center">说明</h1>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+<link href="~/css/help-img.css" type="text/css" rel="stylesheet" />
+
+<hr />
+
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="website-tab" data-toggle="tab" href="#website" role="tab" aria-controls="website" aria-selected="false">关于网站</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="program-tab" data-toggle="tab" href="#program" role="tab" aria-controls="program" aria-selected="true">关于程序</a>
+    </li>
+
+</ul>
+
+<!-- Tab panes -->
+<div style="height:100%;" class="tab-content">
+    <div style="height:100%;" class="tab-pane active" id="website" role="tabpanel" aria-labelledby="website-tab">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-primary">这个网站是做什么的？</li>
+            <li class="list-group-item">这是一个原神风花琴自动演奏乐谱分享网站，您可以浏览其他用户上传的乐谱工程，也可以上传您自己创作的乐谱工程</li>
+
+            <li class="list-group-item list-group-item-primary">所谓「乐谱」是什么？</li>
+            <li class="list-group-item">
+                乐谱是一个json格式的文件，可以通过在本网站上下载的软件读取和编辑（点击导航栏「获取软件」）。目前仅支持下载通过软件读写的工程文件，在未来可能会提供键盘谱。
+                更多关于软件的功能请查看「关于软件」。
+            </li>
+
+            <li class="list-group-item list-group-item-primary">需要注册账号吗？</li>
+            <li class="list-group-item">
+                您不需要注册账号也可以浏览、下载网站的所有内容，可以使用配套软件的所有功能。只有发言和乐谱上传功能要求您注册并登陆一个账号。
+            </li>
+
+        </ul>
+
+    </div>
+
+
+    <div class="tab-pane" id="program" role="tabpanel" aria-labelledby="program-tab">
+        <div class="row">
+            <div class="col-3">
+                <div style="position:fixed" class="nav flex-column nav-pills">
+                    <a class="nav-link" href="#prepare">准备</a>
+                    <a class="nav-link" href="#brief">软件界面介绍</a>
+
+                    <a class="nav-link" href="#compose">作曲操作</a>
+                    <a class="nav-link" href="#create_notes">&nbsp;&nbsp;&nbsp;&nbsp;创建音符</a>
+                    <a class="nav-link" href="#move_notes">&nbsp;&nbsp;&nbsp;&nbsp;移动音符</a>
+                    <a class="nav-link" href="#select_notes">&nbsp;&nbsp;&nbsp;&nbsp;选中音符</a>
+                    <a class="nav-link" href="#delete_notes">&nbsp;&nbsp;&nbsp;&nbsp;删除音符</a>
+                    <a class="nav-link" href="#play">&nbsp;&nbsp;&nbsp;&nbsp;直接演奏</a>
+                    <a class="nav-link" href="#play_dump">导出、播放操作</a>
+                    <a class="nav-link" href="#style">样式选择</a>
+                </div>
+
+            </div>
+            <div class="col-9">
+                <p>
+                    <div class="h2" style="font-weight:bolder" id="prepare">
+                        准备
+                    </div>
+                    <br />
+                    <ul>
+                        <li>
+                            点击顶部导航栏「获取软件」下载软件。
+                        </li>
+                        <li>
+                            解压缩压缩包，打开「genshinmusic.exe」即可使用
+                            <img src="~/images/prg_zip.png" alt="主程序入口" />
+                        </li>
+                    </ul>
+                </p>
+                <hr />
+                <p>
+                    <div class="h2" style="font-weight:bolder" id="brief">软件界面介绍</div>
+                    这是一个运行在Windows桌面端的，使用鼠标与键盘编辑的图形化作曲软件。
+                    <br />
+                    <img src="~/images/prg_brief.png" alt="界面概况" />
+                    <br />
+                    以上是程序的基本界面,顶部为功能栏，其功能分区见下图。
+                    <br />
+                    <img src="~/images/prg_brief.png" alt="功能分区图" />
+                    <br />
+                    在编辑区，每一条音轨都对应着一个具体的音高，其对应的音高可以与左边的钢琴卷帘一致。由于本程序是专用与原神风花琴的作曲，因此<b>只提供了三个八度和白键</b>。<br />
+                    <ul>
+                        <li>
+                            「New」按钮：新建一个工程。
+                        </li>
+                        <li>
+                            「Add」按钮：在已有工程的基础上，增加一个小节。
+                        </li>
+                        <li>
+                            「Del」按钮：删除末尾一个不包含任何音符的空小节。
+                        </li>
+                        <li>
+                            「Play/Pause」按钮：开始播放/暂停播放当前工程。默认从头播放，如果选中了一个或多个音符块，则会从其中最靠前的一个音符块开始播放。<b>注意，在原神中播放是按「Genshin」按钮，「Play」按钮是MIDI播放。</b>
+                        </li>
+                        <li>
+                            「Stop」按钮：结束播放。
+                        </li>
+                        <li>
+                            「bpm」输入框：beat per minute，拍/分，都是以四分音符为一拍，不支持三连音、装饰音等不规则音符。
+                        </li>
+                        <li>
+                            「Genshin」按钮：选择一个乐谱，在原神中播放。播放原理是模拟键盘按键输入，因此需要您使用管理员权限打开该软件，并及时切换回原神游戏画面。
+                        </li>
+                    </ul>
+                </p>
+                <hr />
+                <p>
+                    <div class="h2" style="font-weight:bolder" id="compose">作曲操作</div>
+                    <br /><br />
+                    <div id="create_notes" style="font-weight:bolder" class="h5">创建音符</div>
+                    按住鼠标左键拖动可创建音符。
+                    <img src="~/images/create_notes.gif" alt="创建音符" />
+                    <br /><br />
+                    <div id="select_notes" style="font-weight:bolder" class="h5">选中音符</div>
+                    鼠标左键单击选中音符，按住Ctrl可以多选音符。
+                    <img src="~/images/select_notes.gif" alt="选中音符" />
+                    <br /><br />
+                    <div id="move_notes" style="font-weight:bolder" class="h5">移动音符</div>
+                    先选中音符，再使用键盘W S A D可以上下左右移动被选中的音符。
+                    <img src="~/images/move_notes.gif" alt="移动音符" />
+                    <br /><br />
+                    <div id="delete_notes" style="font-weight:bolder" class="h5">删除音符</div>
+                    先选中音符，点击键盘~键（数字1左边、Esc下面那个按键）或Backspace键或Delete键可以删除音符。
+                    <img src="~/images/delete_notes.gif" alt="删除音符" />
+                    <br /><br />
+                    <div id="play" style="font-weight:bolder" class="h5">直接演奏</div>
+                    未选中任何音符的情况下，直接用鼠标点击左侧钢琴卷帘，或者按下键盘按键可以直接演奏。<br />
+                    注意，不能演奏黑键，键盘对应的音符和游戏中风花琴一致。
+
+                </p>
+                <hr />
+                <p>
+                    <div class="h2" style="font-weight:bolder" id="play_dump">导出、播放操作</div>
+                    点击顶部的「文件」按钮可以导出、导入工程，可以导出midi文件。
+                    <img src="~/images/save_proj.png" alt="保存" />
+                    点击「Play」按钮可以预览当前加载的工程，你可以选中一个音符，让程序从被选中的音符开始播放。<br />
+                    点击Genshin可以在游戏中播放，在游戏中播放相当于一个独立的程序，不支持暂停、快进、从中间开始播放等操作，也不需要提前加载工程，单击按钮后选中一个工程即可在游戏中播放。
+
+                </p>
+                <p>
+                    <div class="h2" style="font-weight:bolder" id="style">样式选择</div>
+                    在「配色主题」和「尺寸」下拉框中可以选择你心仪的样式。
+                    <img src="~/images/style.png" alt="样式" />
+                </p>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+</div>

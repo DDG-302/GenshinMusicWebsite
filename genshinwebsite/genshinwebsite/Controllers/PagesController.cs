@@ -15,6 +15,7 @@ using genshinwebsite.ViewModels;
 using genshinwebsite.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace genshinwebsite.Controllers
 {
@@ -38,6 +39,7 @@ namespace genshinwebsite.Controllers
         public async Task<IActionResult> Index(int page_offset, string music_title = "", MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE)
         {
             ViewData["url"] = HttpContext.Request.GetDisplayUrl();
+            ViewData["filter_idx"] = (int)select_order;
             if (music_title != null && music_title != string.Empty && music_title != "")
             {
                 ViewData["music_title"] = music_title;
@@ -61,44 +63,78 @@ namespace genshinwebsite.Controllers
             ViewData["page_offset"] = page_offset;
 
             
-            foreach (var m in music_list)
-            {
-                MusicViewModel music = new MusicViewModel()
-                {
-                    Id = m.Id,
-                    Uploader = m.Uploader,
-                    Abstract_content = m.Abstract_content,
-                    MusicTitle = m.MusicTitle,
-                    View_num = m.View_num,
-                    Download_num = m.Download_num
-                };
-                if(music.Abstract_content.Length > 60)
-                {
-                    music.Abstract_content = music.Abstract_content.Substring(0, 57) + "...";
-                }
-                else
-                {
-                    music.Abstract_content.PadRight(60);
-                }
-                musicViewModels.Add(music);
-            }
-            return View(musicViewModels);
+            //foreach (var m in music_list)
+            //{
+            //    MusicViewModel music = new MusicViewModel()
+            //    {
+            //        Id = m.Id,
+            //        Uploader = m.Uploader,
+            //        Abstract_content = m.Abstract_content,
+            //        MusicTitle = m.MusicTitle,
+            //        View_num = m.View_num,
+            //        Download_num = m.Download_num
+            //    };
+            //    if(music.Abstract_content.Length > 60)
+            //    {
+            //        music.Abstract_content = music.Abstract_content.Substring(0, 57) + "...";
+            //    }
+            //    else
+            //    {
+            //        music.Abstract_content.PadRight(60);
+            //    }
+            //    musicViewModels.Add(music);
+            //}
+            return View(music_list.ToList());
         }
 
         public FileResult download(int muid)
         {
             var music_model = _musicDBHelper.get_by_id(muid);
             string fileName = "music_save/" + music_model.User_id.ToString() + "/" + muid.ToString() + "/" + music_model.MusicTitle + ".genmujson";
-            
-            var stream = System.IO.File.OpenRead(fileName);
+            if (System.IO.File.Exists(fileName)){
+                var stream = System.IO.File.OpenRead(fileName);
+                _musicDBHelper.add_or_set_download_num(muid);
+                return File(stream, "text/plain", music_model.MusicTitle + ".genmujson");
+            }
+            else
+            {
+                return null;
+            }
 
             //string suffix = Path.GetExtension(fileName);
             //var provider = new FileExtensionContentTypeProvider();
             //var contentType = provider.Mappings[suffix];
 
             //var contentType = MimeMapping.GetMimeMapping(fileName);
-            _musicDBHelper.add_or_set_download_num(muid);
-            return File(stream, "text/plain", music_model.MusicTitle + ".genmujson");
+            
+        }
+
+        
+        [Route("Pages/{muid:int}")]
+        public async Task<IActionResult> Detail(int muid)
+        {
+            ViewData["muid"] = muid;
+            var music = _musicDBHelper.get_by_id(muid);
+            if(music != null)
+            {
+                MusicDetailViewModel musicDetailViewModel = new MusicDetailViewModel()
+                {
+                    Id = music.Id,
+                    MusicTitle = music.MusicTitle,
+                    Datetime = music.Datetime,
+                    Abstract_content = music.Abstract_content,
+
+                };
+                music.View_num++;
+                _musicDBHelper.view_one(music);
+                
+                return View(musicDetailViewModel);
+            }
+            else
+            {
+                return Redirect("Home");
+            }
+            
         }
     }
 }

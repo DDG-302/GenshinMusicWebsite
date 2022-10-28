@@ -116,3 +116,8 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\genshinwebsite.pdb
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\genshinwebsite.genruntimeconfig.cache
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\genshinwebsite.csprojAssemblyReference.cache
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\Razor\Views\Pages\Detail.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\Razor\Views\Admin\MusicManage.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\Razor\Views\Home\ProgramDownload.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\Razor\Views\Home\Help.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\Razor\Views\User\UploadManager.cshtml.g.cs

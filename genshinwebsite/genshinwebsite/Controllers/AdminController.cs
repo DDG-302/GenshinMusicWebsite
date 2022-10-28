@@ -10,9 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 
 namespace genshinwebsite.Controllers
-{ 
+{
     //[Authorize(Policy = "仅限管理员")]
     //[Authorize(Policy = "仅限God")]
+    [Authorize(Roles = "God,Admin")]
+
     public class AdminController : Controller
     {
 
@@ -64,20 +66,44 @@ namespace genshinwebsite.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
             if (!User.IsInRole("Admin") && !User.IsInRole("God"))
             {
                 RedirectToAction("index", "home");
             }
-            // 这里需要被删除的用户身份校验
-            Console.WriteLine(id);
-            return View();
-            //UserModel user = new UserModel()
-            //{
-            //    Id = id
-            //};
-            //var result = _userManager.DeleteAsync(user);
+
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            var role = await _userManager.GetRolesAsync(user);
+
+            if (role.Count != 0 && (int)Enum.Parse(typeof(Role_type), role[0]) > 0 && User.IsInRole("God") == false)
+            {
+                return Forbid("不允许删除拥有高级权限的用户");
+            }
+            else if (role.Count != 0 && (int)Enum.Parse(typeof(Role_type), role[0]) == 2)
+            {
+                return Forbid("不允许删除拥有God权限的用户");
+            }
+
+            
+            if(user != null)
+            {
+                var result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return StatusCode(500, "删除出错");
+                }
+            }
+            else
+            {
+                return StatusCode(410, "目标用户不存在");
+            }
+            
+           
         }
         
         public IActionResult UserManage(int id)

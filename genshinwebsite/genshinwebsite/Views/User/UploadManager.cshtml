@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<UserModel> UserManager
+@inject SignInManager<UserModel> SignInManager
+@model List<MusicViewModel>
+@{
+    if (SignInManager.IsSignedIn(User))
+    {
+        ViewData["Title"] = @User.Identity.Name + "的乐谱管理";
+    }
+    int filter_idx = 1;
+    if (ViewData["filter_idx"] != null)
+    {
+        filter_idx = int.Parse(ViewData["filter_idx"].ToString());
+    }
+}
+
+<h1>@User.Identity.Name 的作品</h1>
+<link rel="stylesheet" href="~/css/musicsheet-display.css" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/UploadManager.js"></script>
+@for (int i = 0; i < Model.Count;)
+{
+<div style="min-width:600px" class="row">
+    @for (int j = 0; i < Model.Count && j < 3; j++, i++)
+    {
+        <div class="col-md-4 col-sm-12" style="margin-bottom:10px">
+                <div class="img-thumbnail">
+
+                    <div class="h3">@Model[i].MusicTitle</div>
+                    <div class="h5">上传者：@Model[i].Uploader</div>
+                    <p>发布日期：@Model[i].Datetime</p>
+                    <p style="height:100px">@Model[i].Abstract_content</p>
+                    <img class="img-thumbnail" src="~/f5dd25c2527841ec883df8f3ceadc983.jpg" />
+                    <p>下载：@Model[i].Download_num</p>
+                    <p>浏览：@Model[i].View_num</p>
+                    <button class="btn btn-light" onclick="alert('功能未实现')">
+                        修改
+                    </button>
+                    <button class="btn btn-dark" onclick="delete_my_music(@Model[i].Id)">
+                       删除
+                    </button>
+                </div>
+
+            </div>
+
+    }
+</div>
+}
+
+<partial name="_PageBar" />

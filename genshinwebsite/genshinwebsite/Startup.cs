@@ -24,6 +24,7 @@ using NETCore.MailKit.Infrastructure.Internal;
 
 
 
+
 namespace genshinwebsite
 {
     public class Startup
@@ -80,10 +81,18 @@ namespace genshinwebsite
                     options.User.RequireUniqueEmail = true;
                 }
                 ).AddEntityFrameworkStores<DataContext>();
-   
+
+            services.ConfigureApplicationCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                    options.SlidingExpiration = true; // 过期前发送request则自动发送一个新的cookie
+                }
+
+                 );
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("仅限管理员", policy => policy.RequireRole("Admin"));
+                //options.AddPolicy("仅限管理员", policy => policy.RequireRole("Admin"));
                 options.AddPolicy("仅限God", policy => policy.RequireRole("God"));
                 options.AddPolicy("编辑乐谱", policy => policy.RequireClaim("EditMusic", "Edit Music"));
             });
@@ -109,7 +118,6 @@ namespace genshinwebsite
                     Security = true
                 });
             });
-
             //services.AddAuthorization(options =>
             //{
             //    options.AddPolicy("仅限管理员", policy => { })
@@ -148,8 +156,10 @@ namespace genshinwebsite
             
             app.UseRouting();
 
-            app.UseAuthorization();
+            // 下面两个一定是这个顺序，不然authorize会无效
             app.UseAuthentication();
+            app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
