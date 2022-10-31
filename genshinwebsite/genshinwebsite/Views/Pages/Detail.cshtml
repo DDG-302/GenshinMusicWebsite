@@ -1,11 +1,24 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<UserModel> SignInManager
+@inject UserManager<UserModel> UserManager
 @model MusicDetailViewModel
 @{
     ViewData["Title"] = Model.MusicTitle;
 }
+
+@*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+<link href="~/css/comment-style.css" rel='stylesheet' type='text/css' />
+<script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
 <script src="~/js/Comment.js"></script>
+@if (SignInManager.IsSignedIn(User))
+{
+    <script>
+        is_login = true;
+    </script>
+}
+<script>
+    muid = @Model.Id;
+</script>
 <style>
     .abs {
         white-space: pre;
@@ -16,17 +29,17 @@
     <span style="float:right;height:100%;padding:10px 0;">编号: @Model.Id</span>
 </div>
 @*<div class="row mt-4">
-    <div class="col-2 offset-2">
-        <span class="label">
-            上传用户：
-        </span>
-    </div>
-    <div class="col-3 offset-1">
-        <span class="label">
+        <div class="col-2 offset-2">
+            <span class="label">
+                上传用户：
+            </span>
+        </div>
+        <div class="col-3 offset-1">
+            <span class="label">
 
-        </span>
-    </div>
-</div>*@
+            </span>
+        </div>
+    </div>*@
 
 <table class="table table-bordered table-striped table-hover">
 
@@ -34,7 +47,7 @@
     <tbody>
         <tr>
             <th>上传用户：</th>
-            <td colspan=2 >
+            <td colspan=2>
                 <a href="#">
                     @Model.Uploader
                 </a>
@@ -42,23 +55,23 @@
         </tr>
         <tr>
             <th>上传日期：</th>
-            <td colspan=2 >  @Model.Datetime</td>
+            <td colspan=2>  @Model.Datetime</td>
         </tr>
         <tr>
             <th>下载量：</th>
-            <td colspan=2 >@Model.Download_num</td>
+            <td colspan=2>@Model.Download_num</td>
         </tr>
         <tr>
             <th>浏览量：</th>
-            <td colspan=2 >@Model.View_num</td>
+            <td colspan=2>@Model.View_num</td>
         </tr>
         <tr>
             <th>简介：</th>
-            <td colspan=2 ><span class="abs">@Model.Abstract_content</span> </td>
+            <td colspan=2><span class="abs">@Model.Abstract_content</span> </td>
         </tr>
         <tr>
             <th>下载：</th>
-            <td >
+            <td>
                 <a class="btn btn-dark" asp-action="download" asp-route-muid="@Model.Id">
                     工程文件下载(.genmujson)
                 </a>
@@ -72,24 +85,73 @@
     </tbody>
 </table>
 
+<hr />
 
-
-<form method="post" asp-action="Submit_comment" style="align-content:center">
+@if (SignInManager.IsSignedIn(User))
+{
     <div class="row">
-        <textarea style="height:100px" id="comment_input_box" class="offset-md-3 col-md-6 offset-sm-2 col-sm-8" placeholder="在这里可以发送评论（功能未实现）"></textarea>
+        <div class="col-md-8 offset-md-2 offset-sm-3 col-sm-6">
+            <textarea style="height:100px;width:100%" id="comment_input_box" placeholder="在这里可以编写评论（注意，每个用户在一个乐谱下只能发送一条评论，如果已经发过评论了，再次评论会覆盖原有评论哦）"></textarea>
+        </div>
+
     </div>
 
-    <input id="comment_input_hidden" type="hidden" />
+    @Html.AntiForgeryToken()
 
-    <div class="row">
+    <div class="row" style="margin-top:20px;margin-bottom:20px">
         <div class="col-md-6 offset-md-3 offset-sm-2 col-sm-8">
-            <button style="width:100%;" class="btn btn-dark" type="button" onclick="comment_submit_click()">提交（功能未实现）</button>
+            <button style="width:100%;" class="btn btn-dark" type="button" onclick="comment_submit_click()">提交</button>
         </div>
     </div>
-</form>
+    <h2>我的评论</h2>
+    <div class="row">
+        <div class="block offset-md-2 col-md-8 offset-sm-2 col-sm-8 offset-xs-2 col-xs-8" style="background-color:#eeedab">
+            <div>
+                <div class="card_head">
+                    <img class="user_icon" src="~/img/login-user.png" />
+                    <p id="my_id">@User.Identity.Name </p>
 
-<div class="main_back" style="height:100%">
-    <div id="main_div" class="main_div">
+                </div>
+                <div>
+                    <p id="my_upload_date" class="date_time_p">发布时间： 未知</p>
+                    <p id="my_update_date" class="date_time_p">最后更新时间： 未知</p>
+                    <hr />
+                    <p id="my_comment" class="comment_content">正在查询我的评论...</p>
+                </div>
+                <div>
+
+                </div>
+                <button id="delete_btn" class="btn btn-danger" onclick="delete_my_comment();" disabled="disabled">删除评论</button>
+            </div>
+        </div>
 
     </div>
+    <hr />
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8 offset-md-2 offset-sm-3 col-sm-6">
+            <textarea style="height:100px;width:100%" id="comment_input_box" placeholder="评论前请先登录" disabled="disabled"></textarea>
+        </div>
+    </div>
+    <div class="row" style="margin-top:20px;margin-bottom:20px">
+        <div class="offset-md-3 col-md-6 offset-sm-3 col-sm-6">
+            <a style="width:100%;" class="btn btn-dark" href="~/User">去登录</a>
+        </div>
+    </div>
+}
+
+<h2>评论区</h2>
+<div>
+    <div id="main_div">
+
+    </div>
+    <div id="guard"></div>
+    <div class="row">
+        <a class="col-12" style="text-align: center;font-style:italic;"  href="javascript:get_comment_list(muid);">如果没有加载评论请尝试点击此处</a>
+    </div>
+   
 </div>
+
+

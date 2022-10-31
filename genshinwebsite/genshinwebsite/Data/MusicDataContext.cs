@@ -17,5 +17,7 @@ namespace genshinwebsite.Data
 
         public DbSet<MusicModel> Music { get; set; }
         public DbSet<UserModel> AspNetUsers { get; set; }
+
+    
     }
 }

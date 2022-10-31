@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.SqlServer;
 
 namespace genshinwebsite.Models
 {
-    public class MusicModel:DbContext
+    public class MusicModel
     {
         public int Id { get; set; }
 

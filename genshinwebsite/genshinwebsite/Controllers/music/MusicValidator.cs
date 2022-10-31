@@ -239,7 +239,7 @@ namespace genshinwebsite.Controllers.music {
 
         /// 把music_sheet加载到music_with_key_sequence中添加note，同时会校验每个note的正确性
         /// </summary>
-        /// <param name="music_sheet">引用传参，会将其排序</param>
+        /// <param name="music_sheet">乐谱，将排序</param>
         /// <param name="beat_per_bar">每小节几拍</param>
         /// <param name="eight_degree_num">八度数量，默认为3（目前的genshin乐器配置）</param>
         /// <returns>如果音符位置不合法，则返回false</returns>

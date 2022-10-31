@@ -44,12 +44,12 @@ namespace genshinwebsite.Controllers
             {
                 ViewData["music_title"] = music_title;
             }
-            List<MusicViewModel> musicViewModels = new List<MusicViewModel>();
+
             var num_per_page = _configuration.GetValue("NumPerPage", 10);
             page_offset = Math.Max(1, page_offset);
 
-            int item_count = 0;
-            var music_list = _musicDBHelper.get_music_by_offset(out item_count, num_per_page, page_offset - 1, music_title, select_order);
+            int item_count = _musicDBHelper.get_item_count(music_title);
+            var music_list = await _musicDBHelper.get_music_by_offset(num_per_page, page_offset - 1, music_title, select_order);
             if (item_count % num_per_page != 0)
             {
                 page_offset = Math.Min(item_count / num_per_page + 1, page_offset);
@@ -62,34 +62,16 @@ namespace genshinwebsite.Controllers
             }
             ViewData["page_offset"] = page_offset;
 
-            
-            //foreach (var m in music_list)
-            //{
-            //    MusicViewModel music = new MusicViewModel()
-            //    {
-            //        Id = m.Id,
-            //        Uploader = m.Uploader,
-            //        Abstract_content = m.Abstract_content,
-            //        MusicTitle = m.MusicTitle,
-            //        View_num = m.View_num,
-            //        Download_num = m.Download_num
-            //    };
-            //    if(music.Abstract_content.Length > 60)
-            //    {
-            //        music.Abstract_content = music.Abstract_content.Substring(0, 57) + "...";
-            //    }
-            //    else
-            //    {
-            //        music.Abstract_content.PadRight(60);
-            //    }
-            //    musicViewModels.Add(music);
-            //}
             return View(music_list.ToList());
         }
 
-        public FileResult download(int muid)
+        public async Task<FileResult> download(int muid)
         {
-            var music_model = _musicDBHelper.get_by_id(muid);
+            var music_model = await _musicDBHelper.get_by_id(muid);
+            if(music_model == null)
+            {
+                return null;
+            }
             string fileName = "music_save/" + music_model.User_id.ToString() + "/" + muid.ToString() + "/" + music_model.MusicTitle + ".genmujson";
             if (System.IO.File.Exists(fileName)){
                 var stream = System.IO.File.OpenRead(fileName);
@@ -104,7 +86,6 @@ namespace genshinwebsite.Controllers
             //string suffix = Path.GetExtension(fileName);
             //var provider = new FileExtensionContentTypeProvider();
             //var contentType = provider.Mappings[suffix];
-
             //var contentType = MimeMapping.GetMimeMapping(fileName);
             
         }
@@ -114,7 +95,7 @@ namespace genshinwebsite.Controllers
         public async Task<IActionResult> Detail(int muid)
         {
             ViewData["muid"] = muid;
-            var music = _musicDBHelper.get_by_id(muid);
+            var music = await _musicDBHelper.get_by_id(muid);
             if(music != null)
             {
                 MusicDetailViewModel musicDetailViewModel = new MusicDetailViewModel()
@@ -123,6 +104,8 @@ namespace genshinwebsite.Controllers
                     MusicTitle = music.MusicTitle,
                     Datetime = music.Datetime,
                     Abstract_content = music.Abstract_content,
+                    Download_num = music.Download_num,
+                    View_num = music.View_num + 1
 
                 };
                 music.View_num++;

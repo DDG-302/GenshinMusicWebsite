@@ -1,24 +1,27 @@
-﻿.search_btn_small {
-    background-color: transparent;
-    border: none;
-    transition: 0.5s;
-    height: 40px;
-    width: 20%;
-    margin-top:5px;
-    margin-bottom:5px;
-    margin-left:20px;
-    font-size: 15px;
-    font-weight: bold;
+﻿
+
+
+
+.date_time_p {
+    font-size: 9px;
+    font-style: italic;
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
-    .search_btn_small:hover {
-        background: #66CCCC;
-    }
+.comment_content {
+    white-space: pre;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
 
 .block {
-    width: 90%;
-    height: 120px;
-    background-color:lightsteelblue;
+    /*width: 90%;*/
+    /*height: 120px;*/
+    background-color: lightsteelblue;
     margin-top: 10px;
     margin-bottom: 10px;
     text-align: left;
@@ -26,47 +29,48 @@
     padding-top: 5%;
     padding-bottom: 20px;
     padding-right: 20px;
-    font-size:18px;
-    opacity:0.7;
-    transition:0.5s;
-    
+    font-size: 18px;
+    opacity: 0.7;
+    transition: 0.5s;
+    border-radius: 25px;
 }
     .block:hover {
         background-color: mintcream;
         opacity: 1.0;
     }
 
-.search_box_small {
-    width:300px;
-
-    font-size:15px; 
-    margin-top:10px; 
-    margin-bottom:10px
-}
-
-
-.selected {
-    background: #66CC99;
-    border: none;
-    opacity: 1.0;
-    height: 30px;
-    width: 210px;
-}
 
 
 
-.unselected {
+
+
+.card_head {
+    height: 50px;
+    width:100%;
+    margin-left: 10px;
+    margin-right: 10px;
+    position: relative;
     background-color: transparent;
-    border: none;
-    opacity: 0.5;
-    transition: 0.5s;
-    height: 30px;
-    width: 210px;
+    /*color: white;*/
+    top: 10%;
 }
 
+    .card_head .user_icon {
+        float: left;
+        width: 45px;
+        height: 45px;
+        padding-left: 5px;
+        padding: 5px;
+        border-radius: 25px;
+    }
 
-.unselected:hover {
-    background: #66CCCC;
-    font-weight: bold;
-    opacity: 1.0;
-}
+    .card_head p {
+        float: left;
+        font-style: italic;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 45px;
+        margin: 0;
+        padding: 10px 0;
+    }

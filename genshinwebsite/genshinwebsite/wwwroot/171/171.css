@@ -38,19 +38,19 @@
     bottom: -15vh;
     right: -15vh;
 }
+
 /* 登录框 */
 .container1 {
     /*position: relative;*/
     z-index: 1;
-    width: 60%;
+    width: 80%;
     height: 600px;
     background-color: #fff;
     box-shadow: 0 8px 50px rgba(0,0,0,0.08);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-
-    margin-left:20%;
+    margin-left:10%;
     /*margin-right:10%;*/
 
     justify-content: center;

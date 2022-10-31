@@ -10,6 +10,7 @@ using genshinwebsite.ViewModels;
 using System.Data;
 
 
+
 namespace genshinwebsite.Services
 {
     public class MusicDBService : IMusicDB<MusicModel, MusicViewModel>
@@ -19,10 +20,7 @@ namespace genshinwebsite.Services
         {
             _musicDataContext = musicDataContext;
         }
-        public int get_music_count()
-        {
-            return _musicDataContext.Music.AsNoTracking().Count();
-        }
+
         public DBOperationResult add_one(MusicModel musicModel)
         {
             try
@@ -32,10 +30,12 @@ namespace genshinwebsite.Services
             }
             catch (DbUpdateException exp)
             {
+                Console.WriteLine(exp.Message);
                 return DBOperationResult.DbUpdateException;
             }
             catch(Exception exp)
             {
+                Console.WriteLine(exp.Message);
                 return DBOperationResult.ERROR;
             }
             return DBOperationResult.OK;
@@ -50,10 +50,12 @@ namespace genshinwebsite.Services
             }
             catch (DbUpdateException exp)
             {
+                Console.WriteLine(exp.Message);
                 return DBOperationResult.DbUpdateException;
             }
             catch (Exception exp)
             {
+                Console.WriteLine(exp.Message);
                 return DBOperationResult.ERROR;
             }
             return DBOperationResult.OK;
@@ -68,14 +70,16 @@ namespace genshinwebsite.Services
             try
             {
                 _musicDataContext.RemoveRange(musics);
-                _musicDataContext.SaveChanges();
+                _musicDataContext.SaveChangesAsync();
             }
             catch (DbUpdateException exp)
             {
+                Console.WriteLine(exp.Message);
                 return DBOperationResult.DbUpdateException;
             }
             catch (Exception exp)
             {
+                Console.WriteLine(exp.Message);
                 return DBOperationResult.ERROR;
             }
             return DBOperationResult.OK;
@@ -95,10 +99,12 @@ namespace genshinwebsite.Services
             }
             catch (DbUpdateException exp)
             {
+                Console.WriteLine(exp.Message);
                 return DBOperationResult.DbUpdateException;
             }
             catch(Exception exp)
             {
+                Console.WriteLine(exp.Message);
                 return DBOperationResult.ERROR;
             }
 
@@ -106,14 +112,14 @@ namespace genshinwebsite.Services
             
         }
 
-        public IEnumerable<MusicModel> get_all()
+        public async Task<IEnumerable<MusicModel>> get_all()
         {
-            return _musicDataContext.Music.AsNoTracking().ToList();
+            return await _musicDataContext.Music.AsNoTracking().ToListAsync();
         }
 
-        public MusicModel get_by_id(int id)
+        public async Task<MusicModel> get_by_id(int id)
         {
-            return _musicDataContext.Music.Find(id);
+            return await _musicDataContext.Music.FindAsync(id);
         }
 
         public IEnumerable<MusicModel> get_by_uid(int uid, out int max_item_num, int num_per_page = 10, int page_offset = 0, MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE)
@@ -128,19 +134,19 @@ namespace genshinwebsite.Services
             switch (select_order)
             {
                 case MUSIC_SELECT_ORDER.UPLOAD_DATE:
-                    result = content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).ToList();
+                    result = content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page);
                     break;
                 case MUSIC_SELECT_ORDER.TITLE:
-                    result = content.OrderBy(m => m.MusicTitle).Skip(num_per_page * page_offset).Take(num_per_page).ToList();
+                    result = content.OrderBy(m => m.MusicTitle).Skip(num_per_page * page_offset).Take(num_per_page);
                     break;
                 case MUSIC_SELECT_ORDER.VIEW_NUM:
-                    result = content.OrderByDescending(m => m.View_num).Skip(num_per_page * page_offset).Take(num_per_page).ToList();
+                    result = content.OrderByDescending(m => m.View_num).Skip(num_per_page * page_offset).Take(num_per_page);
                     break;
                 case MUSIC_SELECT_ORDER.DOWNLOAD_NUM:
-                    result = content.OrderByDescending(m => m.Download_num).Skip(num_per_page * page_offset).Take(num_per_page).ToList();
+                    result = content.OrderByDescending(m => m.Download_num).Skip(num_per_page * page_offset).Take(num_per_page);
                     break;
                 default:
-                    result = content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).ToList();
+                    result = content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page);
                     break;
 
             }
@@ -148,39 +154,32 @@ namespace genshinwebsite.Services
             return result;
         }
 
-
-        public IEnumerable<MusicViewModel> get_music_by_offset(out int max_item_num, int num_per_page = 10, int page_offset = 0, string music_title = "", MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE)
+        public int get_item_count(string music_title = "")
+        {
+            var content = _musicDataContext.Music.AsNoTracking();
+            if (music_title != null && music_title != string.Empty && music_title != "")
+            {
+                content = content.Where(m => m.MusicTitle.Contains(music_title));
+            }
+            return content.Count();
+        }
+        public async Task<IEnumerable<MusicViewModel>> get_music_by_offset(int num_per_page = 10, int page_offset = 0, string music_title = "", MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE)
         {
             page_offset = Math.Max(page_offset, 0);
             num_per_page = Math.Max(num_per_page, 1);
             IEnumerable<MusicViewModel> result = null;
 
             var content = _musicDataContext.Music.AsNoTracking();
-            if(music_title != null && music_title != string.Empty && music_title != "")
+            if (music_title != null && music_title != string.Empty && music_title != "")
             {
                 content = content.Where(m => m.MusicTitle.Contains(music_title));
             }
-            max_item_num = content.Count();
             
-            //IQueryable<MusicModel> content = null;
-            //if(music_title_list != null && music_title_list.Count > 0)
-            //{
-            //    string sql = "SELECT * FROM Music WHERE Music_Title=={0}";
-            //    for(int i = 1; i < music_title_list.Count; i++)
-            //    {
-            //        sql += " || Music_Title=={" + i.ToString() + "}";
-            //    }
-            //    var a = new SqlParameter();
-            //    //content = _musicDataContext.Music.FromSqlRaw(sql, new sqlpara);
-            //}
-            //else
-            //{
-            //    content = _musicDataContext.Music.AsNoTracking();
-            //}
+
             switch (select_order)
             {
                 case MUSIC_SELECT_ORDER.UPLOAD_DATE:
-                    result = content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
+                    result = await content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
                     {
                         Id = music.Id,
                         MusicTitle = music.MusicTitle,
@@ -191,10 +190,10 @@ namespace genshinwebsite.Services
                         Uid = music.User_id,
                         Uploader = user.UserName
 
-                    }).ToList();
+                    }).ToListAsync();
                     break;
                 case MUSIC_SELECT_ORDER.TITLE:
-                    result = content.OrderBy(m => m.MusicTitle).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
+                    result = await content.OrderBy(m => m.MusicTitle).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
                     {
                         Id = music.Id,
                         MusicTitle = music.MusicTitle,
@@ -205,10 +204,10 @@ namespace genshinwebsite.Services
                         Uid = music.User_id,
                         Uploader = user.UserName
 
-                    }).ToList();
+                    }).ToListAsync();
                     break;
                 case MUSIC_SELECT_ORDER.VIEW_NUM:
-                    result = content.OrderByDescending(m => m.View_num).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
+                    result = await content.OrderByDescending(m => m.View_num).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
                     {
                         Id = music.Id,
                         MusicTitle = music.MusicTitle,
@@ -219,10 +218,10 @@ namespace genshinwebsite.Services
                         Uid = music.User_id,
                         Uploader = user.UserName
 
-                    }).ToList();
+                    }).ToListAsync();
                     break;
                 case MUSIC_SELECT_ORDER.DOWNLOAD_NUM:
-                    result = content.OrderByDescending(m => m.Download_num).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
+                    result = await content.OrderByDescending(m => m.Download_num).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
                     {
                         Id = music.Id,
                         MusicTitle = music.MusicTitle,
@@ -233,10 +232,10 @@ namespace genshinwebsite.Services
                         Uid = music.User_id,
                         Uploader = user.UserName
 
-                    }).ToList();
+                    }).ToListAsync();
                     break;
                 default:
-                    result = content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
+                    result = await content.OrderByDescending(m => m.Datetime).Skip(num_per_page * page_offset).Take(num_per_page).Join(_musicDataContext.AspNetUsers, music => music.User_id, user => user.Id, (music, user) => new MusicViewModel
                     {
                         Id = music.Id,
                         MusicTitle = music.MusicTitle,
@@ -247,17 +246,17 @@ namespace genshinwebsite.Services
                         Uid = music.User_id,
                         Uploader = user.UserName
 
-                    }).ToList();
+                    }).ToListAsync();
                     break;
 
             }
             return result;
         }
-        public DBOperationResult add_or_set_download_num(int muid, int set_num = -1)
+        public async Task<DBOperationResult> add_or_set_download_num(int muid, int set_num = -1)
         {
             try { 
            
-                var mu = _musicDataContext.Music.Find(muid);
+                var mu = await _musicDataContext.Music.FindAsync(muid);
                 if(mu == null)
                 {
                     return DBOperationResult.ERROR;
@@ -272,7 +271,7 @@ namespace genshinwebsite.Services
                 
                 }
                 _musicDataContext.Music.Update(mu);
-                _musicDataContext.SaveChanges();
+                await _musicDataContext.SaveChangesAsync();
                 return DBOperationResult.OK;
             }
             catch

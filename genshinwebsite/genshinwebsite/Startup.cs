@@ -59,6 +59,11 @@ namespace genshinwebsite
             {
                 option.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection"));
             });
+            services.AddDbContext<CommentDataContext>(option =>
+            {
+                option.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection"));
+            });
+
             //services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<IdentityDbContext>();
             services.AddIdentity<UserModel, IdentityRole<int>>(
                 options =>
@@ -134,8 +139,9 @@ namespace genshinwebsite
             services.AddScoped<IMusicDB<MusicModel, MusicViewModel>, MusicDBService>(); // efcore不是线程安全的，不能用singleton
                                                                                         // 用scope让每次执行都在一个逻辑线程中
             services.AddScoped<IEmailVCodeDB, EmailVCodeDBService>();
+            services.AddScoped<ICommentDB<CommentModel, CommentViewModel>, CommentDBService>();
 
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

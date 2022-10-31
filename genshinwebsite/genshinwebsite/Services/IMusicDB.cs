@@ -12,17 +12,11 @@ namespace genshinwebsite.Services
         
 
         /// <summary>
-        /// 总乐谱数量
-        /// </summary>
-        /// <returns></returns>
-        public int get_music_count();
-
-        /// <summary>
         /// 获取一个乐谱模型，如果查找失败会返回null
         /// </summary>
         /// <param name="id">乐谱id</param>
         /// <returns>乐谱模型，为null表示没找到</returns>
-        public T get_by_id(int id);
+        public Task<T> get_by_id(int id);
 
         /// <summary>
         /// 根据用户id寻找由该用户名下的所有乐谱
@@ -36,7 +30,7 @@ namespace genshinwebsite.Services
         /// 全表查询
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<T> get_all();
+        public Task<IEnumerable<T>> get_all();
 
         /// <summary>
         /// 根据乐谱模型添加到数据库
@@ -69,14 +63,21 @@ namespace genshinwebsite.Services
         /// <returns></returns>
         public DBOperationResult delete_ones_by_uid(int uid);
 
-        public IEnumerable<M> get_music_by_offset(out int max_item_num, int num_per_page = 10, int page_offset = 0, string music_title = "", MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE);
+        /// <summary>
+        /// 获取相关查询下的数据表总条数
+        /// </summary>
+        /// <param name="music_title">音乐标题</param>
+        /// <returns></returns>
+        public int get_item_count(string music_title = "");
+
+        public Task<IEnumerable<M>> get_music_by_offset(int num_per_page = 10, int page_offset = 0, string music_title = "", MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE);
 
         /// <summary>
         /// 根据乐谱id增加下载量
         /// </summary>
         /// <param name="muid"></param>
         /// <returns></returns>
-        public DBOperationResult add_or_set_download_num(int muid, int set_num = -1);
+        public Task<DBOperationResult> add_or_set_download_num(int muid, int set_num = -1);
 
     }
 }

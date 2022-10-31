@@ -25,12 +25,9 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_PageBar.cshtml.g.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\login.cshtml.g.cs
-D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\postMusic.cshtml.g.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\register.cshtml.g.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\Space.cshtml.g.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\Upload.cshtml.g.cs
-D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\UserSpace.cshtml.g.cs
-D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\_UserTable.cshtml.g.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.RazorTargetAssemblyInfo.cache

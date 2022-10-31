@@ -104,7 +104,7 @@ namespace genshinwebsite.Controllers
             var readstream = new StreamReader(file.OpenReadStream());
             //var data = readstream.ReadToEnd();
 
-            string json_str = readstream.ReadToEnd();
+            string json_str = await readstream.ReadToEndAsync();
             
             try
             {
@@ -148,7 +148,7 @@ namespace genshinwebsite.Controllers
                             string music_file_save_path = Path.Combine(music_save_file, file.FileName);
                             using (var fileStream = new FileStream(music_file_save_path, FileMode.Create, FileAccess.Write))
                             {
-                                file.CopyTo(fileStream);
+                                await file.CopyToAsync(fileStream);
                             }
                             //using (var fileStream = new FileStream(Path.Combine(_img_root, file.FileName), FileMode.Create, FileAccess.Write))
                             //{
@@ -284,7 +284,7 @@ namespace genshinwebsite.Controllers
             {
                 return StatusCode(500, "出错");
             }
-            return View();
+
         }
 
         [Authorize]
@@ -403,6 +403,7 @@ namespace genshinwebsite.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+          
             return RedirectToAction("index", "home");
             
         }
