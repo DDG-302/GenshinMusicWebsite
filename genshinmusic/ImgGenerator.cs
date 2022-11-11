@@ -383,11 +383,11 @@ namespace genshinmusic
             }
 
             SaveFileDialog dialog = new SaveFileDialog();
-
+            title = System.IO.Path.GetFileNameWithoutExtension(title);
             string filename = "";
             dialog.Filter = "乐谱图片保存(*.jpg)|*.jpg";
             dialog.Title = "选择乐谱图片保存文件";
-            dialog.FileName = System.IO.Path.GetFileNameWithoutExtension(title);
+            dialog.FileName = title;
             if (dialog.ShowDialog() == true)
             {
                 Console.WriteLine(dialog.FileName);
@@ -407,7 +407,7 @@ namespace genshinmusic
             var head = new TextBlock();
             // top 100  bot 100 height 80
             head.Margin = new Thickness(100, 100, 100, 0);
-            head.Height = 80;
+            head.Height = 110;
             head.TextWrapping = TextWrapping.Wrap;
             head.FontWeight = FontWeights.Bold;
             head.FontSize = 71;
@@ -683,7 +683,7 @@ namespace genshinmusic
             //    row_num * (lbl_height * 3 + grid_border_size * 4) + 600 );
             var size = new Size(
                 note_width * notes_per_row + keyboard_lbl_width + 200,
-                340 + row_stack_panel_list.Count * (this.row_grid_top_height + this.note_height * this.note_num_in_one_note_grid + this.note_margin_bot)
+                370 + row_stack_panel_list.Count * (this.row_grid_top_height + this.note_height * this.note_num_in_one_note_grid + this.note_margin_bot)
                 );
             stackPanel.Measure(size);
             stackPanel.Arrange(new Rect(size));
