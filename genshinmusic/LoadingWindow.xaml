@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="LoadingWindow" Height="200" Width="200">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100px"></RowDefinition>
+            <RowDefinition Height="100px"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100px"></ColumnDefinition>
+            <ColumnDefinition Width="100px"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Line X1="10" Y1="50" X2="40" Y2="50" StrokeThickness="2" Grid.Row="1" Grid.Column="1"  Stroke="Black"></Line>
+        <Line X1="10" Y1="40" X2="40" Y2="40" StrokeThickness="2" Grid.Row="1" Grid.Column="1"  Stroke="Black"></Line>
     </Grid>
 </Window>

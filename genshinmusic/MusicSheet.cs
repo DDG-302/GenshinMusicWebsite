@@ -54,6 +54,7 @@ namespace genshinmusic
                         return -1;
                     if (x.Absolute_semi_offset == y.Absolute_semi_offset)
                     {
+                        // 按Key_idx从小到大排序，即从高音到低音
                         if (x.Key_idx > y.Key_idx)
                         {
                             return 1;
@@ -522,7 +523,8 @@ namespace genshinmusic
                        this.music_with_key_sequence[i][j].Key_idx,
                        this.music_with_key_sequence[i][j].Continuous_semi,
                        this.music_with_key_sequence[i][j].End_bar_idx,
-                       this.beat_per_bar));
+                       this.beat_per_bar,
+                       this.music_with_key_sequence[i][j].get_music_rectangle_block()));
                 }
             }
             foreach(var note in origin)

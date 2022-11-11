@@ -63,7 +63,7 @@ namespace genshinmusic
 
         private void window_key_down_handler(object sender, KeyEventArgs e)
         {
-            Console.WriteLine("key="+ e.Key.ToString());
+            //Console.WriteLine("key="+ e.Key.ToString());
 
             if (e.Key == Key.LeftShift || e.Key == Key.RightShift)
             {
@@ -111,7 +111,7 @@ namespace genshinmusic
                 }
                 foreach(var note in origin_note_list)
                 {
-                    Note target_note = new Note(note.Begin_bar_idx, note.Semi_offset, note.Key_idx - 1, note.Continuous_semi, note.End_bar_idx, beats_per_bar);
+                    Note target_note = new Note(note.Begin_bar_idx, note.Semi_offset, note.Key_idx - 1, note.Continuous_semi, note.End_bar_idx, beats_per_bar, note.get_music_rectangle_block());
                     target_note_list.Add(target_note);
                 }
                 if(music_sheet.move_notes(origin_note_list, target_note_list))
@@ -135,7 +135,7 @@ namespace genshinmusic
                 }
                 foreach (var note in origin_note_list)
                 {
-                    Note target_note = new Note(note.Begin_bar_idx, note.Semi_offset, note.Key_idx + 1, note.Continuous_semi, note.End_bar_idx, beats_per_bar);
+                    Note target_note = new Note(note.Begin_bar_idx, note.Semi_offset, note.Key_idx + 1, note.Continuous_semi, note.End_bar_idx, beats_per_bar, note.get_music_rectangle_block());
                     target_note_list.Add(target_note);
                 }
                 if (music_sheet.move_notes(origin_note_list, target_note_list))
@@ -159,7 +159,7 @@ namespace genshinmusic
                 }
                 foreach (var note in origin_note_list)
                 {
-                    Note target_note = new Note(note.Begin_bar_idx, note.Semi_offset, note.Key_idx, note.Continuous_semi, note.End_bar_idx, beats_per_bar); ;
+                    Note target_note = new Note(note.Begin_bar_idx, note.Semi_offset, note.Key_idx, note.Continuous_semi, note.End_bar_idx, beats_per_bar, note.get_music_rectangle_block()); ;
                     if(note.Semi_offset == 0)
                     {
                         target_note.Begin_bar_idx -= 1;
@@ -214,7 +214,7 @@ namespace genshinmusic
                 }
                 foreach (var note in origin_note_list)
                 {
-                    Note target_note = new Note(note.Begin_bar_idx, note.Semi_offset, note.Key_idx, note.Continuous_semi, note.End_bar_idx, beats_per_bar); ;
+                    Note target_note = new Note(note.Begin_bar_idx, note.Semi_offset, note.Key_idx, note.Continuous_semi, note.End_bar_idx, beats_per_bar, note.get_music_rectangle_block()); ;
                     if (note.Semi_offset == beats_per_bar * 4 - 1)
                     {
                         target_note.Begin_bar_idx += 1;
@@ -598,15 +598,15 @@ namespace genshinmusic
                     }
                     
                     midiplayer.set_midi_player(music_sheet.Music_sheet, int.Parse(bpm_inputbox.Text), start_semi, 3);
-                    music_play_btn.Content = "Pause";
+                    music_play_btn.Content = "暂停";
                     midiplayer.start_play();
                     break;
                 case MIDIPlayer.PlayStatus.PAUSE:
-                    music_play_btn.Content = "Pause";
+                    music_play_btn.Content = "暂停";
                     midiplayer.continue_play();
                     break;
                 case MIDIPlayer.PlayStatus.PLAYING:
-                    music_play_btn.Content = "Play";
+                    music_play_btn.Content = "播放";
                     midiplayer.pause_play();
                     break;
             }
@@ -700,7 +700,8 @@ namespace genshinmusic
                     cross_bar -= 1;
                 }
             }
-            Note note = new Note(begin_bar, semi_offset, key_idx, continuous_semi, begin_bar + cross_bar, beats_per_bar);
+            Note note = new Note(begin_bar, semi_offset, key_idx, continuous_semi, begin_bar + cross_bar, beats_per_bar, rectangle);
+      
             return note;
         }
 
@@ -1008,6 +1009,7 @@ namespace genshinmusic
 
                 rec.Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0));
                 canvas.Children.Add(rec);
+                note.set_music_rectangle_block(rec);
             }
             foreach(Note note in music_sheet.Music_sheet)
             {
@@ -1213,7 +1215,7 @@ namespace genshinmusic
                     set_rectangle_binding(ref basic_attribution, "Music_block_style", ref rec, Rectangle.StyleProperty);
 
                     rec.Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-
+                    note.set_music_rectangle_block(rec);
                     canvas.Children.Add(rec);
                 }
             }
@@ -1271,7 +1273,7 @@ namespace genshinmusic
             {
                 return;
             }
-            Console.WriteLine(key_idx);
+            //Console.WriteLine(key_idx);
             midiplayer.play_on_keyboard(key_idx, basic_attribution.Eight_degree_num);
 
         }
@@ -1294,6 +1296,22 @@ namespace genshinmusic
             {
                 UseShellExecute = true,
             });
+        }
+
+        private void Save_img_btn_click(object sender, RoutedEventArgs e)
+        {
+            var g = new ImgGenerator();
+            if (this.music_sheet == null || this.music_sheet.Music_sheet == null)
+            {
+                MessageBox.Show("该功能会把当前加载的工程输出为键盘谱，但是您还没有加载工程",
+                           "警告",
+                           MessageBoxButton.OK,
+                           MessageBoxImage.Warning);
+                return;
+            }
+            g.generate_img(this.music_sheet.Music_sheet, this.proj_save_path, this.bpm_inputbox.Text, this.beats_per_bar);
+
+
         }
 
     }

@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:genshinmusic"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <!--播放时音符块色-->
+        <Style x:Key="on_play_block" TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="LightGreen"/>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Top"></Setter>
+            <Setter Property="Panel.ZIndex" Value="3"></Setter>
+        </Style>
 
         <!--洛天依主题按键色-->
         <Style x:Key="white_key_tianyi" TargetType="{x:Type Rectangle}">

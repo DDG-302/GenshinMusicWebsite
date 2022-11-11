@@ -43,29 +43,31 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10px"/>
-                <ColumnDefinition Width="40px"/>
+                <ColumnDefinition Width="60px"/>
                 <ColumnDefinition Width="10px"/>
-                <ColumnDefinition Width="40px"/>
+                <ColumnDefinition Width="60px"/>
                 <ColumnDefinition Width="10px"/>
-                <ColumnDefinition Width="40px"/>
+                <ColumnDefinition Width="60px"/>
                 <ColumnDefinition Width="10px"/>
-                <ColumnDefinition Width="40px"/>
+                <ColumnDefinition Width="60px"/>
                 <ColumnDefinition Width="10px"/>
-                <ColumnDefinition Width="40px"/>
+                <ColumnDefinition Width="60px"/>
                 <ColumnDefinition Width="10px"/>
                 <ColumnDefinition Width="70px"/>
                 <ColumnDefinition Width="10px"/>
-                <ColumnDefinition Width="40px"/>
+                <ColumnDefinition Width="60px"/>
                 <!--<ColumnDefinition Width="10px"/>-->
                 <ColumnDefinition Width="70px"/>
                 <ColumnDefinition Width="10px"/>
-                <ColumnDefinition Width="50px"/>
+                <ColumnDefinition Width="80px"/>
+                <ColumnDefinition Width="10px"/>
+                <ColumnDefinition Width="80px"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Grid.Row="1" Content="New" Style="{DynamicResource ButtonStyle1}" Click="Create_new_proj_btn_handler"></Button>
-            <Button Name="add_bar_btn" Grid.Column="3" Grid.Row="1" Content="Add" Style="{DynamicResource ButtonStyle1}" Click="Add_btn_handler"></Button>
-            <Button Grid.Column="5" Grid.Row="1" Content="Del" Style="{DynamicResource ButtonStyle1}" Click="Delete_bar_handler"></Button>
-            <Button Name="music_play_btn" Grid.Column="7" Grid.Row="1" Content="Play" Style="{DynamicResource ButtonStyle1}" Click="Play_btn_click" ></Button>
-            <Button Grid.Column="9" Grid.Row="1" Content="Stop" Style="{DynamicResource ButtonStyle1}" Click="Stop_btn_handler" ></Button>
+            <Button Grid.Column="1" Grid.Row="1" Content="新工程" Style="{DynamicResource ButtonStyle1}" Click="Create_new_proj_btn_handler"></Button>
+            <Button Name="add_bar_btn" Grid.Column="3" Grid.Row="1" Content="添加小节" Style="{DynamicResource ButtonStyle1}" Click="Add_btn_handler"></Button>
+            <Button Grid.Column="5" Grid.Row="1" Content="删除" Style="{DynamicResource ButtonStyle1}" Click="Delete_bar_handler"></Button>
+            <Button Name="music_play_btn" Grid.Column="7" Grid.Row="1" Content="播放" Style="{DynamicResource ButtonStyle1}" Click="Play_btn_click" ></Button>
+            <Button Grid.Column="9" Grid.Row="1" Content="停止播放" Style="{DynamicResource ButtonStyle1}" Click="Stop_btn_handler" ></Button>
             <Label Grid.Row="1" Grid.Column="13" Content="bpm:" VerticalAlignment="Center"/>
             <TextBox Name="bpm_inputbox" MaxLength="3" Grid.Column="14" HorizontalAlignment="Left" Height="19"  Grid.Row="1" Text="75" VerticalAlignment="Center" Width="70px" InputMethod.IsInputMethodEnabled="False" PreviewTextInput="BPMTextBox_PreviewTextInput" MaxLines="2" MinLines="2" LostFocus="BPMLoseFocus"/>
             <ComboBox Name="temple_type_combobox" Grid.Row="1" Grid.Column="11" HorizontalAlignment="Left" Height="19px" Width="70px" VerticalAlignment="Center" SelectedIndex="0">
@@ -73,12 +75,13 @@
                 <ComboBoxItem Content="3/4" Height="25px"></ComboBoxItem>
                 <ComboBoxItem Content="2/4" Height="25px"></ComboBoxItem>
             </ComboBox>
-            <Button Focusable="False" Grid.Column="16" Grid.Row="1" Content="Genshin" Style="{DynamicResource ButtonStyle1}" Click="Play_in_genshin_click"  />
+            <Button Focusable="False" Grid.Column="16" Grid.Row="1" Content="原神中播放" Style="{DynamicResource ButtonStyle1}" Click="Play_in_genshin_click"  />
+            <Button Focusable="False" Grid.Column="18" Grid.Row="1" Content="保存为键盘谱" Style="{DynamicResource ButtonStyle1}" Click="Save_img_btn_click"  />
 
         </Grid>
 
 
-        <ScrollViewer  Focusable="False" InputMethod.IsInputMethodEnabled="False"  Name="SV_with_ver_bar" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" Margin="0,0.4,9.6,-0.2" Grid.ColumnSpan="2" ScrollChanged="ver_scroll_changed" >
+        <ScrollViewer Focusable="False" InputMethod.IsInputMethodEnabled="False"  Name="SV_with_ver_bar" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" Margin="0,0.4,9.6,-0.2" Grid.ColumnSpan="2" ScrollChanged="ver_scroll_changed" >
 
             <Grid>
                 <Grid.ColumnDefinitions>

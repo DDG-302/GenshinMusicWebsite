@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NAudio.Midi;
 using System.Threading;
+using System.Windows.Shapes;
+using System.Windows.Media;
 
 
 namespace genshinmusic
@@ -29,6 +31,30 @@ namespace genshinmusic
         static MidiOut midiOut = new MidiOut(0);
         public delegate void Stop_signal();
         public event Stop_signal music_reach_to_final;
+
+        /// <summary>
+        /// 上一次播放时颜色改变的音符块
+        /// </summary>
+        private List<Rectangle> pre_color_changed_music_blocks = new List<Rectangle>();
+
+        /// <summary>
+        /// UI变换委托
+        /// </summary>
+        public delegate void Change_music_block_UI(List<Rectangle> target_block_list);
+
+
+        /// <summary>
+        /// 调用主线程恢复播放时变换的UI
+        /// </summary>
+        public event Change_music_block_UI reset_play_ui;
+
+        /// <summary>
+        /// 调用主线程变更播放时的UI
+        /// </summary>
+        public event Change_music_block_UI set_play_ui;
+
+
+
 
 
         /// <summary>
@@ -96,6 +122,8 @@ namespace genshinmusic
                 current_status = PlayStatus.STOP;
                 music_reach_to_final();
                 is_device_on = false;
+                this.reset_play_ui(this.pre_color_changed_music_blocks);
+                this.pre_color_changed_music_blocks.Clear();
             }
             if (is_device_on == true)
             {
@@ -122,47 +150,59 @@ namespace genshinmusic
                     midiOut.Send(MidiMessage.ChangePatch(instrument, 1).RawData);
                     for (int i = start_note_idx; i < music_sheet.Count; i++)
                     {
+                        // 当前正在播放的音符块
+                        
+
                         var note = music_sheet[i];
+                    
+                        
                         while (!play_or_pause.WaitOne(1) && !stop_play_event.WaitOne(1)) ;
                         int duration = (int)((float)(note.Absolute_semi_offset - pre_start_semiquaver) * quarter_time_milis);
                         if (stop_play_event.WaitOne(duration))
                         {
                             break;
                         }
+                        this.reset_play_ui(this.pre_color_changed_music_blocks);
+                        this.pre_color_changed_music_blocks.Clear();
+                        this.pre_color_changed_music_blocks.Add(note.get_music_rectangle_block());
 
                         for (int j = i; j < music_sheet.Count && music_sheet[j].Absolute_semi_offset == note.Absolute_semi_offset;j++)
                         {
                             note = music_sheet[j];
+                            this.pre_color_changed_music_blocks.Add(note.get_music_rectangle_block());
                             int note_val = change_to_note_val(note, eight_degree_num);
                             midiOut.Send(MidiMessage.StartNote(note_val, 127, 1).RawData);
                             i = j;
                         }
+                        set_play_ui(this.pre_color_changed_music_blocks);
                         pre_start_semiquaver = note.Absolute_semi_offset;
 
                     }
                     stop_play_event.WaitOne(1500);
-            }
-            catch(Exception e)
-            {
+                }
+                catch (Exception e)
+                {
                     LogMsg logMsg = new LogMsg(e);
                     ProgramLog.write_log(logMsg);
-                Console.WriteLine("play error!");
-            }
-            finally
-            {
-                current_status = PlayStatus.STOP;
+                    Console.WriteLine("play error!");
+                }
+                finally
+                {
+                    current_status = PlayStatus.STOP;
                     music_reach_to_final();
                     is_device_on = false;
-            }
-        });
+                    this.reset_play_ui(this.pre_color_changed_music_blocks);
+                    this.pre_color_changed_music_blocks.Clear();
+                }
+            });
         }
 
         public void start_play()
         {
             current_status = PlayStatus.PLAYING;
             play_or_pause.Set();
-            play_task.Start();
             stop_play_event.Reset();
+            this.play_task.Start();
         }
 
         /// <summary>

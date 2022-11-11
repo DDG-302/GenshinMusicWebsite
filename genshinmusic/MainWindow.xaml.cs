@@ -105,6 +105,20 @@ namespace genshinmusic
 
         List<bool> is_play_key_down;// 判断演奏时是否已经按下按键
 
+        ///// <summary>
+        ///// UI变换委托
+        ///// </summary>
+        //public delegate void Change_music_block_UI(List<Rectangle> target_block_list);
+
+        ///// <summary>
+        ///// 调用主线程恢复播放时变换的UI
+        ///// </summary>
+        //public event Change_music_block_UI reset_play_ui;
+
+        ///// <summary>
+        ///// 调用主线程变更播放时的UI
+        ///// </summary>
+        //public event Change_music_block_UI set_play_ui;
 
         public MainWindow()
         {
@@ -124,6 +138,9 @@ namespace genshinmusic
             app_data_init();
             midiplayer = new MIDIPlayer();
             midiplayer.music_reach_to_final += Music_reach_to_end_event_handler;
+            midiplayer.reset_play_ui += reset_UI_on_playing;
+            midiplayer.set_play_ui += set_UI_on_playing;
+
 
             switch (current_window_size)
             {
@@ -231,10 +248,18 @@ namespace genshinmusic
         private void set_rectangle_binding(ref BasicAttribution source, string path,ref Rectangle rectangle,
          DependencyProperty dependencyProperty)
         {
-            Binding binding = new Binding();
-            binding.Source = source;
-            binding.Path = new PropertyPath(path);
-            BindingOperations.SetBinding(rectangle, dependencyProperty, binding);
+            var rect = rectangle;
+            var src = source;
+            // 异步方法
+            Action actiondelegate = () =>
+            {
+                Binding binding = new Binding();
+                binding.Source = src;
+                binding.Path = new PropertyPath(path);
+                BindingOperations.SetBinding(rect, dependencyProperty, binding);
+            };
+            Dispatcher.BeginInvoke(actiondelegate);
+            
 
         }
 
@@ -468,11 +493,53 @@ namespace genshinmusic
             
         }
 
+        /// <summary>
+        /// 重置在播放时使用UI提示
+        /// </summary>
+        /// <param name="pre_block_list">上一次播放时颜色改变的音符块</param>
+        private void reset_UI_on_playing(List<Rectangle> pre_block_list)
+        {
+            for (int k = 0; k < pre_block_list.Count; k++)
+            {
+                Rectangle rectangle = pre_block_list[k];
+                bool existed_flag = false;
+                if (chosen_block_list.FindIndex(a => a == rectangle) != -1)
+                {
+                    existed_flag = true;
+                }
+                if (!existed_flag)
+                {
+                    set_rectangle_binding(ref basic_attribution, "Music_block_style", ref rectangle, Rectangle.StyleProperty);
+                }
+                else
+                {
+                    set_rectangle_binding(ref basic_attribution, "Chosen_music_block_style", ref rectangle, Rectangle.StyleProperty);
+                }
+
+            }
+
+        }
+
+        /// <summary>
+        /// 变换在播放时使用UI提示
+        /// </summary>
+        /// <param name="target_block_list">要改变的音符块</param>
+        private void set_UI_on_playing(List<Rectangle> target_block_list)
+        {
+            for (int k = 0; k < target_block_list.Count; k++)
+            {
+                Rectangle rectangle = target_block_list[k];
+                set_rectangle_binding(ref basic_attribution, "Musci_block_on_play_style", ref rectangle, Rectangle.StyleProperty);
+            }
+
+        }
+
+
         private void test_change_size(object sender, RoutedEventArgs e)
         {
             set_size(WINDOW_SIZE.BIG);
         }
 
-        
+
     }
 }

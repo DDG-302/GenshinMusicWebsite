@@ -78,3 +78,70 @@
    在 genshinmusic.MIDIPlayer.create_midi_file(List`1 music_sheet, Int32 speed, String path, Int32 eight_degree_num) 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 80
 ===========================================
 ===========================================
+错误时间：2022/10/9 13:37:41
+错误信息：调用线程无法访问此对象，因为另一个线程拥有该对象。
+错误源：WindowsBase
+错误栈：   在 System.Windows.Threading.Dispatcher.VerifyAccess()
+   在 System.Windows.DependencyObject.GetValue(DependencyProperty dp)
+   在 System.Windows.Shapes.Shape.get_Fill()
+   在 genshinmusic.MIDIPlayer.<>c__DisplayClass23_0.<set_midi_player>b__0() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 146
+===========================================
+===========================================
+错误时间：2022/10/9 15:16:41
+错误信息：调用线程无法访问此对象，因为另一个线程拥有该对象。
+错误源：WindowsBase
+错误栈：   在 System.Windows.Threading.Dispatcher.VerifyAccess()
+   在 System.Windows.DependencyObject.GetValue(DependencyProperty dp)
+   在 System.Windows.Shapes.Shape.get_Fill()
+   在 genshinmusic.MIDIPlayer.<>c__DisplayClass31_0.<set_midi_player>b__0() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 166
+===========================================
+===========================================
+错误时间：2022/10/9 15:18:27
+错误信息：调用线程无法访问此对象，因为另一个线程拥有该对象。
+错误源：WindowsBase
+错误栈：   在 System.Windows.Threading.Dispatcher.VerifyAccess()
+   在 System.Windows.DependencyObject.GetValue(DependencyProperty dp)
+   在 System.Windows.Shapes.Shape.get_Fill()
+   在 genshinmusic.MIDIPlayer.<>c__DisplayClass31_0.<set_midi_player>b__0() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 166
+===========================================
+===========================================
+错误时间：2022/10/9 15:23:05
+错误信息：调用线程无法访问此对象，因为另一个线程拥有该对象。
+错误源：WindowsBase
+错误栈：   在 System.Windows.Threading.Dispatcher.VerifyAccess()
+   在 System.Windows.DependencyObject.GetValue(DependencyProperty dp)
+   在 System.Windows.Shapes.Shape.get_Fill()
+   在 genshinmusic.MainWindow.get_rectangle_fill(Rectangle rectangle) 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MainWindow.xaml.cs:行号 502
+   在 genshinmusic.MIDIPlayer.<>c__DisplayClass35_0.<set_midi_player>b__0() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 169
+===========================================
+===========================================
+错误时间：2022/10/9 15:35:51
+错误信息：调用线程无法访问此对象，因为另一个线程拥有该对象。
+错误源：WindowsBase
+错误栈：   在 System.Windows.Threading.Dispatcher.VerifyAccess()
+   在 System.Windows.DependencyObject.GetValue(DependencyProperty dp)
+   在 System.Windows.Shapes.Shape.get_Fill()
+   在 genshinmusic.MainWindow.get_rectangle_fill(Rectangle rectangle) 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MainWindow.xaml.cs:行号 517
+   在 genshinmusic.MIDIPlayer.<>c__DisplayClass34_0.<set_midi_player>b__0() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 162
+===========================================
+===========================================
+错误时间：2022/10/9 15:45:24
+错误信息：调用线程无法访问此对象，因为另一个线程拥有该对象。
+错误源：WindowsBase
+错误栈：   在 System.Windows.Threading.Dispatcher.VerifyAccess()
+   在 System.Windows.Data.BindingOperations.SetBinding(DependencyObject target, DependencyProperty dp, BindingBase binding)
+   在 genshinmusic.MainWindow.set_rectangle_binding(BasicAttribution& source, String path, Rectangle& rectangle, DependencyProperty dependencyProperty) 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MainWindow.xaml.cs:行号 240
+   在 genshinmusic.MainWindow.set_UI_on_playing(List`1 target_block_list) 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MainWindow.xaml.cs:行号 509
+   在 genshinmusic.MIDIPlayer.<>c__DisplayClass33_0.<set_midi_player>b__0() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 173
+===========================================
+===========================================
+错误时间：2022/10/9 15:47:17
+错误信息：调用线程无法访问此对象，因为另一个线程拥有该对象。
+错误源：WindowsBase
+错误栈：   在 System.Windows.Threading.Dispatcher.VerifyAccess()
+   在 System.Windows.Data.BindingOperations.SetBinding(DependencyObject target, DependencyProperty dp, BindingBase binding)
+   在 genshinmusic.MainWindow.set_rectangle_binding(BasicAttribution& source, String path, Rectangle& rectangle, DependencyProperty dependencyProperty) 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MainWindow.xaml.cs:行号 240
+   在 genshinmusic.MainWindow.set_UI_on_playing(List`1 target_block_list) 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MainWindow.xaml.cs:行号 509
+   在 genshinmusic.MIDIPlayer.<>c__DisplayClass33_0.<set_midi_player>b__0() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 173
+===========================================
+===========================================

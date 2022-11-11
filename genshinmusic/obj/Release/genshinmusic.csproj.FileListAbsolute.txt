@@ -41,3 +41,5 @@ D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\obj\Release\gens
 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\obj\Release\genshinmusic.exe
 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\obj\Release\genshinmusic.pdb
 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\obj\Release\genshinmusic.csprojAssemblyReference.cache
+D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\obj\Release\genshinmusic.TrustInfo.xml
+D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\obj\Release\genshinmusic.exe.manifest

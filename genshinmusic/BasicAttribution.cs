@@ -51,6 +51,7 @@ namespace genshinmusic
         object music_block_style;
         object chosen_music_block_style;
         object c_key_style;
+        object musci_block_on_play_style;
 
         public THEME program; 
 
@@ -101,6 +102,8 @@ namespace genshinmusic
         public object Chosen_music_block_style { get => chosen_music_block_style; }
         public int Keyboard_font_size { get => keyboard_font_size;  }
         public object C_key_style { get => c_key_style; }
+        public object Musci_block_on_play_style { get => musci_block_on_play_style; }
+
 
 
 
@@ -120,6 +123,7 @@ namespace genshinmusic
             piano_key_board_height = eight_degree_num * white_key_height * 7;
             Console.WriteLine(piano_key_board_height);
             this.semiquaver_width = semiquaver_width;
+            musci_block_on_play_style = Application.Current.Resources["on_play_block"];
         }
      
         public void set_size(int white_key_height, int black_key_height, int semiquaver_width, int keyboard_font_size)
