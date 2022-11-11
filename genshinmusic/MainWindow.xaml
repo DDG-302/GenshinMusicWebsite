@@ -65,7 +65,7 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="1" Grid.Row="1" Content="新工程" Style="{DynamicResource ButtonStyle1}" Click="Create_new_proj_btn_handler"></Button>
             <Button Name="add_bar_btn" Grid.Column="3" Grid.Row="1" Content="添加小节" Style="{DynamicResource ButtonStyle1}" Click="Add_btn_handler"></Button>
-            <Button Grid.Column="5" Grid.Row="1" Content="删除" Style="{DynamicResource ButtonStyle1}" Click="Delete_bar_handler"></Button>
+            <Button Grid.Column="5" Grid.Row="1" Content="删除小节" Style="{DynamicResource ButtonStyle1}" Click="Delete_bar_handler"></Button>
             <Button Name="music_play_btn" Grid.Column="7" Grid.Row="1" Content="播放" Style="{DynamicResource ButtonStyle1}" Click="Play_btn_click" ></Button>
             <Button Grid.Column="9" Grid.Row="1" Content="停止播放" Style="{DynamicResource ButtonStyle1}" Click="Stop_btn_handler" ></Button>
             <Label Grid.Row="1" Grid.Column="13" Content="bpm:" VerticalAlignment="Center"/>
