@@ -37,7 +37,8 @@ function make_info(info, success_or_error) {
 
 // 上传成功后跳转回space
 // second: second秒后跳转
-function redirect_to_space(second) {
+function redirect_to_space(second, muid) {
+    // muid暂时没法用
     var counter = Math.max(second, 1);
     var div = document.createElement("div");
 
@@ -58,6 +59,7 @@ function redirect_to_space(second) {
             a.innerHTML = "将在" + counter.toString() + "秒后跳转（或者单击此处直接跳转）";
         }
         else {
+            window.open("/Page/Detail/")
             location.href = "/User/UploadManager";
         }
     }
@@ -70,7 +72,7 @@ function upload_btn_click() {
     var formData = new FormData();
 
     var info_div = document.getElementById("info_div");
-
+    info_div.innerHTML = "";
     var file = document.getElementById("File").files[0]
     if (file == undefined) {
         info_div.appendChild(make_info("请先选择一个工程文件", 3));
@@ -88,26 +90,57 @@ function upload_btn_click() {
     console.log(document.getElementById("abs").value.replaceAll("\n", "</br>"));
     formData.append("__RequestVerificationToken", document.getElementsByName("__RequestVerificationToken")[0].value);
 
-    info_div.appendChild(make_info("已接收上传指令，请等待上传结果，超时时间为10秒，在此期间请不要重复点击提交", 3));
+    info_div.appendChild(make_info("已接收上传指令，请等待上传结果，超时时间为10秒，请不要重复点击提交", 3));
+    
     $.ajax(
         {
             type: "POST",
-            url: "/User/Upload",
+            url: "/Music/Upload",
             data: formData,
             processData: false,
             contentType:false,  
             success: function (data) {
                 console.log("ok");
                 console.log(data);
-                info_div.appendChild(make_info(data, 1));
-                redirect_to_space(5);
+               
+
+                //var info_div = document.getElementById("info_div");
+         
+                info_div.appendChild(make_info("上传成功", 1));
+                //redirect_to_space(5, data);
+                var div = document.createElement("div");
+                info_div.appendChild(div);
+                div.className = "alert alert-info  alert-dismissable";
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "close";
+                button.setAttribute("data-dismiss", "alert");
+                button.setAttribute("aria-hidden", "true");
+                button.innerHTML = "&times";
+                div.appendChild(button);
+
+                var a = document.createElement("a");
+                a.className = "alert-link";
+                div.appendChild(a);
+                a.innerHTML = "点击此处查看";
+                a.href = "/Pages/" + data;
+                a.setAttribute("target", "_blank");
+
             },
             error: function (data) {
                 console.log("error");
                 console.log(data);
-                if (data.responseText != undefined) {
+                if (data.responseText != undefined && data.responseText != "") {
                     info_div.appendChild(make_info(data.responseText, 2));
+                    
                 }
+                else if (data.status == 403) {
+                    info_div.appendChild(make_info("上传失败，服务器拒绝", 2));
+                }
+                else {
+                    info_div.appendChild(make_info("上传失败，发生错误", 2));
+                }
+
                 
             },
             complete: function (XMLHttpRequest, status) {

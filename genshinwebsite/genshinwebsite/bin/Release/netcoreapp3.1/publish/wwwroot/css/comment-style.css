@@ -11,9 +11,11 @@
 }
 
 .comment_content {
-    white-space: pre;
+    white-space: pre-wrap;
     margin-left: 10px;
     margin-right: 10px;
+    word-break: break-all;
+
 }
 
 

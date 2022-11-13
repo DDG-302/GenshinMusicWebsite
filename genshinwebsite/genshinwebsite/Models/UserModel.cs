@@ -13,13 +13,15 @@ namespace genshinwebsite.Models
     {
 
         override public int Id { get; set; }
-        
+
+        public int UploadLimit { get; set; } = 5;
+
         //[Display(Name = "昵称")]
         //public string Name { get; set; }
 
         //[Display(Name = "邮箱账号")]
         //[DataType(DataType.EmailAddress)]
-        
+
         //public string Account { get; set; }
 
         //[Display(Name = "密码")]

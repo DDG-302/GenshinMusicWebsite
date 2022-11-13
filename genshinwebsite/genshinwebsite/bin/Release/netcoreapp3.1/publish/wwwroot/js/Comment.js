@@ -7,22 +7,7 @@ var user_id_list = []
 var is_comment_empty = false;
 let muid = 0;
 var is_login = false;
-const io = new IntersectionObserver(entrys => {
-    entrys.forEach((entry) => {
-        console.log(entry);
-        console.log(entry.isIntersecting)
-        if (!entry.isIntersecting) {
-            console.log("not");
-            return;
-        }
-        else {
-            get_comment_list(muid)
-            console.log("yes");
-        }
-        //img.src = img.getAttribute('data-src');
-        //io.unobserve(img);
-    })
-}, {})
+
 
 function comment_submit_click() {
     var input_box = document.getElementById("comment_input_box");
@@ -60,7 +45,6 @@ function comment_submit_click() {
                 success: function (data) {
                     alert(data);
                     get_my_comment(muid);
-
                 },
                 error: function (data) {
                     if (data.responseText != undefined) {
@@ -91,7 +75,7 @@ function _make_comment_div(info) {
     row_div.className = "row";
 
     var div = document.createElement("div"); // 主div
-    div.className = "block offset-md-2 col-md-8 offset-sm-2 col-sm-8 offset-xs-2 col-xs-8";
+    div.className = "block offset-md-2 col-md-8 offset-sm-2 col-sm-8 offset-1 col-10";
     row_div.appendChild(div);
 
     var body_div = document.createElement("div"); // 信息div
@@ -134,17 +118,23 @@ function _make_comment_div(info) {
 
 // 增加评论div
 function add_comments(data) {
-    if (is_comment_empty) {
-        return;
-    }
-    if (data.length == 0) {
-        is_comment_empty = true;
-        io.disconnect();
-        $("#main_div").append("<div class=\"block row\" style=\"margin-bottom:50px;\"><p style=\"font-style: italic\">已抵达末尾...<p></div>")
-        return;
-    }
 
+
+    if (data.length == 0) {
+        if (!is_comment_empty) {
+            $("#main_div").append("<div id=\"end_div\" class=\"block row\" style=\"margin-bottom:50px;\"><p style=\"font-style: italic\">已抵达末尾...<p></div>")
+            is_comment_empty = true;
+        }
+        is_comment_empty = true;
+        return;
+    }
+    is_comment_empty = false;
+    offset = offset + data.length;
     // todo: 增加评论block
+    end_div = document.getElementById("end_div");
+    if (end_div != undefined) {
+        end_div.parentNode.removeChild(end_div);
+    }
     idx = 0
     var main_div = document.getElementById("main_div");
     while (idx < data.length) {
@@ -155,9 +145,9 @@ function add_comments(data) {
 
 function get_comment_list(muid) {
 
-    if (is_comment_empty) {
-        return;
-    }
+    //if (is_comment_empty) {
+    //    return;
+    //}
 
     $.ajax(
         {
@@ -168,8 +158,7 @@ function get_comment_list(muid) {
                 "page_num": page_num,
                 "page_offset": offset
             },
-            success: function (data) {
-                offset = offset + page_num
+            success: function (data) {      
                 add_comments(data)
             },
             error: function (data) {
@@ -216,6 +205,7 @@ function delete_my_comment() {
             data: formData,
             success: function (data) {
                 alert(data);
+                get_my_comment(muid);
             },
             error: function (data) {
                 alert(data.responseText);
@@ -242,6 +232,10 @@ function set_my_comment(data) {
         document.getElementById("delete_btn").removeAttribute("disabled")
     }
     else {
+        var p_upload_date = document.getElementById("my_upload_date");
+        var p_update_date = document.getElementById("my_update_date");
+        p_upload_date.innerHTML = "发布时间：未知";
+        p_update_date.innerHTML = "最后更新时间：未知";
         var p_comment = document.getElementById("my_comment");
         p_comment.setAttribute("style", "color:green;font-style: italic;")
         p_comment.className = "comment_content";
@@ -293,6 +287,17 @@ $(document).ready(function () {
         get_my_comment(muid);
     }
 
+    const io = new IntersectionObserver(entrys => {
+        entrys.forEach((entry) => {
+            if (!entry.isIntersecting) {
+                return;
+            }
+            else {
+                get_comment_list(muid)
+            }
+
+        })
+    }, {})
 
     
    

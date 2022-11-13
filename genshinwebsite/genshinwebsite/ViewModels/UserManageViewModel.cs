@@ -39,5 +39,8 @@ namespace genshinwebsite.ViewModels
         [Display(Name = "角色")]
         public Role_type Role { get; set; } = Role_type.User;
 
+        [Display(Name = "用户每日上传乐谱数量限制")]
+        public int UploadLimit { get; set; } = 5;
+
     }
 }

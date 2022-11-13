@@ -19,5 +19,7 @@ namespace genshinwebsite.ViewModels
         public int Uid { get; set; }
         public int View_num { get; set; }
         public int Download_num { get; set; }
+
+        public List<string> Img_path { get; set; } = new List<string>();
     }
 }

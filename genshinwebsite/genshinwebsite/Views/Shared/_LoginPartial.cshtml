@@ -4,50 +4,50 @@
 @tagHelperPrefix "my:"
 
 @*<ul class="navbar-nav">*@
-    @*登录有效*@
-    @if (SignInManager.IsSignedIn(User))
-    {
-        @*<my:li class="nav-item" condition="SignInManager.IsSignedIn(User)">
-                <my:a class="nav-link text-dark" asp-area="Identity" asp-page="/User/Space" title="个人空间">@User.Identity.Name</my:a>
-            </my:li>
-            <my:li class="nav-item" condition="SignInManager.IsSignedIn(User)">
-                <my:form class="form-inline" asp-controller="user" asp-action="logout">
-                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                </my:form>
-            </my:li>*@
-
-        <li style="float:right">
-            <a href="/User/Space" title="个人空间">@User.Identity.Name</a>
-        </li>
-        <li style="float:right">
-
-            <my:form asp-controller="user" asp-action="logout">
-                <a href="/User/Logout" type="submit">登出</a>
+@*登录有效*@
+@if (SignInManager.IsSignedIn(User))
+{
+    @*<my:li class="nav-item" condition="SignInManager.IsSignedIn(User)">
+            <my:a class="nav-link text-dark" asp-area="Identity" asp-page="/User/Space" title="个人空间">@User.Identity.Name</my:a>
+        </my:li>
+        <my:li class="nav-item" condition="SignInManager.IsSignedIn(User)">
+            <my:form class="form-inline" asp-controller="user" asp-action="logout">
+                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
             </my:form>
-        </li>
-    }
-    else
-    {
+        </my:li>*@
 
-        @*登录无效*@
-        <!--<my:li class="nav-item" condition="!SignInManager.IsSignedIn(User)">-->
+    <li style="float:right">
+        <a href="/User/Space" title="个人空间">@User.Identity.Name</a>
+    </li>
+    <li style="float:right">
+        <a href="#" onclick="document.getElementById('myform').submit(); return false;">登出</a>
+
+    </li>
+    <my:form id="myform" asp-controller="user" asp-action="logout">
+    </my:form>
+}
+else
+{
+
+    @*登录无效*@
+    <!--<my:li class="nav-item" condition="!SignInManager.IsSignedIn(User)">-->
+    @*asp-page="/User/Register" 没用*@
+    @*<my:a class="nav-link text-dark" asp-page="/User/Register">Register</my:a>*@
+    <!--<my:a class="nav-link text-dark" asp-controller="user" asp-action="register">Register</my:a>
+    </my:li>
+    <my:li class="nav-item" condition="!SignInManager.IsSignedIn(User)">
+        <my:a class="nav-link text-dark" asp-controller="user" asp-action="login">Login</my:a>
+    </my:li>-->
+
+    <li>
         @*asp-page="/User/Register" 没用*@
         @*<my:a class="nav-link text-dark" asp-page="/User/Register">Register</my:a>*@
-        <!--<my:a class="nav-link text-dark" asp-controller="user" asp-action="register">Register</my:a>
-        </my:li>
-        <my:li class="nav-item" condition="!SignInManager.IsSignedIn(User)">
-            <my:a class="nav-link text-dark" asp-controller="user" asp-action="login">Login</my:a>
-        </my:li>-->
-
-        <li>
-            @*asp-page="/User/Register" 没用*@
-            @*<my:a class="nav-link text-dark" asp-page="/User/Register">Register</my:a>*@
-            <a href="/User/Register">注册</a>
-        </li>
-        <li>
-            <a href="/User/Login">登录</a>
-        </li>
-    }
+        <a href="/User/Register">注册</a>
+    </li>
+    <li>
+        <a href="/User/Login">登录</a>
+    </li>
+}
 
 
 @*</ul>*@

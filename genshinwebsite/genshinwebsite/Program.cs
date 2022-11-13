@@ -22,7 +22,8 @@ namespace genshinwebsite
                 {
                     //webBuilder.UseStartup<Startup>();
                     //webBuilder.UseUrls("http://*:5000").UseStartup<Startup>();
-                    webBuilder.UseUrls("https://*", "http://*").UseStartup<Startup>();
+                    //webBuilder.UseUrls("https://*", "http://*").UseStartup<Startup>();
+                    webBuilder.UseUrls("http://*").UseStartup<Startup>();
 
 
                 });

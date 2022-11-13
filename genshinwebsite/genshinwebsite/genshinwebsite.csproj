@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aba6c8ef-ddbf-4de1-a195-86eae67f40a7</UserSecretsId>
+    <OutputType>Exe</OutputType>
+    <UseWPF>true</UseWPF>
+    <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +20,8 @@
     <None Include="wwwroot\css\login-style.css" />
     <None Include="wwwroot\f5dd25c2527841ec883df8f3ceadc983.jpg" />
     <None Include="wwwroot\img\login-user.png" />
+    <None Include="wwwroot\music_img_save\80\1.jpg" />
+    <None Include="wwwroot\music_img_save\80\2.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,12 +40,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
+    <PackageReference Include="System.Windows.Extensions" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="music_save\" />
     <Folder Include="wwwroot\img\musicsheet\" />
     <Folder Include="wwwroot\program\dev\" />
+    <Folder Include="wwwroot\music_img_save\" />
   </ItemGroup>
-
 </Project>

@@ -8,6 +8,8 @@ using genshinwebsite.Models;
 using genshinwebsite.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using genshinwebsite.Services;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace genshinwebsite.Controllers
 {
@@ -22,17 +24,19 @@ namespace genshinwebsite.Controllers
         private readonly UserManager<UserModel> _userManager;
         private readonly IConfiguration _configuration;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
+        private readonly IMusicDB<MusicModel, MusicViewModel> _musicDBHelper;
         public AdminController(
             SignInManager<UserModel> signInManager,
-            UserManager<UserModel> userManager, 
+            UserManager<UserModel> userManager,
             RoleManager<IdentityRole<int>> roleManager,
-            IConfiguration configuration)
+            IConfiguration configuration, IMusicDB<MusicModel, MusicViewModel> musicDBHelper)
 
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _configuration = configuration;
             _roleManager = roleManager;
+            _musicDBHelper = musicDBHelper;
         }
 
         public IActionResult Index(int page_offset, string username)
@@ -78,11 +82,11 @@ namespace genshinwebsite.Controllers
 
             if (role.Count != 0 && (int)Enum.Parse(typeof(Role_type), role[0]) > 0 && User.IsInRole("God") == false)
             {
-                return Forbid("不允许删除拥有高级权限的用户");
+                return StatusCode(403, "不允许删除拥有高级权限的用户");
             }
             else if (role.Count != 0 && (int)Enum.Parse(typeof(Role_type), role[0]) == 2)
             {
-                return Forbid("不允许删除拥有God权限的用户");
+                return StatusCode(403, "不允许删除拥有God权限的用户");
             }
 
             
@@ -189,6 +193,7 @@ namespace genshinwebsite.Controllers
                 
                 user.UserName = userManageViewModel.Name;
                 user.Email = userManageViewModel.Account;
+                user.UploadLimit = userManageViewModel.UploadLimit;
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
@@ -301,7 +306,7 @@ namespace genshinwebsite.Controllers
                 }
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("admin", "index");
+                    return RedirectToAction("index", "admin");
                 }
                 else
                 {
@@ -319,6 +324,36 @@ namespace genshinwebsite.Controllers
         {
            
             return View();
+        }
+
+        [Authorize(Roles = ("Admin, God"))]
+        public async Task<IActionResult> MusicManage(int page_offset, string music_title = "", MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE)
+        {
+            ViewData["url"] = HttpContext.Request.GetDisplayUrl();
+            ViewData["filter_idx"] = (int)select_order;
+            if (music_title != null && music_title != string.Empty && music_title != "")
+            {
+                ViewData["music_title"] = music_title;
+            }
+
+            var num_per_page = _configuration.GetValue("NumPerPage", 10);
+            page_offset = Math.Max(1, page_offset);
+
+            int item_count = _musicDBHelper.get_item_count(music_title);
+            var music_list = await _musicDBHelper.get_music_by_offset(num_per_page, page_offset - 1, music_title, select_order);
+            if (item_count % num_per_page != 0)
+            {
+                page_offset = Math.Min(item_count / num_per_page + 1, page_offset);
+                ViewData["max_page"] = item_count / num_per_page + 1;
+            }
+            else
+            {
+                page_offset = Math.Min(item_count / num_per_page, page_offset);
+                ViewData["max_page"] = item_count / num_per_page;
+            }
+            ViewData["page_offset"] = page_offset;
+
+            return View(music_list.ToList());
         }
 
     }

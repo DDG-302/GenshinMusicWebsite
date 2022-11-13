@@ -4,5 +4,117 @@
 @{
 }
 
-@{ViewData["Title"] = "乐谱管理";}
-@model IEnumerable<MusicModel>
+@{
+    ViewData["Title"] = "乐谱管理";
+    int filter_idx = 1;
+    if (ViewData["filter_idx"] != null)
+    {
+        filter_idx = int.Parse(ViewData["filter_idx"].ToString());
+    }
+    }
+@model List<MusicViewModel>
+
+@if (User.IsInRole("Admin") || User.IsInRole("God"))
+{
+    <link rel="stylesheet" href="~/css/musicsheet-display.css" />
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/js/UploadManager.js"></script>
+    <script src="~/js/MusicFilter.js"></script>
+    <script>
+    selected_filter = @filter_idx
+    </script>
+
+    <div class="row" style="margin-bottom:10px">
+        <div class="col-md-3"></div>
+        <div class="col-md-4">
+            @if (ViewData["music_title"] != null)
+            {
+                <input id="search_input_box" type="text" value="@ViewData["music_title"].ToString()" style="width:100%" />
+            }
+            else
+            {
+                <input id="search_input_box" type="text" style="width:100%" />
+            }
+
+        </div>
+        <div class="col-md-2">
+            <button style="width:100%" onclick="search_click()">搜索</button>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <ul class="nav nav-pills">
+        @if (filter_idx == 1)
+        {
+            <li><a id="filter_1" class="nav-link active" href="javascript:set_filter(1);">最新发布顺序</a></li>
+
+        }
+        else
+        {
+            <li><a id="filter_1" class="nav-link" href="javascript:set_filter(1);">最新发布顺序</a></li>
+        }
+
+        @if (filter_idx == 2)
+        {
+            <li><a id="filter_2" class="nav-link active" href="javascript:set_filter(2);">下载顺序</a></li>
+
+        }
+        else
+        {
+            <li><a id="filter_2" class="nav-link" href="javascript:set_filter(2);">下载顺序</a></li>
+        }
+
+        @if (filter_idx == 3)
+        {
+            <li><a id="filter_3" class="nav-link active" href="javascript:set_filter(3);">浏览顺序</a></li>
+
+        }
+        else
+        {
+            <li><a id="filter_3" class="nav-link" href="javascript:set_filter(3);">浏览顺序</a></li>
+        }
+
+
+        @if (filter_idx == 4)
+        {
+            <li><a id="filter_4" class="nav-link active" href="javascript:set_filter(4);">标题</a></li>
+
+        }
+        else
+        {
+            <li><a id="filter_4" class="nav-link" href="javascript:set_filter(4);">标题</a></li>
+        }
+    </ul>
+
+
+    @for (int i = 0; i < Model.Count;)
+    {
+        <div style="min-width:600px" class="row">
+            @for (int j = 0; i < Model.Count && j < 3; j++, i++)
+            {
+                <div class="col-md-4 col-sm-12" style="margin-bottom:10px">
+                    <div class="img-thumbnail">
+
+                        <div class="h3">@Model[i].MusicTitle</div>
+                        <div class="h5">上传者：@Model[i].Uploader</div>
+                        <p>发布日期：@Model[i].Datetime</p>
+                        <p style="height:100px">@Model[i].Abstract_content</p>
+                        <img class="img-thumbnail" src="~/f5dd25c2527841ec883df8f3ceadc983.jpg" />
+                        <p>下载：@Model[i].Download_num</p>
+                        <p>浏览：@Model[i].View_num</p>
+                        <button class="btn btn-light" onclick="alert('功能未实现')">
+                            修改
+                        </button>
+                        <button class="btn btn-dark" onclick="delete_music(@Model[i].Id)">
+                            删除
+                        </button>
+                    </div>
+
+                </div>
+
+            }
+        </div>
+    }
+
+    <partial name="_PageBar" />
+}

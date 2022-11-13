@@ -1,8 +1,6 @@
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.AssemblyInfoInputs.cache
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.AssemblyInfo.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.csproj.CoreCompileInputs.cache
-D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.MvcApplicationPartsAssemblyInfo.cs
-D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.MvcApplicationPartsAssemblyInfo.cache
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.RazorAssemblyInfo.cache
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.RazorAssemblyInfo.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\staticwebassets\genshinwebsite.StaticWebAssets.Manifest.cache
@@ -80,11 +78,9 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\System.Collections.Immutable.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\System.ComponentModel.Annotations.dll
-D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\System.Diagnostics.DiagnosticSource.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\System.Runtime.Caching.dll
-D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
@@ -96,7 +92,6 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
-D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.Views.pdb
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.csproj.CopyComplete
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.genruntimeconfig.cache

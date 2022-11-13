@@ -16,7 +16,7 @@ namespace genshinwebsite.Services
         /// </summary>
         /// <param name="id">乐谱id</param>
         /// <returns>乐谱模型，为null表示没找到</returns>
-        public Task<T> get_by_id(int id);
+        public Task<M> get_by_id(int id);
 
         /// <summary>
         /// 根据用户id寻找由该用户名下的所有乐谱
@@ -37,7 +37,7 @@ namespace genshinwebsite.Services
         /// </summary>
         /// <param name="musicModel"></param>
         /// <returns></returns>
-        public DBOperationResult add_one(MusicModel musicModel);
+        public Task<T> add_one(MusicModel musicModel);
 
         /// <summary>
         /// 记录一次浏览
@@ -70,6 +70,12 @@ namespace genshinwebsite.Services
         /// <returns></returns>
         public int get_item_count(string music_title = "");
 
+        /// <summary>
+        /// 查询用户今天上传的乐谱数量
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        public Task<int> get_user_today_upload_num(int uid);
         public Task<IEnumerable<M>> get_music_by_offset(int num_per_page = 10, int page_offset = 0, string music_title = "", MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE);
 
         /// <summary>

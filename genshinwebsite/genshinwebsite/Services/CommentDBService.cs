@@ -43,7 +43,7 @@ namespace genshinwebsite.Services
         {
             try
             {
-                if(await _commentDataContext.Music.FindAsync(comment) != null)
+                if(await _commentDataContext.Comment.AsNoTracking().FirstOrDefaultAsync(c=>c.Uid == comment.Uid && c.Muid == comment.Muid) != null)
                 {
                     _commentDataContext.Remove(comment);
                     await _commentDataContext.SaveChangesAsync();
@@ -134,7 +134,7 @@ namespace genshinwebsite.Services
             switch (select_order)
             {
                 case COMMENT_SELECT_ORDER.UPLOAD_DATE:
-                    result = await _commentDataContext.Comment.AsNoTracking().Where(c => c.Muid == muid).Skip(page_offset * num_per_page).Take(num_per_page).OrderBy(c => c.UploadDate).Join(_commentDataContext.AspNetUsers, comment=>comment.Uid, user=>user.Id, (comment, user)=> new CommentViewModel
+                    result = await _commentDataContext.Comment.Where(c => c.Muid == muid).Skip(page_offset * num_per_page).Take(num_per_page).OrderBy(c => c.UploadDate).Join(_commentDataContext.AspNetUsers, comment=>comment.Uid, user=>user.Id, (comment, user)=> new CommentViewModel
                     { 
                         Uid = comment.Uid,
                         UserName = user.UserName,

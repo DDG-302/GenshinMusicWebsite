@@ -87,10 +87,15 @@ namespace genshinwebsite
                 }
                 ).AddEntityFrameworkStores<DataContext>();
 
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                options.ValidationInterval = TimeSpan.FromMinutes(1); // 每一分钟检查一次用户状态
+            });
+
             services.ConfigureApplicationCookie(options =>
                 {
                     options.Cookie.HttpOnly = true;
-                    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                    options.ExpireTimeSpan = TimeSpan.FromDays(3);
                     options.SlidingExpiration = true; // 过期前发送request则自动发送一个新的cookie
                 }
 

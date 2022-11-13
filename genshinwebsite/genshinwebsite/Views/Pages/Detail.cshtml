@@ -8,6 +8,15 @@
 
 @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
 <link href="~/css/comment-style.css" rel='stylesheet' type='text/css' />
+<style>
+    .music_img {
+        width: 100%;
+        /*    margin-left:10%;*/
+        align-self: center;
+        height: auto;
+        margin: 0 auto;
+    }
+</style>
 <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
 <script src="~/js/Comment.js"></script>
 @if (SignInManager.IsSignedIn(User))
@@ -76,15 +85,25 @@
                     工程文件下载(.genmujson)
                 </a>
             </td>
-            <td>
-                <a class="btn btn-dark" href="#">
-                    键盘谱下载(.zip)[功能未实现]
-                </a>
-            </td>
+            @*<td>
+                    <a class="btn btn-dark" href="#">
+                        键盘谱下载(.zip)[功能未实现]
+                    </a>
+                </td>*@
         </tr>
     </tbody>
 </table>
-
+@foreach (var src in Model.Img_path)
+{
+    <hr />
+    <div class="row">
+        <div class="col-md-8 offset-md-2 col-10 offset-1" >
+            <a href="~/@src" target="_blank">
+                <img class="music_img" src="~/@src" />
+            </a>
+        </div>
+    </div>
+}
 <hr />
 
 @if (SignInManager.IsSignedIn(User))
@@ -131,13 +150,13 @@
 else
 {
     <div class="row">
-        <div class="col-md-8 offset-md-2 offset-sm-3 col-sm-6">
+        <div class="col-md-8 offset-md-2 offset-sm-3 col-sm-6  offset-1 col-10">
             <textarea style="height:100px;width:100%" id="comment_input_box" placeholder="评论前请先登录" disabled="disabled"></textarea>
         </div>
     </div>
     <div class="row" style="margin-top:20px;margin-bottom:20px">
-        <div class="offset-md-3 col-md-6 offset-sm-3 col-sm-6">
-            <a style="width:100%;" class="btn btn-dark" href="~/User">去登录</a>
+        <div class="offset-md-3 col-md-6 offset-sm-3 col-sm-6  offset-1 col-10">
+            <a style="width:100%;" class="btn btn-dark" href="~/User" target="_blank">去登录</a>
         </div>
     </div>
 }
@@ -149,9 +168,9 @@ else
     </div>
     <div id="guard"></div>
     <div class="row">
-        <a class="col-12" style="text-align: center;font-style:italic;"  href="javascript:get_comment_list(muid);">如果没有加载评论请尝试点击此处</a>
+        <a class="col-12" style="text-align: center;font-style:italic;" href="javascript:get_comment_list(muid);">如果没有加载评论请尝试点击此处</a>
     </div>
-   
+
 </div>
 
 

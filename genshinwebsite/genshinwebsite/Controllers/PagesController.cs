@@ -16,6 +16,7 @@ using genshinwebsite.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading;
 
 namespace genshinwebsite.Controllers
 {
@@ -23,17 +24,22 @@ namespace genshinwebsite.Controllers
     {
 
         private readonly string _data_root;
+        private readonly string _img_root;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IMusicDB<MusicModel, MusicViewModel> _musicDBHelper;
         private readonly UserManager<UserModel> _userManager;
         private readonly IConfiguration _configuration;
 
         public PagesController(IWebHostEnvironment env
-            , IMusicDB<MusicModel, MusicViewModel> musicDBHelper, UserManager<UserModel> userManager, IConfiguration configuration)
+            , IMusicDB<MusicModel, MusicViewModel> musicDBHelper, UserManager<UserModel> userManager, IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
-            _data_root = env.ContentRootPath;
+            _hostingEnvironment = hostingEnvironment;
+            _data_root = Path.Combine(env.ContentRootPath, "music_save");
+            _img_root = Path.Combine(_hostingEnvironment.WebRootPath, "music_img_save");
             _musicDBHelper = musicDBHelper;
             _userManager = userManager;
             _configuration = configuration;
+
         }
 
         public async Task<IActionResult> Index(int page_offset, string music_title = "", MUSIC_SELECT_ORDER select_order = MUSIC_SELECT_ORDER.UPLOAD_DATE)
@@ -72,7 +78,7 @@ namespace genshinwebsite.Controllers
             {
                 return null;
             }
-            string fileName = "music_save/" + music_model.User_id.ToString() + "/" + muid.ToString() + "/" + music_model.MusicTitle + ".genmujson";
+            string fileName = "music_save/" + music_model.Uid.ToString() + "/" + muid.ToString() + "/" + music_model.MusicTitle + ".genmujson";
             if (System.IO.File.Exists(fileName)){
                 var stream = System.IO.File.OpenRead(fileName);
                 _musicDBHelper.add_or_set_download_num(muid);
@@ -101,15 +107,76 @@ namespace genshinwebsite.Controllers
                 MusicDetailViewModel musicDetailViewModel = new MusicDetailViewModel()
                 {
                     Id = music.Id,
+                    Uid = music.Uid,
                     MusicTitle = music.MusicTitle,
                     Datetime = music.Datetime,
                     Abstract_content = music.Abstract_content,
                     Download_num = music.Download_num,
-                    View_num = music.View_num + 1
+                    View_num = music.View_num + 1,
+                    Uploader = music.Uploader
 
                 };
+                string target_path = Path.Combine(_img_root, muid.ToString());
+                if (Directory.Exists(target_path))
+                {
+                    var files = Directory.GetFiles(target_path, "*.jpg");
+                    foreach (var file in files)
+                    {
+                        musicDetailViewModel.Img_path.Add(System.IO.Path.Combine(
+                            System.IO.Path.Combine("music_img_save",music.Id.ToString()), 
+                            System.IO.Path.GetFileName(file)));
+                    }
+
+                }
+                else
+                {
+                    Thread mythread = new Thread(new ThreadStart(delegate ()
+                    {
+                        var img_generator = new ImgGenerator();
+                        string music_sheet_file_path = Path.Combine(
+                            Path.Combine(
+                            Path.Combine(_data_root, musicDetailViewModel.Uid.ToString()), 
+                            musicDetailViewModel.Id.ToString()),
+                            music.MusicTitle + ".genmujson"
+                            );
+                        string json_str = "";
+                        if (System.IO.File.Exists(music_sheet_file_path))
+                        {
+                            json_str = System.IO.File.ReadAllText(music_sheet_file_path);
+                        }
+                        else
+                        {
+                            return;
+                        }
+                        SaveFileTemplate save_file = null;
+                        try
+                        {
+                            save_file = JsonSerializer.Deserialize<SaveFileTemplate>(json_str);
+                            img_generator.generate_img(save_file.Music_sheet, musicDetailViewModel.MusicTitle, target_path, save_file.Bpm.ToString(), save_file.Beats_per_bar);
+                        }
+                        catch
+                        {
+                            return;
+                        }
+                       
+                    }));
+                    mythread.SetApartmentState(ApartmentState.STA);
+                    mythread.Start();
+                }
                 music.View_num++;
-                _musicDBHelper.view_one(music);
+                MusicModel musicModel = new MusicModel()
+                {
+                    Id = music.Id,
+
+                    Datetime = music.Datetime,
+                    MusicTitle = music.MusicTitle,
+
+                    Abstract_content = music.Abstract_content,
+                    User_id = music.Uid,
+                    View_num = music.View_num,
+                    Download_num = music.Download_num
+                };
+                _musicDBHelper.view_one(musicModel);
                 
                 return View(musicDetailViewModel);
             }
