@@ -40,3 +40,4 @@ D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\bin\Debug\NAudio
 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\bin\Debug\System.Security.AccessControl.xml
 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\bin\Debug\System.Security.Principal.Windows.xml
 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\obj\Debug\genshinmusic.csproj.CopyComplete
+D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\obj\Debug\genshinmusic.csprojAssemblyReference.cache

@@ -11,10 +11,23 @@ using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using System.IO;
 
+
 namespace genshinmusic
 {
     class ImgGenerator
     {
+        /// <summary>
+        /// 整个图像的主stackpanel
+        /// </summary>
+        StackPanel stackPanel = new StackPanel();
+        /// <summary>
+        /// 承载每一行的stackpanel
+        /// </summary>
+        StackPanel main_stack_panel = new StackPanel();
+        /// <summary>
+        /// 每一行中承载音符的stackpanel
+        /// </summary>
+        List<StackPanel> row_stack_panel_list = new List<StackPanel>();
 
         private int keyboard_lbl_width = 60;
         private int keyboard_lbl_font_size = 42;
@@ -45,10 +58,16 @@ namespace genshinmusic
 
         private int row_grid_top_height = 20;
 
+        private Size img_size = new Size(1940,
+                3310);
+
         /// <summary>
         /// 每一拍的音符数
         /// </summary>
         private int notes_per_row = 24;
+
+        private int row_num_in_first_page = 5;
+        private int row_num_in_ordinary_page = 6;
 
         // 一个音符块的参数
 
@@ -64,6 +83,17 @@ namespace genshinmusic
         
 
         private int note_num_in_one_note_grid = 5; // 一个note_grid中能防止多少个音符
+
+        /// <summary>
+        /// 重置grid，注意重置后还要手动插入行
+        /// </summary>
+        private void reset_grid()
+        {
+            stackPanel = new StackPanel();
+            main_stack_panel = new StackPanel();
+            main_stack_panel.Margin = new Thickness(100, 100, 100, 100);
+            row_stack_panel_list = new List<StackPanel>();
+        }
 
 
         /// <summary>
@@ -375,35 +405,174 @@ namespace genshinmusic
             Grid.SetColumn(line, 0);
         }
 
+        /// <summary>
+        /// 把所有全保存到1页
+        /// </summary>
+        private void save_all_in_one_page(string folder_path, TextBlock head, TextBlock config_info)
+        {
+            string filename = System.IO.Path.Combine(folder_path, "1.jpg");
+
+            stackPanel.Children.Add(head);
+            stackPanel.Children.Add(config_info);
+            stackPanel.Children.Add(main_stack_panel);
+            stackPanel.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+
+
+            stackPanel.Measure(this.img_size);
+            stackPanel.Arrange(new Rect(this.img_size));
+
+            // Render control to an image
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)stackPanel.ActualWidth, (int)stackPanel.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            rtb.Render(stackPanel);
+
+
+
+            var encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
+
+            using (var file = File.OpenWrite(filename))
+            {
+                encoder.Save(file);
+            }
+
+        }
+
+        /// <summary>
+        /// 保存第一页
+        /// </summary>
+        private void save_first_page(string folder_path, TextBlock head, TextBlock config_info )
+        {
+            string filename = System.IO.Path.Combine(folder_path, "1.jpg");
+
+            var page_text = new TextBlock();
+            page_text.HorizontalAlignment = HorizontalAlignment.Center;
+            page_text.VerticalAlignment = VerticalAlignment.Bottom;
+            page_text.FontFamily = new FontFamily(this.note_font_family);
+            page_text.Text = "1";
+            page_text.FontSize = 45;
+            page_text.Margin = new Thickness(0, 50, 0, 0);
+
+            stackPanel.Children.Add(head);
+            stackPanel.Children.Add(config_info);
+            stackPanel.Children.Add(main_stack_panel);
+            stackPanel.Children.Add(page_text);
+            stackPanel.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+
+
+  
+            stackPanel.Measure(this.img_size);
+            stackPanel.Arrange(new Rect(this.img_size));
+
+            // Render control to an image
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)stackPanel.ActualWidth, (int)stackPanel.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            rtb.Render(stackPanel);
+
+            FormatConvertedBitmap convertImg = new FormatConvertedBitmap(rtb, PixelFormats.Gray8, null, 0);
+
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(convertImg));
+
+            using (var file = File.OpenWrite(filename))
+            {
+                encoder.Save(file);
+            }
+
+        }
+
+        private void save_img_with_page(string folder_path, int page_num)
+        {
+            string filename = System.IO.Path.Combine(folder_path, page_num.ToString() + ".jpg");
+            var page_text = new TextBlock();
+            page_text.HorizontalAlignment = HorizontalAlignment.Center;
+            page_text.VerticalAlignment = VerticalAlignment.Bottom;
+            page_text.FontFamily = new FontFamily(this.note_font_family);
+            page_text.Text = page_num.ToString();
+            page_text.FontSize = 45;
+            page_text.Margin = new Thickness(0, 50, 0, 0);
+            
+            stackPanel.Children.Add(main_stack_panel);
+            stackPanel.Children.Add(page_text);
+            stackPanel.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+
+
+            stackPanel.Measure(this.img_size);
+            stackPanel.Arrange(new Rect(this.img_size));
+
+            // Render control to an image
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)stackPanel.ActualWidth, (int)stackPanel.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            rtb.Render(stackPanel);
+            FormatConvertedBitmap convertImg = new FormatConvertedBitmap(rtb, PixelFormats.Gray8, null, 0);
+
+
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(convertImg));
+
+
+            using (var file = File.OpenWrite(filename))
+            {
+                encoder.Save(file);
+            }
+        }
+
         public void generate_img(List<Note> music_sheet, string title, string bpm, int beats_per_bar)
         {
             if(music_sheet == null)
             {
                 return;
             }
+            // 单一文件的情况
+            //SaveFileDialog dialog = new SaveFileDialog();
+            //title = System.IO.Path.GetFileNameWithoutExtension(title);
+            //string filename = "";
+            //dialog.Filter = "乐谱图片保存(*.jpg)|*.jpg";
+            //dialog.Title = "选择乐谱图片保存文件";
+            //dialog.FileName = title;
+            //if (dialog.ShowDialog() == true)
+            //{
+            //    Console.WriteLine(dialog.FileName);
+            //    filename = dialog.FileName;
+            //    if (filename == "")
+            //    {
+            //        return;
+            //    }
+            //}
+            //else
+            //{
+            //    return;
+            //}
 
-            SaveFileDialog dialog = new SaveFileDialog();
-            title = System.IO.Path.GetFileNameWithoutExtension(title);
-            string filename = "";
-            dialog.Filter = "乐谱图片保存(*.jpg)|*.jpg";
-            dialog.Title = "选择乐谱图片保存文件";
-            dialog.FileName = title;
-            if (dialog.ShowDialog() == true)
+            var folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            string folder_path = "";
+            folderBrowserDialog.Description = "选择要导出的文件夹";
+            if(folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                Console.WriteLine(dialog.FileName);
-                filename = dialog.FileName;
-                if (filename == "")
-                {
-                    return;
-                }
+                folder_path = folderBrowserDialog.SelectedPath;
             }
             else
             {
                 return;
             }
 
-            var stackPanel = new StackPanel();
-
+            reset_grid();
+            int page = 1;
+            if(title != "")
+            {
+                title = System.IO.Path.GetFileNameWithoutExtension(title);
+            }
+            else
+            {
+                title = System.IO.Path.GetFileNameWithoutExtension(folder_path);
+            }
+            int temp_dir_num = 1;
+            string target_folder_path = System.IO.Path.Combine(folder_path, title);
+            while (Directory.Exists(target_folder_path))
+            {
+                target_folder_path = System.IO.Path.Combine(folder_path, title + " (" + temp_dir_num.ToString() + ")");
+                temp_dir_num++;
+            }
+            Directory.CreateDirectory(target_folder_path);
+            folder_path = target_folder_path;
+           
             var head = new TextBlock();
             // top 100  bot 100 height 80
             head.Margin = new Thickness(100, 100, 100, 0);
@@ -423,10 +592,10 @@ namespace genshinmusic
             config_info.Text = "曲速：" + bpm + "  " + 
                                 "拍号：" + beats_per_bar.ToString() + "/4"+ "  " + "总音符量：" + music_sheet.Count;
             config_info.Height = 60;
-            var main_stack_panel = new StackPanel();
+
             
-            main_stack_panel.Margin = new Thickness(100, 0, 100, 100);
-            List<StackPanel> row_stack_panel_list = new List<StackPanel>();
+            
+            
          
             // 无小节设置
             main_stack_panel.Children.Add(this.make_row_grid(ref row_stack_panel_list));
@@ -456,7 +625,16 @@ namespace genshinmusic
                     note_idx = i;
                     max_duration_time = Math.Max(music_sheet[i].Continuous_semi, max_duration_time);
                 }
-                if(note_idx + 1 < music_sheet.Count)
+                note_list.Sort(
+                    (x, y) =>
+                    {
+                        if (x.Key_idx > y.Key_idx)
+                        {
+                            return 1;
+                        }
+                        return -1;
+                    });
+                if (note_idx + 1 < music_sheet.Count)
                 {
                     int next_start = music_sheet[note_idx + 1].Absolute_semi_offset;
                     max_duration_time = Math.Min(max_duration_time, next_start - current_semi);
@@ -476,6 +654,20 @@ namespace genshinmusic
                         {
                             remain_vacancy_num = this.notes_per_row;
                             row_idx++;
+                            if(page == 1 && row_idx > row_num_in_first_page)
+                            {
+                                save_first_page(folder_path, head, config_info);
+                                row_idx = 0;
+                                reset_grid();
+                                page++;
+                            }
+                            else if( page > 1 && row_idx > row_num_in_ordinary_page)
+                            {
+                                save_img_with_page(folder_path, page);
+                                row_idx = 0;
+                                reset_grid();
+                                page++;
+                            }
                             main_stack_panel.Children.Add(this.make_row_grid(ref row_stack_panel_list));
                         }
                         switch (duration)
@@ -533,6 +725,20 @@ namespace genshinmusic
                                         {
                                             remain_vacancy_num = this.notes_per_row;
                                             row_idx++;
+                                            if (page == 1 && row_idx > row_num_in_first_page)
+                                            {
+                                                save_first_page(folder_path, head, config_info);
+                                                row_idx = 0;
+                                                reset_grid();
+                                                page++;
+                                            }
+                                            else if (page > 1 && row_idx > row_num_in_ordinary_page)
+                                            {
+                                                save_img_with_page(folder_path, page);
+                                                row_idx = 0;
+                                                reset_grid();
+                                                page++;
+                                            }
                                             main_stack_panel.Children.Add(this.make_row_grid(ref row_stack_panel_list));
                                         }
                                         start_rest_text_box = this.make_note_text_block('—');
@@ -578,6 +784,20 @@ namespace genshinmusic
                     {
                         remain_vacancy_num = this.notes_per_row;
                         row_idx++;
+                        if (page == 1 && row_idx > row_num_in_first_page)
+                        {
+                            save_first_page(folder_path, head, config_info);
+                            row_idx = 0;
+                            reset_grid();
+                            page++;
+                        }
+                        else if (page > 1 && row_idx > row_num_in_ordinary_page)
+                        {
+                            save_img_with_page(folder_path, page);
+                            row_idx = 0;
+                            reset_grid();
+                            page++;
+                        }
                         main_stack_panel.Children.Add(this.make_row_grid(ref row_stack_panel_list));
                     }
                     switch (duration)
@@ -634,6 +854,20 @@ namespace genshinmusic
                                     {
                                         remain_vacancy_num = this.notes_per_row;
                                         row_idx++;
+                                        if (page == 1 && row_idx > row_num_in_first_page)
+                                        {
+                                            save_first_page(folder_path, head, config_info);
+                                            row_idx = 0;
+                                            reset_grid();
+                                            page++;
+                                        }
+                                        else if (page > 1 && row_idx > row_num_in_ordinary_page)
+                                        {
+                                            save_img_with_page(folder_path, page);
+                                            row_idx = 0;
+                                            reset_grid();
+                                            page++;
+                                        }
                                         main_stack_panel.Children.Add(this.make_row_grid(ref row_stack_panel_list));
                                     }
                                     text_block = this.make_note_text_block('—');
@@ -668,40 +902,19 @@ namespace genshinmusic
                 current_semi = start_semi + max_duration_time;
 
             }
-
-            stackPanel.Children.Add(head);
-            stackPanel.Children.Add(config_info);
-            stackPanel.Children.Add(main_stack_panel);
-            stackPanel.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-
-            // process layouting
-            //var size = new Size(
-            //    (beats_per_bar * 4 * 4 + 1) * lbl_width + 
-            //    4 * grid_border_size_thick +
-            //    (beats_per_bar * 4 * 4 - 2) * grid_border_size + 200
-            //    , 
-            //    row_num * (lbl_height * 3 + grid_border_size * 4) + 600 );
-            var size = new Size(
-                note_width * notes_per_row + keyboard_lbl_width + 200,
-                370 + row_stack_panel_list.Count * (this.row_grid_top_height + this.note_height * this.note_num_in_one_note_grid + this.note_margin_bot)
-                );
-            stackPanel.Measure(size);
-            stackPanel.Arrange(new Rect(size));
-
-            // Render control to an image
-            RenderTargetBitmap rtb = new RenderTargetBitmap((int)stackPanel.ActualWidth, (int)stackPanel.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            rtb.Render(stackPanel);
-
-          
-
-            var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(rtb));
-
-            using (var file = File.OpenWrite(filename))
+            if((row_idx == 0 && remain_vacancy_num == this.notes_per_row) != true)
             {
-                encoder.Save(file);
+                if(page != 1)
+                {
+                    this.save_img_with_page(folder_path, page);
+                }
+                else
+                {
+                    this.save_first_page(folder_path, head, config_info);
+                }
+                
             }
-
+           
         }
        
     }
