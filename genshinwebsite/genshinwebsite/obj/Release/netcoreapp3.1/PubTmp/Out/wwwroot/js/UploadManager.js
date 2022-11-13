@@ -74,3 +74,4 @@ function delete_music(muid) {
         timeout: 10000
     })
 }
+

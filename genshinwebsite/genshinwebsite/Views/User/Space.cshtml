@@ -6,16 +6,16 @@
     {
         ViewData["Title"] = @User.Identity.Name;
     }
-    
+
 }
 
 <div class="row mt-4">
-    <div class="col-2 offset-2">
+    <div class="col-2 offset-2 col-md-2 offset-md-2">
         <span class="label">
             UID：
         </span>
     </div>
-    <div class="col-3 offset-1">
+    <div class="col-7 offset-1 col-md-7 offset-md-1">
         <span class="label">
             @UserManager.GetUserId(User)
         </span>
@@ -23,25 +23,32 @@
 </div>
 
 <div class="row mt-4">
-    <div class="col-2 offset-2">
+    <div class="col-2 offset-2 col-md-2 offset-md-2">
         <span class="label">
             用户名：
         </span>
     </div>
-    <div class="col-3 offset-1">
+    <div class="col-7 offset-1 col-md-7 offset-md-1">
         <span class="label">
             @User.Identity.Name
         </span>
     </div>
 </div>
 <div class="row mt-4">
-    <a class="offset-2 col-2 btn btn-light" asp-action="upload">上传乐谱</a>
-    <a class="offset-1 col-2 btn btn-info" asp-action="UploadManager">can can need</a><br />
+    <div class="col-3 offset-6 col-md-8 offset-md-2">
+        <a class="btn btn-light" asp-action="upload">上传乐谱</a>
+    </div>
+
 
 </div>
-<div class="row">
-    <a class="offset-2 col-2 btn btn-info" asp-action="test_ip">测试用户ip地址</a>
+<div class="row mt-4">
+    <div class="col-3 offset-6 col-md-8 offset-md-2">
+        <a class="btn btn-info" asp-action="UploadManager">can can need</a><br />
+    </div>
 </div>
+    @*<div class="row">
+            <a class="offset-2 col-2 btn btn-info" asp-action="test_ip">测试用户ip地址</a>
+        </div>*@
 
 
 

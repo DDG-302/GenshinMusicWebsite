@@ -44,6 +44,7 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\Comment.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\login.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\MusicFilter.js
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\MusicImg.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\MusicUpload.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\page-jump.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\register.js
@@ -85,6 +86,8 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\music_img_save\80\1.jpg
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\music_img_save\80\2.jpg
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\music_img_save\81\1.jpg
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\music_img_save\82\1.jpg
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\music_img_save\82\2.jpg
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\program\stb\Release-2.0.zip
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\appsettings.Development.json
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\appsettings.json

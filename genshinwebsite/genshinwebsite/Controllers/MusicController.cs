@@ -44,35 +44,19 @@ namespace genshinwebsite.Controllers
 
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Upload([FromForm] string abs, IFormFile file)
+        /// <summary>
+        /// 用于第一次上传的保存，会同时保存工程与图片，并将保存数据写入数据库
+        /// </summary>
+        /// <param name="file">工程文件</param>
+        /// <param name="uid">用户id</param>
+        /// <param name="abs">简介</param>
+        /// <returns>服务器返回状态</returns>
+        private async Task<IActionResult> Save_new_musicsheet_file_to_local(IFormFile file, int uid, string abs)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if(user == null)
-            {
-                return StatusCode(400, "上传失败：用户不存在");
-            }
-            if (!User.IsInRole("Admin") && !User.IsInRole("God"))
-            {
-                var num = await _musicDBHelper.get_user_today_upload_num(user.Id);
-                if(num >= user.UploadLimit)
-                {
-                    return StatusCode(403, "上传失败：当日上传次数过多，每天只能上传" + user.UploadLimit.ToString() + "个乐谱\n您今天已经上传了" + num.ToString()+"个");
-                }
-            }
-            if (!User.Identity.IsAuthenticated || file == null)
-            {
-                return StatusCode(403, "上传失败：文件为空");
-            }
-
-            string rtn_str = "上传成功";
-            int status_code = 200;
-
-
             var readstream = new StreamReader(file.OpenReadStream());
             //var data = readstream.ReadToEnd();
+            string rtn_str = "上传成功";
+            int status_code = 200;
 
             string json_str = await readstream.ReadToEndAsync();
             MusicModel result = null;
@@ -81,22 +65,16 @@ namespace genshinwebsite.Controllers
                 SaveFileTemplate save_file = null;
                 save_file = JsonSerializer.Deserialize<SaveFileTemplate>(json_str);
                 var music_sheet = save_file.Music_sheet;
-               
-                
+
+
                 // 路径格式为 {用户id}/{乐谱id}/{title}.genmujson(这是为了确保重名乐谱也可以上传)
                 if (MusicValidator.from_music_sheet_load_notes_to_seq_list(ref music_sheet, save_file.Beats_per_bar))
                 {
-                    
-                    if (user != null)
-                    {
-                        int uid = user.Id;
                         string user_music_root = Path.Combine(_data_root, uid.ToString());
                         if (!Directory.Exists(user_music_root))
                         {
                             Directory.CreateDirectory(user_music_root);
                         }
-
-
                         MusicModel musicModel = new MusicModel()
                         {
                             MusicTitle = Path.GetFileNameWithoutExtension(file.FileName),
@@ -122,7 +100,7 @@ namespace genshinwebsite.Controllers
                             {
                                 await file.CopyToAsync(fileStream);
                             }
-                            
+
 
                             Thread mythread = new Thread(new ThreadStart(delegate ()
                             {
@@ -133,19 +111,94 @@ namespace genshinwebsite.Controllers
                             mythread.SetApartmentState(ApartmentState.STA);
                             mythread.Start();
                             mythread.Join();
-                            //using (var fileStream = new FileStream(Path.Combine(_img_root, file.FileName), FileMode.Create, FileAccess.Write))
-                            //{
-                            //    file.CopyTo(fileStream);
-                            //}
 
                         }
+                }
+                else
+                {
+                    rtn_str = "上传失败：乐谱未通过校验，请检查乐谱内容正确";
+                    status_code = 500;
+                }
+            }
+            catch (Exception e)
+            {
+                string err = e.Message;
+                rtn_str = "上传失败，服务器程序错误：" + err;
+                status_code = 500;
+            }
+            finally
+            {
+                readstream.Close();
+            }
+            if(result != null)
+            {
+                return StatusCode(status_code, result.Id);
+            }
+            return StatusCode(status_code, rtn_str);
+        }
 
-                    }
-                    else
+        /// <summary>
+        /// 用于更新，会更新工程与图片，并将更新结果写入数据库
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="muid"></param>
+        /// <param name="uid"></param>
+        /// <param name="music_title"></param>
+        /// <returns></returns>
+        private async Task<IActionResult> Update_musicsheet_local_file(IFormFile file, MusicModel music)
+        {
+            var readstream = new StreamReader(file.OpenReadStream());
+            //var data = readstream.ReadToEnd();
+            string rtn_str = "上传成功";
+            int status_code = 200;
+
+            string json_str = await readstream.ReadToEndAsync();
+            int muid = music.Id;
+            int uid = music.User_id;
+            string music_title = music.MusicTitle;
+
+            try
+            {
+                SaveFileTemplate save_file = null;
+                save_file = JsonSerializer.Deserialize<SaveFileTemplate>(json_str);
+                var music_sheet = save_file.Music_sheet;
+
+
+                // 路径格式为 {用户id}/{乐谱id}/{title}.genmujson(这是为了确保重名乐谱也可以上传)
+                if (MusicValidator.from_music_sheet_load_notes_to_seq_list(ref music_sheet, save_file.Beats_per_bar))
+                {
+                    string user_music_root = Path.Combine(_data_root, uid.ToString());
+                    if (!Directory.Exists(user_music_root))
                     {
-                        rtn_str = "上传失败：用户不存在";
-                        status_code = 400;
+                        Directory.CreateDirectory(user_music_root);
                     }
+                  
+                    StringBuilder sb = new StringBuilder();
+
+
+                    // 真正包含文件名的存放路径
+                    string music_save_file = Path.Combine(user_music_root, muid.ToString());
+                    if (Directory.Exists(music_save_file))
+                    {
+                        Directory.Delete(music_save_file, true);
+                    }
+                    Directory.CreateDirectory(music_save_file);
+                    string music_file_save_path = Path.Combine(music_save_file, file.FileName);
+                    using (var fileStream = new FileStream(music_file_save_path, FileMode.Create, FileAccess.Write))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+
+                    Thread mythread = new Thread(new ThreadStart(delegate ()
+                    {
+                        var img_generator = new ImgGenerator();
+                        string img_folder = Path.Combine(_img_root, muid.ToString());
+                        img_generator.generate_img(music_sheet, music_title, img_folder, save_file.Bpm.ToString(), save_file.Beats_per_bar);
+                    }));
+                    mythread.SetApartmentState(ApartmentState.STA);
+                    mythread.Start();
+                    mythread.Join();
 
 
                 }
@@ -165,13 +218,91 @@ namespace genshinwebsite.Controllers
             {
                 readstream.Close();
             }
-            if(status_code == 200 && result != null)
+            if (status_code == 200)
             {
-                return StatusCode(status_code, result.Id);
+                return StatusCode(status_code, muid);
             }
-
             return StatusCode(status_code, rtn_str);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Upload([FromForm] string abs, IFormFile file)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                return StatusCode(400, "上传失败：用户不存在");
+            }
+            if (!User.IsInRole("Admin") && !User.IsInRole("God"))
+            {
+                var num = await _musicDBHelper.get_user_today_upload_num(user.Id);
+                if(num >= user.UploadLimit)
+                {
+                    return StatusCode(403, "上传失败：当日上传次数过多，每天只能上传" + user.UploadLimit.ToString() + "个乐谱\n您今天已经上传了" + num.ToString()+"个");
+                }
+            }
+            if (!User.Identity.IsAuthenticated || file == null)
+            {
+                return StatusCode(403, "上传失败：文件为空");
+            }
+
+            return await Save_new_musicsheet_file_to_local(file, user.Id, abs);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateMyMusic(string abs, IFormFile file, int muid)
+        {
+
+            var music = await _musicDBHelper.get_by_id(muid);
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                return StatusCode(403, "修改失败，用户不存在");
+            }
+            if (music == null)
+            {
+                return StatusCode(403, "修改失败，乐谱不存在");
+            }
+            if (music.Uid != user.Id)
+            {
+                return StatusCode(403, "用户无权修改当前乐谱");
+            }
+            var music_model = new MusicModel()
+            {
+                Id = music.Id,
+                User_id = music.Uid,
+                Datetime = music.Datetime,
+                MusicTitle = music.MusicTitle,
+                Abstract_content = abs,
+                View_num = music.View_num,
+                Download_num = music.Download_num
+            };
+            if(file != null)
+            {
+                music_model.View_num = 0;
+                music_model.Download_num = 0;
+                music_model.MusicTitle = Path.GetFileNameWithoutExtension(file.FileName);
+                if (await _musicDBHelper.update_music(music_model) != DBOperationResult.OK)
+                {
+                    return StatusCode(500, "数据库操作失败");
+                }
+                return await Update_musicsheet_local_file(file, music_model);
+            }
+            else
+            {
+                if(await _musicDBHelper.update_music(music_model) != DBOperationResult.OK)
+                {
+                    return StatusCode(500, "数据库操作失败");
+                }
+            }
+            return Ok("修改完成");
+        }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -296,12 +427,25 @@ namespace genshinwebsite.Controllers
             return Ok("评论成功");
         }
 
+        /// <summary>
+        /// 获取一组评论
+        /// </summary>
+        /// <param name="muid">乐谱id</param>
+        /// <param name="page_offset">页偏移</param>
+        /// <param name="page_num">页内数量</param>
+        /// <param name="select_order">排序</param>
+        /// <returns></returns>
         public async Task<IActionResult> get_comment_list(int muid, int page_offset, int page_num = 10, COMMENT_SELECT_ORDER select_order = COMMENT_SELECT_ORDER.UPDATE_DATE)
         {
             var result = await _commentDBHelper.get_comment_list(muid, page_num, page_offset, select_order);
             return Ok(result.ToList());
         }
 
+        /// <summary>
+        /// 获取当前muid下用户评论
+        /// </summary>
+        /// <param name="muid"></param>
+        /// <returns></returns>
         public async Task<IActionResult> get_user_comment(int muid)
         {
             if (!_signInManager.IsSignedIn(User))

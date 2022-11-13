@@ -81,7 +81,7 @@ namespace genshinwebsite.Controllers
             string fileName = "music_save/" + music_model.Uid.ToString() + "/" + muid.ToString() + "/" + music_model.MusicTitle + ".genmujson";
             if (System.IO.File.Exists(fileName)){
                 var stream = System.IO.File.OpenRead(fileName);
-                _musicDBHelper.add_or_set_download_num(muid);
+                await _musicDBHelper.add_or_set_download_num(muid);
                 return File(stream, "text/plain", music_model.MusicTitle + ".genmujson");
             }
             else
@@ -122,9 +122,11 @@ namespace genshinwebsite.Controllers
                     var files = Directory.GetFiles(target_path, "*.jpg");
                     foreach (var file in files)
                     {
-                        musicDetailViewModel.Img_path.Add(System.IO.Path.Combine(
+                        musicDetailViewModel.Img_path.Add(
+                      
+                            System.IO.Path.Combine(
                             System.IO.Path.Combine("music_img_save",music.Id.ToString()), 
-                            System.IO.Path.GetFileName(file)));
+                            System.IO.Path.GetFileName(file)).Replace("\\","\\\\"));
                     }
 
                 }

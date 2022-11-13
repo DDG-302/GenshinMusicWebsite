@@ -85,5 +85,11 @@ namespace genshinwebsite.Services
         /// <returns></returns>
         public Task<DBOperationResult> add_or_set_download_num(int muid, int set_num = -1);
 
+        /// <summary>
+        /// 根据输入的model更新数据库
+        /// </summary>
+        /// <param name="music_model">全部赋值完成的模型类</param>
+        /// <returns></returns>
+        public Task<DBOperationResult> update_music(T music_model);
     }
 }

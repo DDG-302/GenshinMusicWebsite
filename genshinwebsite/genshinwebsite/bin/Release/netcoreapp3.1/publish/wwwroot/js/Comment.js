@@ -122,7 +122,7 @@ function add_comments(data) {
 
     if (data.length == 0) {
         if (!is_comment_empty) {
-            $("#main_div").append("<div id=\"end_div\" class=\"block row\" style=\"margin-bottom:50px;\"><p style=\"font-style: italic\">已抵达末尾...<p></div>")
+            $("#main_div").append("<div id=\"end_div\" class=\"block row\" style=\"margin-bottom:50px;\"><p style=\"font-style: italic\">已抵达末尾，没有更多评论了...<p></div>")
             is_comment_empty = true;
         }
         is_comment_empty = true;

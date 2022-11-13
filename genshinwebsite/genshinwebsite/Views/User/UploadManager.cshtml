@@ -34,9 +34,9 @@
                     <img class="img-thumbnail" src="~/f5dd25c2527841ec883df8f3ceadc983.jpg" />
                     <p>下载：@Model[i].Download_num</p>
                     <p>浏览：@Model[i].View_num</p>
-                    <button class="btn btn-light" onclick="alert('功能未实现')">
+                    <a class="btn btn-light" href="~/User/UploadManager/@Model[i].Id">
                         修改
-                    </button>
+                    </a>
                     <button class="btn btn-dark" onclick="delete_my_music(@Model[i].Id)">
                        删除
                     </button>

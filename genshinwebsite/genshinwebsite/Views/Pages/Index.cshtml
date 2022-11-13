@@ -23,22 +23,21 @@
 
 
 <div class="row" style="margin-bottom:10px">
-    <div class="col-md-3"></div>
-    <div class="col-md-4">
+    <div class="col-md-4 offset-md-3 col-sm-6 offset-sm-1 col-6 offset-1">
         @if (ViewData["music_title"] != null)
         {
-            <input id="search_input_box" type="text" value="@ViewData["music_title"].ToString()" style="width:100%" />
+            <input id="search_input_box" type="text" value="@ViewData["music_title"].ToString()" style="width:100%;border-radius:10px;" />
         }
         else
         {
-            <input id="search_input_box" type="text" style="width:100%" />
+            <input id="search_input_box" type="text" style="width:100%;border-radius:10px;" />
         }
 
     </div>
-    <div class="col-md-2">
-        <button style="width:100%" onclick="search_click()">搜索</button>
+    <div class="col-md-2 col-sm-2 col-sm-4 col-4">
+        <button style="width:100%;border-radius:10px;" onclick="search_click()">搜索</button>
     </div>
-    <div class="col-md-3"></div>
+
 </div>
 <ul class="nav nav-pills">
     @if (filter_idx == 1)

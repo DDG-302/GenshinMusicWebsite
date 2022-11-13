@@ -305,5 +305,20 @@ namespace genshinwebsite.Services
 
 
         }
+
+        public async Task<DBOperationResult> update_music(MusicModel music_model)
+        {
+            try
+            {
+                _musicDataContext.Update(music_model);
+                await _musicDataContext.SaveChangesAsync();
+                return DBOperationResult.OK;
+            }
+            catch
+            {
+                return DBOperationResult.DbUpdateException;
+            }
+            
+        }
     }
 }

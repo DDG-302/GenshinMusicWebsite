@@ -284,6 +284,13 @@ namespace genshinwebsite.Controllers
             
         }
 
+        [Route("User/UploadManager/{muid:int}")]
+        public async Task<IActionResult> UploadManagerDetail(int muid)
+        {
+            var music = await _musicDBHelper.get_by_id(muid);
+            return View(music);
+        }
+
 
     }
 }

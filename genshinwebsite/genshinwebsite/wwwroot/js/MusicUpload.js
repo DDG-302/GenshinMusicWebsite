@@ -1,5 +1,4 @@
-﻿
-// info: 消息字符串
+﻿// info: 消息字符串
 // success_or_error: 1 - success
 //                  2 - error
 //                  3 - warning
@@ -150,6 +149,89 @@ function upload_btn_click() {
                 }
             },
             timeout:10000
+        }
+    )
+}
+
+function update_btn_click(muid) {
+
+    var formData = new FormData();
+
+    var info_div = document.getElementById("info_div");
+    info_div.innerHTML = "";
+    var file = document.getElementById("File").files[0]
+
+    formData.append("file", file);
+
+    var abs = document.getElementById("abs").value
+
+    if (abs.length > 500) {
+        info_div.appendChild(make_info("简介请不要大于500字", 3));
+        return;
+    }
+    formData.append("abs", abs);
+    formData.append("muid", muid);
+    console.log(document.getElementById("abs").value.replaceAll("\n", "</br>"));
+    formData.append("__RequestVerificationToken", document.getElementsByName("__RequestVerificationToken")[0].value);
+    
+    info_div.appendChild(make_info("已接收上传指令，请等待上传结果，超时时间为10秒，请不要重复点击提交", 3));
+
+    $.ajax(
+        {
+            type: "POST",
+            url: "/Music/UpdateMyMusic",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log("ok");
+                console.log(data);
+                //var info_div = document.getElementById("info_div");
+
+                info_div.appendChild(make_info("更新成功", 1));
+                //redirect_to_space(5, data);
+                var div = document.createElement("div");
+                info_div.appendChild(div);
+                div.className = "alert alert-info  alert-dismissable";
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "close";
+                button.setAttribute("data-dismiss", "alert");
+                button.setAttribute("aria-hidden", "true");
+                button.innerHTML = "&times";
+                div.appendChild(button);
+
+                var a = document.createElement("a");
+                a.className = "alert-link";
+                div.appendChild(a);
+                a.innerHTML = "点击此处查看";
+                a.href = "/Pages/" + muid;
+                a.setAttribute("target", "_blank");
+
+            },
+            error: function (data) {
+                console.log("error");
+                console.log(data);
+                if (data.responseText != undefined && data.responseText != "") {
+                    info_div.appendChild(make_info(data.responseText, 2));
+
+                }
+                else if (data.status == 403) {
+                    info_div.appendChild(make_info("上传失败，服务器拒绝", 2));
+                }
+                else {
+                    info_div.appendChild(make_info("上传失败，发生错误", 2));
+                }
+
+
+            },
+            complete: function (XMLHttpRequest, status) {
+                if (status == "timeout") {
+                    console.log(XMLHttpRequest);
+                    info_div.appendChild(make_info("等待超时", 2));
+                }
+            },
+            timeout: 10000
         }
     )
 }
