@@ -486,7 +486,7 @@ namespace genshinmusic
         {
             Dispatcher.Invoke(() =>
             {
-                music_play_btn.Content = "Play";
+                music_play_btn.Content = "播放";
 
             });
           

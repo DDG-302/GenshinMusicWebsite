@@ -264,6 +264,66 @@ namespace genshinmusic
                 }
 
             }
+            else if (e.Key == Key.E && chosen_block_list.Count != 0)
+            {
+                List<Note> target_note_list = new List<Note>();
+                List<Note> origin_note_list = new List<Note>();
+                foreach (var rec in chosen_block_list)
+                {
+                    origin_note_list.Add(make_note(rec));
+                }
+                foreach (var note in origin_note_list)
+                {
+                    Note target_note = new Note(note.Begin_bar_idx, note.Semi_offset, note.Key_idx, note.Continuous_semi, note.End_bar_idx, beats_per_bar, note.get_music_rectangle_block()); ;
+                    target_note.Continuous_semi += 1;
+                    if ((note.Absolute_semi_offset + note.Continuous_semi) % (beats_per_bar * 4) == 0)
+                    {
+                        target_note.End_bar_idx += 1;
+                        if (target_note.End_bar_idx > bar_num)
+                        {
+                            return;
+                        }
+                    }
+
+                    target_note_list.Add(target_note);
+                }
+                if (music_sheet.move_notes(origin_note_list, target_note_list))
+                {
+                    this.is_proj_saved = false;
+                    for (int i = 0; i < chosen_block_list.Count; i++)
+                    {
+                        chosen_block_list[i].Width += basic_attribution.Semiquaver_width;
+                    }
+                }
+
+            }
+            else if (e.Key == Key.Q && chosen_block_list.Count != 0)
+            {
+                List<Note> target_note_list = new List<Note>();
+                List<Note> origin_note_list = new List<Note>();
+                foreach (var rec in chosen_block_list)
+                {
+                    origin_note_list.Add(make_note(rec));
+                }
+                foreach (var note in origin_note_list)
+                {
+                    Note target_note = new Note(note.Begin_bar_idx, note.Semi_offset, note.Key_idx, note.Continuous_semi, note.End_bar_idx, beats_per_bar, note.get_music_rectangle_block()); ;
+                    target_note.Continuous_semi -= 1;
+
+
+                    target_note_list.Add(target_note);
+                }
+                if (music_sheet.move_notes(origin_note_list, target_note_list))
+                {
+                    this.is_proj_saved = false;
+                    for (int i = 0; i < chosen_block_list.Count; i++)
+                    {
+                        chosen_block_list[i].Width -= basic_attribution.Semiquaver_width;
+                        
+                    }
+                }
+
+            }
             else if(piano_grid.Children.Count > 0)
             {
                 // 第一排
@@ -615,7 +675,7 @@ namespace genshinmusic
         private void Stop_btn_handler(object sender, RoutedEventArgs e)
         {
             midiplayer.stop_play();
-            music_play_btn.Content = "Play";
+            music_play_btn.Content = "播放";
         }
 
         private void Delete_bar_handler(object sender, RoutedEventArgs e)
