@@ -17,7 +17,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
-
+using NETCore.MailKit.Core;
 
 
 
@@ -31,13 +31,14 @@ namespace genshinwebsite.Controllers
         private readonly string _data_root;
         private readonly string _img_root;
         private readonly IMusicDB<MusicModel, MusicViewModel> _musicDBHelper;
+        private readonly IEmailService _EmailService;
         private readonly IEmailVCodeDB _emailVCodeDB;
         public UserController(
             SignInManager<UserModel> signInManager,
             UserManager<UserModel> userManager,
             IWebHostEnvironment env,
             IMusicDB<MusicModel, MusicViewModel> musicDBHelper,
-            IEmailVCodeDB emailVCodeDB, IConfiguration configuration)
+            IEmailVCodeDB emailVCodeDB, IConfiguration configuration, IEmailService emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -46,6 +47,7 @@ namespace genshinwebsite.Controllers
             _img_root = Path.Combine(env.WebRootPath, "img/musicsheet");
             _emailVCodeDB = emailVCodeDB;
             _configuration = configuration;
+            _EmailService = emailService;
         }
 
 
@@ -84,30 +86,74 @@ namespace genshinwebsite.Controllers
             return StatusCode(200, ip.ToString());
         }
 
-       
-
-       
-
-        [Route("Space/Setting")]
         [Authorize]
-        public IActionResult Setting()
+        public async Task<IActionResult> Setting()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            if(user is null)
+            {
+                await _signInManager.SignOutAsync();
+                return RedirectToAction("Login");
+            }
+            ChangeUserInfoViewModel changeUserInfoViewModel = new ChangeUserInfoViewModel()
+            {
+                Uid = user.Id,
+                Account = user.Email,
+                Name = user.UserName
+            };
+
+            return View(changeUserInfoViewModel);
         }
 
-        [Route("Space/Setting")]
         [HttpPost]
         [Authorize]
-        public IActionResult Setting(UserManageViewModel userManageViewModel)
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Setting(ChangeUserInfoViewModel changeUserInfoViewModel)
         {
+            var user = await _userManager.GetUserAsync(User);
+            changeUserInfoViewModel.Uid = user.Id;
+            changeUserInfoViewModel.Account = user.Email;
+            changeUserInfoViewModel.Name = user.UserName;
+            if(user is null)
+            {
+                await _signInManager.SignOutAsync();
+                return Redirect("Login");
+            }
             if (ModelState.IsValid)
             {
-               
+                if(!_emailVCodeDB.is_code_verified(user.Email, changeUserInfoViewModel.VCode))
+                {
+                    ModelState.AddModelError(string.Empty, "邮箱验证码错误");
+                    return View(changeUserInfoViewModel);
+                }
+                user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, changeUserInfoViewModel.Password);
+                var result =  await _userManager.UpdateAsync(user);
+                var result_list = new List<string>();
+                ViewData["result"] = result_list;
+                if (result.Succeeded)
+                {
+                    result_list.Add("更新完成");
+                }
+                else
+                {
+                    result_list.Add("更新失败，服务器错误");
+                }
                 
+                
+                return View(changeUserInfoViewModel);
 
             }
+            else
+            {
+                return View(changeUserInfoViewModel);
+            }
 
-            return Ok();
+            
+        }
+
+        public IActionResult ForgetPassword()
+        {
+            return View();
         }
 
         [Authorize]
@@ -172,6 +218,11 @@ namespace genshinwebsite.Controllers
 
         public IActionResult Login()
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Space");
+            }
+
             return View();
         }
 
@@ -229,7 +280,13 @@ namespace genshinwebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(_emailVCodeDB.is_code_verified(user_model.Account, user_model.VCode) == false)
+                var user_check = await _userManager.FindByEmailAsync(user_model.Account);
+                if(user_check != null)
+                {
+                    ModelState.AddModelError(string.Empty, "用户已存在");
+                    return View(user_model);
+                }
+                if (_emailVCodeDB.is_code_verified(user_model.Account, user_model.VCode) == false)
                 {
                     ModelState.AddModelError("VCode", "邮箱验证码错误");
                     user_model.VCode = string.Empty;
@@ -275,6 +332,8 @@ namespace genshinwebsite.Controllers
             return View("register", user_model);
         }
 
+
+     
 
         public async Task<IActionResult> Logout()
         {

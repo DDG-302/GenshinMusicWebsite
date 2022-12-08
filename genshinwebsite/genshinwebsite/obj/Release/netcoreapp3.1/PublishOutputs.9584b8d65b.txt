@@ -9,6 +9,8 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\171\171.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\174\174.css
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\174\174.js
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\404.html
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\beila.jpg
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\bootstrap.min.css
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\comment-style.css
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\font-awesome.css
@@ -24,6 +26,7 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\images\bg.jpg
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\images\create_notes.gif
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\images\delete_notes.gif
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\images\duration_change.gif.gif
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\images\move_notes.gif
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\images\prg_brief.png
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\images\prg_brief_2.png
@@ -41,7 +44,11 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\img\musicsheet\骑士王的荣耀.genmujson
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\125.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\140.js
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\AdminComment.js
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\AdminMusic.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\Comment.js
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\CommentFilter.js
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\ForgetPassword.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\login.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\MusicFilter.js
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\MusicImg.js

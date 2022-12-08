@@ -34,6 +34,7 @@ namespace genshinwebsite.ViewModels
         [Display(Name = "密码")]
         [DataType(DataType.Password)]
         [MaxLength(30, ErrorMessage = "密码至过长，不应超出30位")]
+        [MinLength(6, ErrorMessage = "密码过短，至少为6位")]
         public string Password { get; set; }
 
         [Display(Name = "角色")]

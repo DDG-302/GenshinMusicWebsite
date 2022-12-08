@@ -86,7 +86,6 @@ function upload_btn_click() {
         return;
     }
     formData.append("abs", abs);
-    console.log(document.getElementById("abs").value.replaceAll("\n", "</br>"));
     formData.append("__RequestVerificationToken", document.getElementsByName("__RequestVerificationToken")[0].value);
 
     info_div.appendChild(make_info("已接收上传指令，请等待上传结果，超时时间为10秒，请不要重复点击提交", 3));
@@ -227,7 +226,6 @@ function update_btn_click(muid) {
             },
             complete: function (XMLHttpRequest, status) {
                 if (status == "timeout") {
-                    console.log(XMLHttpRequest);
                     info_div.appendChild(make_info("等待超时", 2));
                 }
             },

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace genshinwebsite
 {
     public class Program
@@ -24,7 +25,6 @@ namespace genshinwebsite
                     //webBuilder.UseUrls("http://*:5000").UseStartup<Startup>();
                     //webBuilder.UseUrls("https://*", "http://*").UseStartup<Startup>();
                     //webBuilder.UseUrls("http://*").UseStartup<Startup>();
-
 
                 });
     }

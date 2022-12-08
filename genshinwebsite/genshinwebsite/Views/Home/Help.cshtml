@@ -17,7 +17,7 @@
 
 
 <!-- Nav tabs -->
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+<ul class="nav nav-tabs" id="myTab" role="tablist" style="font-size: 21px">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="website-tab" data-toggle="tab" href="#website" role="tab" aria-controls="website" aria-selected="false">关于网站</a>
     </li>
@@ -28,7 +28,7 @@
 </ul>
 
 <!-- Tab panes -->
-<div style="height:100%;" class="tab-content">
+<div style="height:100%;font-size:21px" class="tab-content">
     <div style="height:100%;" class="tab-pane active" id="website" role="tabpanel" aria-labelledby="website-tab">
         <ul class="list-group">
             <li class="list-group-item list-group-item-primary">这个网站是做什么的？</li>
@@ -53,22 +53,25 @@
     <div class="tab-pane" id="program" role="tabpanel" aria-labelledby="program-tab">
         <div class="row">
             <div class="col-3">
-                <div style="position:fixed" class="nav flex-column nav-pills">
-                    <a class="nav-link" href="#prepare">准备</a>
-                    <a class="nav-link" href="#brief">软件界面介绍</a>
-
-                    <a class="nav-link" href="#compose">作曲操作</a>
-                    <a class="nav-link" href="#create_notes">&nbsp;&nbsp;&nbsp;&nbsp;创建音符</a>
-                    <a class="nav-link" href="#move_notes">&nbsp;&nbsp;&nbsp;&nbsp;移动音符</a>
-                    <a class="nav-link" href="#select_notes">&nbsp;&nbsp;&nbsp;&nbsp;选中音符</a>
-                    <a class="nav-link" href="#delete_notes">&nbsp;&nbsp;&nbsp;&nbsp;删除音符</a>
-                    <a class="nav-link" href="#play">&nbsp;&nbsp;&nbsp;&nbsp;直接演奏</a>
-                    <a class="nav-link" href="#play_dump">导出、播放操作</a>
-                    <a class="nav-link" href="#style">样式选择</a>
+                <div style="position:fixed;" class="nav flex-column nav-pills">
+                    <div style="max-height:400px;max-width:190px;overflow:auto">
+                        <a class="nav-link" href="#prepare">准备</a>
+                        <a class="nav-link" href="#brief">软件界面介绍</a>
+                        <a class="nav-link" href="#compose">作曲操作</a>
+                        <a class="nav-link" href="#create_notes">&nbsp;&nbsp;&nbsp;&nbsp;创建音符</a>
+                        <a class="nav-link" href="#select_notes">&nbsp;&nbsp;&nbsp;&nbsp;选中音符</a>
+                        <a class="nav-link" href="#move_notes">&nbsp;&nbsp;&nbsp;&nbsp;移动音符</a>
+                        <a class="nav-link" href="#change_notes_duration">&nbsp;&nbsp;&nbsp;&nbsp;修改音符时值</a>
+                        <a class="nav-link" href="#delete_notes">&nbsp;&nbsp;&nbsp;&nbsp;删除音符</a>
+                        <a class="nav-link" href="#play">&nbsp;&nbsp;&nbsp;&nbsp;直接演奏</a>
+                        <a class="nav-link" href="#play_dump">导出、播放操作</a>
+                        <a class="nav-link" href="#style">样式选择</a>
+                    </div>
+                    
                 </div>
 
             </div>
-            <div class="col-9">
+            <div class="col-9" >
                 <p>
                     <div class="h2" style="font-weight:bolder" id="prepare">
                         准备
@@ -141,6 +144,11 @@
                     先选中音符，再使用键盘W S A D可以上下左右移动被选中的音符。
                     @*<img src="~/images/move_notes.gif" alt="移动音符" />*@
                     <img src="https://c2.im5i.com/2022/10/29/X6biR.gif" alt="移动音符" />
+                    <br /><br />
+                    <div id="change_notes_duration" style="font-weight:bolder" class="h5">延长/缩短音符时值</div>
+                    先选中音符，再使用键盘Q E可以延长或缩短被选中的音符时值。
+                    @*<img src="~/images/duration_change.gif" alt="移动音符" />*@
+                    <img src="https://c2.im5i.com/2022/11/28/9BUgD.gif" alt="修改时值" />
                     <br /><br />
                     <div id="delete_notes" style="font-weight:bolder" class="h5">删除音符</div>
                     先选中音符，点击键盘~键（数字1左边、Esc下面那个按键）或Backspace键或Delete键可以删除音符。

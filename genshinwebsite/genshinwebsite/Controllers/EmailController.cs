@@ -22,21 +22,22 @@ namespace genshinwebsite.Controllers
             this._emailVCodeDB = emailVCodeDB;
         }
 
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Email(string email)
         {
             try
             {
                 if (email == string.Empty || email == ""||email==null)
                 {
-                    return BadRequest();
+                    return BadRequest("请先输入邮箱");
                 }
-                ViewData["Message"] = "ASP.NET Core mvc send email example";
                 var VCode = _emailVCodeDB.get_VCode(email);
                 if(VCode == string.Empty)
                 {
                     return Forbid();
                 }
-                _EmailService.Send(email, "注册验证码", VCode);
+                _EmailService.Send(email, "邮箱验证码，来自原神风花琴琴谱分享网站", VCode);
 
                 return Ok();
             }

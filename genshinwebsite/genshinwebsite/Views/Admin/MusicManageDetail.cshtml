@@ -1,0 +1,107 @@
+﻿@model MusicViewModel
+@{
+    ViewData["Title"] = "管理员乐谱信息修改";
+}
+
+
+<script src="~/js/AdminMusic.js"></script>
+@*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+<script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+</script>
+@*<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>*@
+<h1>管理员乐谱信息修改</h1>
+<hr />
+@Html.AntiForgeryToken()
+<div class="alert alert-info">
+    <span class="h2">曲名：@Model.MusicTitle</span>
+    <span style="float:right;height:100%;padding:10px 0;">编号: @Model.Id</span>
+</div>
+
+<table class="table table-bordered table-striped table-hover" style="font-size: 21px">
+
+    <tbody>
+        <tr>
+            <th>上传用户：</th>
+            <td colspan=2>
+                <a href="#">
+                    @Model.Uploader
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th>用户ID：</th>
+            <td colspan=2>
+                @Model.Uid
+            </td>
+        </tr>
+        <tr>
+            <th>曲名：</th>
+            <td colspan=2>
+                <input id="MusicTitle" asp-for="MusicTitle" />
+            </td>
+        </tr>
+        <tr>
+            <th>上传日期：</th>
+            <td colspan=2>  @Model.Datetime</td>
+        </tr>
+        <tr>
+            <th>下载量：</th>
+            <td colspan=2>
+                <input id="Download_num" asp-for="Download_num" />
+            </td>
+        </tr>
+        <tr>
+            <th>浏览量：</th>
+            <td colspan=2>
+                <input id="View_num" asp-for="View_num" />
+            </td>
+        </tr>
+        <tr>
+            <th>下载：</th>
+            <td>
+                <a class="btn btn-dark" asp-action="download" asp-route-muid="@Model.Id">
+                    工程文件下载(.genmujson)
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="alert alert-warning">
+    <p>注意如果提交修改会也会修改<b>浏览量和下载量！</b></p>
+</div>
+<div id="info_div">
+
+</div>
+
+<div class="row">
+    <div class="col-3 offset-2 col-md-3 offset-md-2">
+        <span class="label">
+            管理员不可修改工程文件，如不认可请直接删除
+        </span>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-3 offset-2 col-md-3 offset-md-2">
+        <span class="label">
+            简介：
+        </span>
+    </div>
+    <div class="col-4 offset-1 col-md-5 offset-md-1">
+        <textarea style="height:200px;width:100%" class="text-body" type="text" id="abs" placeholder="这里可以填写小于500字的简介">@Model.Abstract_content</textarea>
+    </div>
+</div>
+
+
+
+<div class="row" style="top:20px;">
+    <div class="col-3 offset-6">
+        <button class="btn btn-info" style="width:100%" type="button" onclick="admin_update_btn_click(@Model.Id);">提交更新</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

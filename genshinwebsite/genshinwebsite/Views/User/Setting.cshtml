@@ -1,0 +1,155 @@
+﻿@{
+    ViewData["Title"] = "设置";
+}
+<link rel="stylesheet" href="~/css/font-awesome.css">
+<link rel="stylesheet" href="~/171/171.css">
+<script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+@model ChangeUserInfoViewModel
+<form method="post" >
+     @Html.AntiForgeryToken()
+    <div class="container1" style="height:900px">
+        <h1>设置</h1>
+        <div class="ipt-box1">
+            <div class="row">
+                <label class="col-2 col-md-2 " asp-for="Uid"></label>
+                <label class="col-9 offset-1 col-md-9 offset-md-1" style="font-weight:bold">@Model.Uid</label>
+            </div>
+
+        </div>
+        <div class="ipt-box1">
+            <div class="row">
+                <label class="col-2 col-md-2 " asp-for="Account"></label>
+                <label id="email_input"  class="col-9 offset-1 col-md-9 offset-md-1" style="font-weight:bold">@Model.Account</label>
+            </div>
+
+        </div>
+        <div class="ipt-box1">
+            <div class="row">
+                <label class="col-2 col-md-2 " asp-for="Name"></label>
+                <label class="col-9 offset-1 col-md-9 offset-md-1" style="font-weight:bold">@Model.Name</label>
+            </div>
+
+        </div>
+        <div class="ipt-box1">
+            <div class="row">
+                <label class="col-2 col-md-2 " asp-for="Password"></label>
+                <div class="col-9 offset-1 col-md-9 offset-md-1">
+                    <input onmouseover="this.title='重新设置您的密码'" asp-for="Password" type="password" id="password" placeholder="重置密码" autocomplete="off">
+                    <i id="eye" class="eye fa fa-eye-slash"></i>
+                    <div class="beam1"></div>
+                </div>
+
+            </div>
+        </div>
+        <div class="ipt-box1">
+            <div class="row">
+                <label class="col-2 col-md-2 " asp-for="ConfirmPassoword"></label>
+                <div class="col-9 offset-1 col-md-9 offset-md-1">
+                    <input onmouseover="this.title='确认您的新密码'" asp-for="ConfirmPassoword" type="password" id="confirm_password" placeholder="确认密码" autocomplete="off">
+                    <i id="confirm_eye" class="eye fa fa-eye-slash"></i>
+                    <div class="beam1"></div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="ipt-box1" id="vcode_div">
+            <div class="row">
+                <div class="col-8">
+                    <input asp-for="VCode" onmouseover="this.title='邮箱验证码'" style="width:100%" type="text" placeholder="邮箱验证码" autocomplete="off">
+                </div>
+                <div class="col-4">
+                    <button onmouseover="this.title='请先输入您的邮箱'" class="btn-info" style="width:100%;height:100%;" type="button" onclick="get_VCode_click()">获取邮箱验证码</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="bg-warning">@Html.ValidationSummary()</div>
+            </div>
+        </div>
+        @if (ViewData["result"] != null)
+        {
+            @foreach (var data in (List<string>)ViewData["result"])
+            {
+                <div class="row">
+                    <div class="col">
+                        <p class="text-success"> @data</p>
+                    </div>
+                </div>
+            }
+        }
+        <button class="btn-login1" type="submit" name="register">提交修改</button>
+    </div>
+
+</form>
+        @*@Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-2">
+                <label asp-for="Uid"></label>
+            </div>
+
+            <div class="col">
+                <label>@Model.Uid</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <label asp-for="Account"></label>
+            </div>
+
+            <div class="col">
+                <label>@Model.Account</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <labe asp-for="Name"></labe>
+            </div>
+
+            <div class="col">
+                <label>@Model.Name</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <label asp-for="Password"></label>
+            </div>
+
+            <div class="col">
+                <input class="form-control" asp-for="Password" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2">
+                <label asp-for="ConfirmPassoword"></label>
+            </div>
+
+            <div class="col">
+                <input class="form-control" asp-for="ConfirmPassoword" />
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col">
+                <div class="bg-warning">@Html.ValidationSummary()</div>
+            </div>
+        </div>*@
+
+
+
+
+        @*<div class="row text-center mb-2">
+            <div class="col-md-4 offset-md-4 col-lg-4 offset-lg-4">
+                <button class="btn-info" type="submit" name="register">提交修改</button>
+            </div>
+        </div>*@
+
+
+    <script src="~/171/171.js"></script>
+<script src="~/js/register.js"></script>

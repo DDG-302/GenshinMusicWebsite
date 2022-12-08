@@ -25,11 +25,12 @@ namespace genshinwebsite.Controllers
         private readonly IConfiguration _configuration;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IMusicDB<MusicModel, MusicViewModel> _musicDBHelper;
+        private readonly ICommentDB<CommentModel, CommentViewModel> _commentDBHelper;
         public AdminController(
             SignInManager<UserModel> signInManager,
             UserManager<UserModel> userManager,
             RoleManager<IdentityRole<int>> roleManager,
-            IConfiguration configuration, IMusicDB<MusicModel, MusicViewModel> musicDBHelper)
+            IConfiguration configuration, IMusicDB<MusicModel, MusicViewModel> musicDBHelper, ICommentDB<CommentModel, CommentViewModel> commentDBHelper)
 
         {
             _signInManager = signInManager;
@@ -37,6 +38,7 @@ namespace genshinwebsite.Controllers
             _configuration = configuration;
             _roleManager = roleManager;
             _musicDBHelper = musicDBHelper;
+            _commentDBHelper = commentDBHelper;
         }
 
         public IActionResult Index(int page_offset, string username)
@@ -356,5 +358,50 @@ namespace genshinwebsite.Controllers
             return View(music_list.ToList());
         }
 
+
+        [Authorize(Roles = ("Admin, God"))]
+        [Route("Admin/MusicManager/Detail/{muid}")]
+        public async Task<IActionResult> MusicManageDetail(int muid)
+        {
+            var music_model = await _musicDBHelper.get_by_id(muid);
+            return View(music_model);
+        }
+
+        [Authorize(Roles = ("Admin, God"))]
+        public async Task<IActionResult> CommentManage(int page_offset, string comment_context = "", COMMENT_SELECT_ORDER select_order = COMMENT_SELECT_ORDER.COMMENT_UPDATE_DATE_ORDER)
+        {
+            ViewData["url"] = HttpContext.Request.GetDisplayUrl();
+            ViewData["filter_idx"] = (int)select_order;
+            var num_per_page = _configuration.GetValue("NumPerPage", 10);
+            page_offset = Math.Max(1, page_offset);
+            if (comment_context != null && comment_context != string.Empty && comment_context != "")
+            {
+                ViewData["search_data"] = comment_context;
+            }
+            int item_count = _commentDBHelper.get_item_count(comment_context);
+            var comment_list = await _commentDBHelper.search_comment_list(comment_context, num_per_page, page_offset - 1, select_order);
+            if (item_count % num_per_page != 0)
+            {
+                page_offset = Math.Min(item_count / num_per_page + 1, page_offset);
+                ViewData["max_page"] = item_count / num_per_page + 1;
+            }
+            else
+            {
+                page_offset = Math.Min(item_count / num_per_page, page_offset);
+                ViewData["max_page"] = item_count / num_per_page;
+            }
+            ViewData["page_offset"] = page_offset;
+
+            return View(comment_list.ToList());
+        }
+
+        [Authorize(Roles = ("Admin, God"))]
+        [Route("Admin/CommentManage/Detail")]
+        public async Task<IActionResult> CommentManageDetail(int muid, int uid)
+        {
+            var comment_view_model = await _commentDBHelper.get_comment_by_uid_muid(uid, muid);
+
+            return View(comment_view_model);
+        }
     }
 }

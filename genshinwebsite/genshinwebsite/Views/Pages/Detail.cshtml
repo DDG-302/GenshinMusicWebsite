@@ -46,7 +46,9 @@
 </script>
 <style>
     .abs {
-        white-space: pre;
+        white-space: pre-wrap;
+        word-break: break-all;
+        line-break: loose;
     }
     .carousel-control-prev-icon {
         background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
@@ -82,15 +84,21 @@
         </div>
     </div>*@
 
-<table class="table table-bordered table-striped table-hover">
+<table class="table table-bordered table-striped table-hover" style="font-size: 21px;">
 
     <tbody>
         <tr>
-            <th>上传用户：</th>
+            <th style="min-width:150px;">上传用户：</th>
             <td colspan=2>
                 <a href="#">
                     @Model.Uploader
                 </a>
+            </td>
+        </tr>
+        <tr>
+            <th>用户ID：</th>
+            <td colspan=2>
+                @Model.Uid
             </td>
         </tr>
         <tr>
@@ -107,7 +115,7 @@
         </tr>
         <tr>
             <th>简介：</th>
-            <td colspan=2><span class="abs">@Model.Abstract_content</span> </td>
+            <td colspan=2 style="width:100%"><div class="abs">@Model.Abstract_content</div> </td>
         </tr>
         <tr>
             <th>下载：</th>

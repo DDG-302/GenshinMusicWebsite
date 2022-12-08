@@ -116,3 +116,8 @@ D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsi
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.MvcApplicationPartsAssemblyInfo.cs
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\genshinwebsite.MvcApplicationPartsAssemblyInfo.cache
 D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\UploadManagerDetail.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\ForgetPassword.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\User\Setting.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\Admin\MusicManageDetail.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\Admin\CommentManage.cshtml.g.cs
+D:\visual studio save\genshinmusic_v2\genshinwebsite\genshinwebsite\genshinwebsite\obj\Debug\netcoreapp3.1\Razor\Views\Admin\CommentManageDetail.cshtml.g.cs

@@ -11,6 +11,7 @@
 @*<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>*@
 <h1>乐谱信息修改</h1>
 <hr />
+@Html.AntiForgeryToken()
 <div class="alert alert-info">
     <span class="h2">曲名：@Model.MusicTitle</span>
     <span style="float:right;height:100%;padding:10px 0;">编号: @Model.Id</span>

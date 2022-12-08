@@ -24,7 +24,7 @@
                 @if (User.IsInRole("Admin") || User.IsInRole("God"))
                 {
                     <li>
-                        <a asp-controller="admin" asp-action="index">用户管理</a>
+                        <a asp-controller="admin" asp-action="index">管理</a>
                     </li>
                 }
                 <partial name="_LoginPartial" />

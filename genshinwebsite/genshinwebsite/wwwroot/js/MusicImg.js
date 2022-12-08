@@ -5,8 +5,7 @@ $(document).ready(function () {
     var item_div = document.getElementById("carousel_item_div");
     console.log(img_list)
     for (var i = 0; i < img_list.length; i++) {
-        //img_list[i] = img_list[i].replace("\x0", "/");
-        console.log(img_list[i])
+        //console.log(img_list[i])
         var li = document.createElement("li");
         li.setAttribute("data-target", "#carousel_music_img");
         li.setAttribute("data-slide-to", i);

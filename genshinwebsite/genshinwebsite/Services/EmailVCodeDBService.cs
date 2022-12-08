@@ -60,11 +60,9 @@ namespace genshinwebsite.Services
                     vcode = make_new_VCode();
                     record.RequestTime = 0;
                     record.VCode = vcode;
+                    record.SendDateTime = DateTime.Now;
                     _emailDataContext.Update(record);
                     _emailDataContext.SaveChanges();
-                    
-
-
                 }
                 else
                 {
@@ -96,11 +94,19 @@ namespace genshinwebsite.Services
             {
                 result = false;
             }
+            else if((DateTime.Now - record.SendDateTime).TotalSeconds > _configuration.GetValue("VCodeAvailabeSpanSec", 120))
+            {
+                var a = (DateTime.Now - record.SendDateTime).TotalSeconds;
+                var b = _configuration.GetValue("VCodeAvailabeSpanSec", 120);
+                result = false;
+            }
             else if(code != record.VCode)
             {
                 result = false;
             }
+            
             return result;
         }
+
     }
 }

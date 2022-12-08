@@ -1,0 +1,123 @@
+﻿@{
+    ViewData["Title"] = "评论管理";
+    int filter_idx = 1;
+    if (ViewData["filter_idx"] != null)
+    {
+        filter_idx = int.Parse(ViewData["filter_idx"].ToString());
+    }
+}
+@model List<CommentViewModel>
+@if (User.IsInRole("Admin") || User.IsInRole("God"))
+{
+    <link rel="stylesheet" href="~/css/musicsheet-display.css" />
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/js/AdminComment.js"></script>
+    <script src="~/js/CommentFilter.js"></script>
+    <script>
+    selected_filter = @filter_idx
+    </script>
+
+    <div class="row" style="margin-bottom:10px">
+        <div class="col-md-3"></div>
+        <div class="col-md-4">
+            @if (ViewData["search_data"] != null)
+            {
+                <input id="search_input_box" type="text" value="@ViewData["search_data"].ToString()" style="width:100%" />
+            }
+            else
+            {
+                <input id="search_input_box" type="text" style="width:100%" />
+            }
+
+        </div>
+        <div class="col-md-2">
+            <button style="width:100%" onclick="search_click()">搜索</button>
+        </div>
+
+    </div>
+    <ul class="nav nav-pills">
+        @if (filter_idx == 1)
+        {
+            <li><a id="filter_1" class="nav-link active" href="javascript:set_filter(1);">最新更新顺序</a></li>
+
+        }
+        else
+        {
+            <li><a id="filter_1" class="nav-link" href="javascript:set_filter(1);">最新更新顺序</a></li>
+        }
+
+        @if (filter_idx == 2)
+        {
+            <li><a id="filter_2" class="nav-link active" href="javascript:set_filter(2);">最新上传顺序</a></li>
+
+        }
+        else
+        {
+            <li><a id="filter_2" class="nav-link" href="javascript:set_filter(2);">最新上传顺序</a></li>
+        }
+
+        @if (filter_idx == 3)
+        {
+            <li><a id="filter_3" class="nav-link active" href="javascript:set_filter(3);">乐谱最新发布顺序</a></li>
+
+        }
+        else
+        {
+            <li><a id="filter_3" class="nav-link" href="javascript:set_filter(3);">乐谱最新发布顺序</a></li>
+        }
+
+        @if (filter_idx == 4)
+        {
+            <li><a id="filter_4" class="nav-link active" href="javascript:set_filter(4);">乐谱标题顺序</a></li>
+
+        }
+        else
+        {
+            <li><a id="filter_4" class="nav-link" href="javascript:set_filter(4);">乐谱标题顺序</a></li>
+        }
+
+        @if (filter_idx == 5)
+        {
+            <li><a id="filter_5" class="nav-link active" href="javascript:set_filter(5);">用户id顺序</a></li>
+
+        }
+        else
+        {
+            <li><a id="filter_5" class="nav-link" href="javascript:set_filter(5);">用户id顺序</a></li>
+        }
+
+
+
+
+    </ul>
+
+
+    @for (int i = 0; i < Model.Count;)
+    {
+        <div style="min-width:600px" class="row">
+            @for (int j = 0; i < Model.Count && j < 3; j++, i++)
+            {
+                <div class="col-md-4 col-sm-12" style="margin-bottom:10px">
+                    <div class="img-thumbnail">
+                        <div class="h3"><a href="~/Pages/@Model[i].Muid" target="_blank">MUID：@Model[i].Muid</a></div>
+                        <div class="h5">上传者：@Model[i].UserName</div>
+                        <div class="h5">上传者ID：@Model[i].Uid</div>
+                        <p>发布日期：@Model[i].UploadDateStr</p>
+                        <p>更新日期：@Model[i].UpdateDateStr</p>
+                        <p class="abstract_normal" style="height:150px">@Model[i].CommentContent</p>
+                        <a class="btn btn-light" href="~/Admin/CommentManage/Detail?muid=@Model[i].Muid&uid=@Model[i].Uid" target="_blank">
+                            详情
+                        </a>
+                        <button class="btn btn-dark" onclick="delete_comment(@Model[i].Muid, @Model[i].Uid)">
+                            删除
+                        </button>
+                    </div>
+
+                </div>
+            }
+        </div>
+    }
+
+    <partial name="_PageBar" />
+}

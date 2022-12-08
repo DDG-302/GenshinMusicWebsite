@@ -24,9 +24,19 @@ using NETCore.MailKit.Infrastructure.Internal;
 
 
 
-
 namespace genshinwebsite
 {
+    public class MyIdentityErrorDescriber : IdentityErrorDescriber
+    {
+        public override IdentityError PasswordRequiresNonAlphanumeric()
+        {
+            return new IdentityError { Code = nameof(PasswordRequiresNonAlphanumeric), Description = "密码必须包含除数字和字母外的字符" };
+        }
+        public override IdentityError PasswordRequiresUniqueChars(int uniqueChars)
+        {
+            return new IdentityError { Code = nameof(PasswordRequiresNonAlphanumeric), Description = "密码至少要包含" + uniqueChars.ToString() + "个不同字符" };
+        }
+    }
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -64,6 +74,8 @@ namespace genshinwebsite
                 option.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection"));
             });
 
+            
+
             //services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<IdentityDbContext>();
             services.AddIdentity<UserModel, IdentityRole<int>>(
                 options =>
@@ -74,7 +86,8 @@ namespace genshinwebsite
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequiredLength = 6;
-                    options.Password.RequiredUniqueChars = 1;
+                    options.Password.RequiredUniqueChars = 4;
+                   
 
                     // Lockout settings.
                     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -85,8 +98,12 @@ namespace genshinwebsite
                     options.User.AllowedUserNameCharacters = null;
                     options.User.RequireUniqueEmail = true;
                 }
-                ).AddEntityFrameworkStores<DataContext>();
-
+                ).AddEntityFrameworkStores<DataContext>()
+                .AddErrorDescriber<MyIdentityErrorDescriber>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/User/Login";
+            });
             services.Configure<SecurityStampValidatorOptions>(options =>
             {
                 options.ValidationInterval = TimeSpan.FromMinutes(1); // 每一分钟检查一次用户状态
@@ -162,11 +179,21 @@ namespace genshinwebsite
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.Use(async (ctx, next) =>
+            {
+                await next();
+
+                if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
+                {
+                    ctx.Request.Path = "/404.html";
+                    await next();
+                }
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             
             app.UseRouting();
-
+            
             // 下面两个一定是这个顺序，不然authorize会无效
             app.UseAuthentication();
             app.UseAuthorization();

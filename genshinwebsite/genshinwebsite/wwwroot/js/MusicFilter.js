@@ -59,6 +59,13 @@ function set_filter(filter_id) {
             document.getElementById("filter_1").className = "nav-link active";
             break;
     }
-    window.location = "/Pages?select_order=" + selected_filter;
+    let search_content = document.getElementById("search_input_box");
+    if (search_content.value != null && search_content.value != "") {
+        window.location = "?select_order=" + selected_filter + "&music_title=" + search_content.value
+    }
+    else {
+        window.location = "/Pages?select_order=" + selected_filter;
+    }
+
 }
 

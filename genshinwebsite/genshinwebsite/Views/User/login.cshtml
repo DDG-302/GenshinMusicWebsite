@@ -9,17 +9,18 @@
 
 
 <link rel="stylesheet" href="~/155/155.css">
-    <div class="container_login">
-        <h1>Welcome</h1>
-        <form method="post">
-            <div class="form">
-                <input onmouseover="this.title='您的邮箱'" id="email_input" type="email" asp-for="Account" placeholder="您的邮箱">
-                <input onmouseover="this.title='您的密码'" type="password" asp-for="Password" placeholder="您的密码">
-                <div asp-validation-summary="All"></div>
-                <button class="btn-login" type="submit">登录</button>
-            </div>
-        </form>
-    </div>
+<div class="container_login">
+    <h1>Welcome</h1>
+    <form method="post">
+        <div class="form">
+            <input onmouseover="this.title='您的邮箱'" id="email_input" type="email" asp-for="Account" placeholder="您的邮箱">
+            <input onmouseover="this.title='您的密码'" type="password" asp-for="Password" placeholder="您的密码">
+            <div asp-validation-summary="All"></div>
+            <button class="btn-login" type="submit">登录</button>
+        </div>
+    </form>
+    <button class="btn-login" onclick="window.location='ForgetPassword'" style="margin-top:10px">忘记密码</button>
+</div>
     <ul class="bg-squares">
         <li></li>
         <li></li>

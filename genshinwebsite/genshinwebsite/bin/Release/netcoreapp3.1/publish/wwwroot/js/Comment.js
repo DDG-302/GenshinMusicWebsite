@@ -97,6 +97,11 @@ function _make_comment_div(info) {
 
     body_div.appendChild(div_card_head);
 
+    var p_uid = document.createElement("p");
+    p_uid.innerHTML = "UID: " + info["uid"]
+    p_uid.className = "date_time_p";
+    body_div.appendChild(p_uid);
+
     var p_upload_date = document.createElement("p");
     var p_update_date = document.createElement("p");
     p_upload_date.innerHTML = "发布时间：" + info["uploadDateStr"];
@@ -106,6 +111,8 @@ function _make_comment_div(info) {
     body_div.appendChild(p_upload_date);
     body_div.appendChild(p_update_date);
     body_div.appendChild(document.createElement("hr"));
+
+    //var div_comment = document.createElement("p");
     var p_comment = document.createElement("p");
     p_comment.innerHTML = info["commentContent"];
     p_comment.className = "comment_content";

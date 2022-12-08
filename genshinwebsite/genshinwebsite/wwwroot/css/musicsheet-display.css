@@ -103,3 +103,13 @@
         padding:10px 0;
     }
 
+.abstract_normal {
+    display: -webkit-box;
+    overflow: hidden;
+    word-break: break-all;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    white-space: pre-wrap;
+}

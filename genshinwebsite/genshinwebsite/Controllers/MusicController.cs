@@ -303,6 +303,39 @@ namespace genshinwebsite.Controllers
         }
 
 
+        [HttpPost]
+        [Authorize(Roles = "Admin, God")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateMusicAdmin(string abs, string music_title, int muid, int view_num, int download_num)
+        {
+            var music = await _musicDBHelper.get_by_id(muid);
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return StatusCode(403, "修改失败，用户不存在");
+            }
+            if (music == null)
+            {
+                return StatusCode(403, "修改失败，乐谱不存在");
+            }
+
+            var music_model = new MusicModel()
+            {
+                Id = music.Id,
+                User_id = music.Uid,
+                Datetime = music.Datetime,
+                MusicTitle = music_title,
+                Abstract_content = abs,
+                View_num = view_num,
+                Download_num = download_num
+            };
+            if (await _musicDBHelper.update_music(music_model) != DBOperationResult.OK)
+            {
+                return StatusCode(500, "数据库操作失败");
+            }
+           
+            return Ok("修改完成");
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -435,7 +468,7 @@ namespace genshinwebsite.Controllers
         /// <param name="page_num">页内数量</param>
         /// <param name="select_order">排序</param>
         /// <returns></returns>
-        public async Task<IActionResult> get_comment_list(int muid, int page_offset, int page_num = 10, COMMENT_SELECT_ORDER select_order = COMMENT_SELECT_ORDER.UPDATE_DATE)
+        public async Task<IActionResult> get_comment_list(int muid, int page_offset, int page_num = 10, COMMENT_SELECT_ORDER select_order = COMMENT_SELECT_ORDER.COMMENT_UPDATE_DATE_ORDER)
         {
             var result = await _commentDBHelper.get_comment_list(muid, page_num, page_offset, select_order);
             return Ok(result.ToList());
@@ -504,5 +537,36 @@ namespace genshinwebsite.Controllers
             
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = ("Admin, God"))]
+        public async Task<IActionResult> delete_comment_admin(int muid, int uid)
+        {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return StatusCode(403, "未登录");
+            }
+            if(!User.IsInRole("God")){
+                var user = await _userManager.FindByIdAsync(uid.ToString());
+                if (user != null && await _userManager.IsInRoleAsync(user, "God"))
+                {
+                    return StatusCode(403, "权限不足");
+                }
+            }
+            CommentModel commentModel = new CommentModel
+            {
+                Uid = uid,
+                Muid = muid
+            };
+            var result = await _commentDBHelper.delete_comment(commentModel);
+            if (result == DBOperationResult.OK)
+            {
+                return Ok("删除成功");
+            }
+            else
+            {
+                return StatusCode(500, "删除失败，服务器或数据库错误");
+            }
+        }
     }
 }

@@ -21,31 +21,31 @@
 <script src="~/js/UploadManager.js"></script>
 @for (int i = 0; i < Model.Count;)
 {
-<div style="min-width:600px" class="row">
-    @for (int j = 0; i < Model.Count && j < 3; j++, i++)
-    {
-        <div class="col-md-4 col-sm-12" style="margin-bottom:10px">
+    <div style="min-width:600px" class="row">
+        @for (int j = 0; i < Model.Count && j < 3; j++, i++)
+        {
+            <div class="col-md-4 col-sm-12" style="margin-bottom:10px">
                 <div class="img-thumbnail">
 
                     <div class="h3">@Model[i].MusicTitle</div>
                     <div class="h5">上传者：@Model[i].Uploader</div>
                     <p>发布日期：@Model[i].Datetime</p>
-                    <p style="height:100px">@Model[i].Abstract_content</p>
+                    <p class="abstract_normal" style="height:100px">@Model[i].Abstract_content</p>
                     <img class="img-thumbnail" src="~/f5dd25c2527841ec883df8f3ceadc983.jpg" />
                     <p>下载：@Model[i].Download_num</p>
                     <p>浏览：@Model[i].View_num</p>
-                    <a class="btn btn-light" href="~/User/UploadManager/@Model[i].Id">
+                    <a class="btn btn-light" href="~/User/UploadManager/@Model[i].Id" target="_blank">
                         修改
                     </a>
                     <button class="btn btn-dark" onclick="delete_my_music(@Model[i].Id)">
-                       删除
+                        删除
                     </button>
                 </div>
 
             </div>
 
-    }
-</div>
+        }
+    </div>
 }
 
 <partial name="_PageBar" />

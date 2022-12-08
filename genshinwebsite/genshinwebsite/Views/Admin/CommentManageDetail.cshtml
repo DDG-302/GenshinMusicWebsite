@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "管理员评论信息管理";
+}
+
+@model CommentViewModel
+
+<script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/js/AdminComment.js"></script>
+<style>
+    .abs {
+        white-space: pre-wrap;
+        word-break: break-all;
+        line-break: loose;
+    }
+</style>
+@if (Model != null)
+{
+    <table class="table table-bordered table-striped table-hover" style="font-size: 21px">
+        <tbody>
+
+            <tr>
+                <th style="min-width:150px;">评论者</th>
+                <td colspan=2>@Model.UserName</td>
+            </tr>
+            <tr>
+                <th>评论者ID</th>
+                <td colspan=2>@Model.Uid</td>
+            </tr>
+            <tr>
+                <th>乐谱ID</th>
+                <td colspan=2><a href="~/Pages/@Model.Muid" target="_blank">@Model.Muid</a></td>
+            </tr>
+            <tr>
+                <th>评论内容</th>
+                <td colspan=2><span class="abs">@Model.CommentContent</span></td>
+            </tr>
+            <tr>
+                <th>删除评论</th>
+                <td colspan=2>
+                    <button class="btn btn-danger" onclick="delete_comment(@Model.Muid, @Model.Uid)">
+                        删除
+                    </button>
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+}
+else
+{
+    <script>
+        window.location.href = "404.html";
+    </script>
+}
