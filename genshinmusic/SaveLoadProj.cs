@@ -29,7 +29,7 @@ namespace genshinmusic
         /// <param name="music_sheet"></param>
         /// <param name="bpm"></param>
         /// <returns></returns>
-        public bool save_to_file(MusicSheet music_sheet, int bpm)
+        public bool save_to_file(MusicSheet music_sheet, int bpm, int bar_num)
         {
             if(music_sheet == null)
             {
@@ -55,8 +55,9 @@ namespace genshinmusic
             {
                 var save_file = new SaveFileTemplate(
                       beats_per_bar: music_sheet.Beat_per_bar,
-                      bpm,
-                      music_sheet: music_sheet.Music_sheet); // 根据文件的保存模板保存文件
+                      bpm:bpm,
+                      music_sheet: music_sheet.Music_sheet,
+                      bar_num: bar_num); // 根据文件的保存模板保存文件
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 var data = JsonSerializer.Serialize(save_file, options); // 导出json格式的序列化保存信息q
                 sw = new StreamWriter(filename, append: false, encoding: Encoding.UTF8); // 写文件
@@ -96,7 +97,7 @@ namespace genshinmusic
         /// <param name="music_sheet"></param>
         /// <param name="bpm"></param>
         /// <returns></returns>
-        public bool save_to_existed_file(MusicSheet music_sheet, int bpm, string file_path)
+        public bool save_to_existed_file(MusicSheet music_sheet, int bpm, int bar_num, string file_path)
         {
             if (File.Exists(file_path))
             {
@@ -107,7 +108,8 @@ namespace genshinmusic
                     var save_file = new SaveFileTemplate(
                           beats_per_bar: music_sheet.Beat_per_bar,
                           bpm,
-                          music_sheet: music_sheet.Music_sheet); // 根据文件的保存模板保存文件
+                          music_sheet: music_sheet.Music_sheet,
+                          bar_num: bar_num); // 根据文件的保存模板保存文件
                     var options = new JsonSerializerOptions { WriteIndented = true };
                     var data = JsonSerializer.Serialize(save_file, options); // 导出json格式的序列化保存信息q
                     sw = new StreamWriter(file_path, append: false, encoding: Encoding.UTF8); // 写文件
@@ -138,7 +140,7 @@ namespace genshinmusic
             }
             else
             {
-                return save_to_file(music_sheet, bpm);
+                return save_to_file(music_sheet, bpm, bar_num);
             }
 
             return true;

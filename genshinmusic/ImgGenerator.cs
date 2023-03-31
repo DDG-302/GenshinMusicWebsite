@@ -555,7 +555,7 @@ namespace genshinmusic
 
             reset_grid();
             int page = 1;
-            if(title != "")
+            if(title != "" && title != null)
             {
                 title = System.IO.Path.GetFileNameWithoutExtension(title);
             }

@@ -83,7 +83,7 @@ namespace genshinmusic
                 SaveLoadProj saveLoadProj = new SaveLoadProj();
                 if (proj_save_path != null && proj_save_path != "")
                 {
-                    if(saveLoadProj.save_to_existed_file(music_sheet, int.Parse(bpm_inputbox.Text), proj_save_path))
+                    if(saveLoadProj.save_to_existed_file(music_sheet, int.Parse(bpm_inputbox.Text), bar_num, proj_save_path))
                     {
                         this.is_proj_saved = true;
                         this.ctrl_down = false;
@@ -93,7 +93,7 @@ namespace genshinmusic
                 }
                 else
                 {
-                    if(saveLoadProj.save_to_file(music_sheet, int.Parse(bpm_inputbox.Text)))
+                    if(saveLoadProj.save_to_file(music_sheet, int.Parse(bpm_inputbox.Text), bar_num))
                     {
                         this.is_proj_saved = true;
                         this.proj_save_path = saveLoadProj.File_path;
@@ -287,7 +287,7 @@ namespace genshinmusic
 
                     target_note_list.Add(target_note);
                 }
-                if (music_sheet.move_notes(origin_note_list, target_note_list))
+                if (music_sheet.extend_notes(origin_note_list, target_note_list))
                 {
                     this.is_proj_saved = false;
                     for (int i = 0; i < chosen_block_list.Count; i++)
@@ -313,7 +313,7 @@ namespace genshinmusic
 
                     target_note_list.Add(target_note);
                 }
-                if (music_sheet.move_notes(origin_note_list, target_note_list))
+                if (music_sheet.extend_notes(origin_note_list, target_note_list))
                 {
                     this.is_proj_saved = false;
                     for (int i = 0; i < chosen_block_list.Count; i++)
@@ -977,18 +977,18 @@ namespace genshinmusic
             SaveLoadProj saveLoadProj = new SaveLoadProj();
             if(int.Parse(((MenuItem)sender).Tag.ToString()) == 1)
             {
-                saveLoadProj.save_to_file(music_sheet, int.Parse(bpm_inputbox.Text));
+                saveLoadProj.save_to_file(music_sheet, int.Parse(bpm_inputbox.Text), this.bar_num);
             }
             else if (proj_save_path != null && proj_save_path != "")
             {
-                if (saveLoadProj.save_to_existed_file(music_sheet, int.Parse(bpm_inputbox.Text), proj_save_path))
+                if (saveLoadProj.save_to_existed_file(music_sheet, int.Parse(bpm_inputbox.Text), bar_num, proj_save_path))
                 {
                     this.is_proj_saved = true;
                 }
             }
             else
             {
-                if (saveLoadProj.save_to_file(music_sheet, int.Parse(bpm_inputbox.Text)))
+                if (saveLoadProj.save_to_file(music_sheet, int.Parse(bpm_inputbox.Text), this.bar_num))
                 {
                     this.is_proj_saved = true;
                     this.proj_save_path = saveLoadProj.File_path;
@@ -1049,6 +1049,10 @@ namespace genshinmusic
             // UI加载
             piano_grid.Children.Clear();
             piano_keyboard_init();
+            while(this.bar_num < save_file.Bar_num)
+            {
+                add_bar();
+            }
             foreach(Note note in save_file.Music_sheet)
             {
                 var rec = new Rectangle();

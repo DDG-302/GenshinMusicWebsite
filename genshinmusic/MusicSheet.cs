@@ -39,6 +39,38 @@ namespace genshinmusic
         }
 
         /// <summary>
+        /// 对给定的乐谱进行排序
+        /// </summary>
+        /// <param name="given_music_sheet">用户给定乐谱</param>
+        private void sort_given_music_sheet(ref List<List<Note>> given_music_sheet, int key_idx)
+        {
+            given_music_sheet[key_idx].Sort(
+                (x, y) =>
+                {
+                    // 1大于，0等于，-1小于
+                    if (x.Absolute_semi_offset > y.Absolute_semi_offset)
+                        return 1;
+                    if (x.Absolute_semi_offset < y.Absolute_semi_offset)
+                        return -1;
+                    if (x.Absolute_semi_offset == y.Absolute_semi_offset)
+                    {
+                        // 按Key_idx从小到大排序，即从高音到低音
+                        if (x.Key_idx > y.Key_idx)
+                        {
+                            return 1;
+                        }
+                        if (x.Key_idx < y.Key_idx)
+                        {
+                            return -1;
+                        }
+                    }
+
+                    return 0;
+                }
+               );
+        }
+
+        /// <summary>
         /// 对乐谱排序，request_key_idx表示对music_with_key_sequence的哪些行排序
         /// </summary>
         /// <param name="request_key_idx">要求排序的键盘行索引，为null表示只对music_sheet排序</param>
@@ -135,7 +167,6 @@ namespace genshinmusic
                 }
                 music_with_key_sequence[note.Key_idx].Add(note);
 
-                
             }
             sort_music_sheet(sort_key_list);
             return true;
@@ -196,27 +227,74 @@ namespace genshinmusic
              
             }
 
-            
+/*********************临时：遍历法*********************/
+            //for(int i = 0; i < music_with_key_sequence[note.Key_idx].Count - 1; i++)
+            //{
+            //    var mid_note = music_with_key_sequence[note.Key_idx][i];
+            //    if(mid_note.Begin_bar_idx > note.End_bar_idx)
+            //    {
+            //        break;
+            //    }
+            //    if (mid_note.Begin_bar_idx < note.Begin_bar_idx)
+            //    {
+            //        if (mid_note.End_bar_idx > note.Begin_bar_idx ||
+            //            mid_note.End_bar_idx == note.Begin_bar_idx &&
+            //            mid_note.Continuous_semi + mid_note.Absolute_semi_offset >
+            //            note.Absolute_semi_offset)
+            //        {
+            //            return false;
+            //        }
+            //    }
+            //    else if (mid_note.Begin_bar_idx > note.Begin_bar_idx)
+            //    {
+            //        if (mid_note.Begin_bar_idx < note.End_bar_idx ||
+            //            mid_note.Begin_bar_idx == note.End_bar_idx &&
+            //            note.Continuous_semi + note.Absolute_semi_offset >
+            //            mid_note.Absolute_semi_offset)
+            //        {
+            //            return false;
+            //        }
+            //    }
+            //    else if(mid_note.Absolute_semi_offset < note.Absolute_semi_offset)
+            //    {
+            //        if(mid_note.Absolute_semi_offset + mid_note.Continuous_semi > note.Absolute_semi_offset)
+            //        {
+            //            return false;
+            //        }
+            //    }
+            //    else if(mid_note.Absolute_semi_offset > note.Absolute_semi_offset)
+            //    {
+            //        if (note.Absolute_semi_offset + note.Continuous_semi > mid_note.Absolute_semi_offset)
+            //        {
+            //            return false;
+            //        }
+            //    }
+            //    else if (mid_note.Absolute_semi_offset == note.Absolute_semi_offset)
+            //    {
+            //        return false;
+            //    }
+            //}
+            /******************二分法：有BUG!!********************/
             int low = 0;
-            int high = music_with_key_sequence[note.Key_idx].Count-1;
-            while(low <= high)
+            int high = music_with_key_sequence[note.Key_idx].Count - 1;
+            while (low <= high)
             {
                 int mid = (low + high) / 2;
                 var mid_note = music_with_key_sequence[note.Key_idx][mid];
                 int mid_note_begin_bar = mid_note.Begin_bar_idx;
 
-                if(mid_note_begin_bar < note.Begin_bar_idx)
+                if (mid_note_begin_bar < note.Begin_bar_idx)
                 {
-                    if(mid_note.End_bar_idx > note.Begin_bar_idx ||
+                    if (mid_note.End_bar_idx > note.Begin_bar_idx ||
                         mid_note.End_bar_idx == note.Begin_bar_idx &&
-                        mid_note.Continuous_semi + mid_note.Absolute_semi_offset > 
+                        mid_note.Continuous_semi + mid_note.Absolute_semi_offset >
                         note.Absolute_semi_offset)
                     {
                         return false;
                     }
                     low = mid + 1;
                 }
-                else if(mid_note_begin_bar > note.Begin_bar_idx)
+                else if (mid_note_begin_bar > note.Begin_bar_idx)
                 {
                     if (mid_note.Begin_bar_idx < note.End_bar_idx ||
                         mid_note.Begin_bar_idx == note.End_bar_idx &&
@@ -225,7 +303,7 @@ namespace genshinmusic
                     {
                         return false;
                     }
-                 
+
                     high = mid - 1;
                 }
                 else
@@ -257,7 +335,7 @@ namespace genshinmusic
                         i--;
                     }
 
-                    while (j < music_with_key_sequence[note.Key_idx].Count && music_with_key_sequence[note.Key_idx][j].Begin_bar_idx == note.Begin_bar_idx)
+                    while (j <= high && music_with_key_sequence[note.Key_idx][j].Begin_bar_idx == note.Begin_bar_idx)
                     {
                         mid_note = music_with_key_sequence[note.Key_idx][j];
                         Note a, b; // a小b大
@@ -281,19 +359,22 @@ namespace genshinmusic
                         }
                         j++;
                     }
-                    if(i < music_with_key_sequence[note.Key_idx].Count - j)
+                    if (i >= 0 && music_with_key_sequence[note.Key_idx][i].Absolute_semi_offset + music_with_key_sequence[note.Key_idx][i].Continuous_semi > note.Absolute_semi_offset)
                     {
-                   
-                        high = i;
+                        return false;
+                    }
+                    else if (j <= high && note.Absolute_semi_offset + note.Continuous_semi > music_with_key_sequence[note.Key_idx][j].Absolute_semi_offset)
+                    {
+                        return false;
                     }
                     else
                     {
-                        low = j;
+                        break;
                     }
 
-                   
+
                 }
-                
+
             }
 
 
@@ -466,7 +547,7 @@ namespace genshinmusic
                     }
              
 
-                    while (j < temp_seq_note[note.Key_idx].Count && temp_seq_note[note.Key_idx][j].Begin_bar_idx == note.Begin_bar_idx)
+                    while (j <= high && temp_seq_note[note.Key_idx][j].Begin_bar_idx == note.Begin_bar_idx)
                     {
                         mid_note = temp_seq_note[note.Key_idx][j];
                         Note a, b; // a小b大
@@ -492,14 +573,17 @@ namespace genshinmusic
                         j++;
                     }
   
-                    if (i < temp_seq_note[note.Key_idx].Count - j)
+                    if(i >= 0 && temp_seq_note[note.Key_idx][i].Absolute_semi_offset + temp_seq_note[note.Key_idx][i].Continuous_semi > note.Absolute_semi_offset)
                     {
-
-                        high = i;
+                        return false;
+                    }
+                    else if(j <= high && note.Absolute_semi_offset + note.Continuous_semi > temp_seq_note[note.Key_idx][j].Absolute_semi_offset)
+                    {
+                        return false;
                     }
                     else
                     {
-                        low = j;
+                        break;
                     }
 
 
@@ -550,6 +634,53 @@ namespace genshinmusic
             return true;
         }
 
-        
+        /// <summary>
+        /// QE修改音符块长度
+        /// </summary>
+        /// <param name="origin">被修改的原始音符</param>
+        /// <param name="target">修改后的目标音符</param>
+        /// <returns></returns>
+        public bool extend_notes(List<Note> origin, List<Note> target)
+        {
+            List<List<Note>> temp_note = new List<List<Note>>();
+            for (int i = 0; i < this.music_with_key_sequence.Count; i++)
+            {
+                temp_note.Add(new List<Note>());
+                for (int j = 0; j < this.music_with_key_sequence[i].Count; j++)
+                {
+                    temp_note[i].Add(new Note(this.music_with_key_sequence[i][j].Begin_bar_idx,
+                       this.music_with_key_sequence[i][j].Semi_offset,
+                       this.music_with_key_sequence[i][j].Key_idx,
+                       this.music_with_key_sequence[i][j].Continuous_semi,
+                       this.music_with_key_sequence[i][j].End_bar_idx,
+                       this.beat_per_bar,
+                       this.music_with_key_sequence[i][j].get_music_rectangle_block()));
+                }
+            }
+
+            for(int i = 0; i < origin.Count; i++)
+            {
+                var org_note = origin[i];
+               
+                temp_note[org_note.Key_idx].Remove(org_note);
+                if (!is_note_valid_in_moving(target[i], temp_note))
+                {
+                    return false;
+                }
+                temp_note[org_note.Key_idx].Add(org_note);
+                this.sort_given_music_sheet(ref temp_note, org_note.Key_idx);
+            }
+            delete_notes(origin);
+
+
+            for (int i = 0; i < target.Count; i++)
+            {
+                add_note(target[i]);
+            }
+
+            return true;
+        }
+
+
     }
 }

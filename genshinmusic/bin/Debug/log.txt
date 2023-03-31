@@ -145,3 +145,25 @@
    在 genshinmusic.MIDIPlayer.<>c__DisplayClass33_0.<set_midi_player>b__0() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\MIDIPlayer.cs:行号 173
 ===========================================
 ===========================================
+错误时间：2023/3/31 13:55:09
+错误信息：The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0.
+错误源：System.Text.Json
+错误栈：   在 System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack& readStack, JsonReaderException ex)
+   在 System.Text.Json.JsonSerializer.ReadCore(JsonSerializerOptions options, Utf8JsonReader& reader, ReadStack& readStack)
+   在 System.Text.Json.JsonSerializer.ReadCore(Type returnType, JsonSerializerOptions options, Utf8JsonReader& reader)
+   在 System.Text.Json.JsonSerializer.Deserialize(String json, Type returnType, JsonSerializerOptions options)
+   在 System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   在 genshinmusic.SaveLoadProj.load_file() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\SaveLoadProj.cs:行号 178
+===========================================
+===========================================
+错误时间：2023/3/31 13:56:01
+错误信息：The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0.
+错误源：System.Text.Json
+错误栈：   在 System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack& readStack, JsonReaderException ex)
+   在 System.Text.Json.JsonSerializer.ReadCore(JsonSerializerOptions options, Utf8JsonReader& reader, ReadStack& readStack)
+   在 System.Text.Json.JsonSerializer.ReadCore(Type returnType, JsonSerializerOptions options, Utf8JsonReader& reader)
+   在 System.Text.Json.JsonSerializer.Deserialize(String json, Type returnType, JsonSerializerOptions options)
+   在 System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   在 genshinmusic.SaveLoadProj.load_file() 位置 D:\visual studio save\genshinmusic_v2\genshinmusic\genshinmusic\SaveLoadProj.cs:行号 178
+===========================================
+===========================================
